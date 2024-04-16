@@ -33,6 +33,6 @@ compute_normals <- function(.x, date_var = NULL, value_var = NULL, keys){
       max = max(!!dplyr::sym(value_var), na.rm = TRUE),
       min = min(!!dplyr::sym(value_var), na.rm = TRUE),
       n = dplyr::n(),
-      .by = dplyr::all_of(c(keys,"month"))
+      .by = dplyr::all_of(c(keys, "interval_label", "date_start", "date_end", "month"))
     )
 }
