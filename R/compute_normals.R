@@ -1,4 +1,4 @@
-compute_normals <- function(.x, value_var, keys){
+compute_normals <- function(.x, value_var = NULL, keys){
   # Assertions
   checkmate::assert_tibble(x = .x)
   #checkmate::assert_choice(x = keys, choices = names(.x))
@@ -19,6 +19,11 @@ compute_normals <- function(.x, value_var, keys){
   .x |>
     dplyr::summarise(
       avg = mean(!!dplyr::sym(value_var), na.rm = TRUE),
-      .by = keys
+      sd = sd(!!dplyr::sym(value_var), na.rm = TRUE),
+      se = sd/sqrt(dplyr::n()),
+      max = max(!!dplyr::sym(value_var), na.rm = TRUE),
+      min = min(!!dplyr::sym(value_var), na.rm = TRUE),
+      n = dplyr::n(),
+      .by = dplyr::all_of(keys)
     )
 }

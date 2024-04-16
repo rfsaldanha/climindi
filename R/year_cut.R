@@ -1,12 +1,14 @@
 #' Year cut
 #'
-#' Discretize dates into yearly intervals
+#' Discretize dates into yearly intervals.
+#'
+#' The function compute yearly intervals of size `n` and adds to the tibble a date interval variable (`date_interval`) and a interval label variable (`interval_label`) with the staring and ending years of the interval.
 #'
 #' @param .x a tibble.
 #' @param date_var Date variable. If `NULL`, the function will default to 'date'.
 #' @param n numeric. Size of the interval, in years. Minimum of 1.
 #'
-#' @return a tibble with the variable `year_ref`.
+#' @return a tibble with the variables `date_interval` and `interval_label`.
 #' @export
 #'
 #' @examples
@@ -29,10 +31,8 @@ year_cut <- function(.x, date_var = NULL, n){
   # Compute interval
   .x |>
     dplyr::mutate(
-      year_ref = paste0(
-        lubridate::year(lubridate::floor_date(!!dplyr::sym(date_var), lubridate::years(n))),
-        "--",
-        lubridate::year(lubridate::ceiling_date(!!dplyr::sym(date_var), lubridate::years(n)))
-      )
+      date_start = lubridate::floor_date(!!dplyr::sym(date_var), lubridate::years(n)),
+      date_end = lubridate::ceiling_date(!!dplyr::sym(date_var), lubridate::years(n))-1,
+      interval_label = paste0(lubridate::year(date_start),"--",lubridate::year(date_end))
     )
 }
