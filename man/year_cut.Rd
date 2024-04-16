@@ -19,3 +19,7 @@ a tibble with the variable \code{year_ref}.
 \description{
 Discretize dates into yearly intervals
 }
+\examples{
+year_cut(temp_max_data, n = 30)
+
+}

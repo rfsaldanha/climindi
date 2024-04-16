@@ -9,6 +9,9 @@
 #' @return a tibble with the variable `year_ref`.
 #' @export
 #'
+#' @examples
+#' year_cut(temp_max_data, n = 30)
+#'
 year_cut <- function(.x, date_var = NULL, n){
   # Assertions
   checkmate::assert_tibble(x = .x)
