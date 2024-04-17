@@ -1,4 +1,4 @@
-compute_normals <- function(.x, date_var = NULL, value_var = NULL, keys){
+compute_indicators <- function(.x, date_var = NULL, value_var = NULL, keys){
   # Assertions
   checkmate::assert_tibble(x = .x)
 
@@ -25,6 +25,7 @@ compute_normals <- function(.x, date_var = NULL, value_var = NULL, keys){
 
   # Compute normals
   .x |>
+    dplyr::mutate(year = lubridate::year(!!dplyr::sym(date_var))) |>
     dplyr::mutate(month = lubridate::month(!!dplyr::sym(date_var))) |>
     dplyr::summarise(
       n = dplyr::n(),
@@ -37,6 +38,6 @@ compute_normals <- function(.x, date_var = NULL, value_var = NULL, keys){
       days_a2 = sum(!!dplyr::sym(value_var) > avg + (2 * sd), na.rm = TRUE),
       days_b1 = sum(!!dplyr::sym(value_var) < avg - (1 * sd), na.rm = TRUE),
       days_b2 = sum(!!dplyr::sym(value_var) < avg - (2 * sd), na.rm = TRUE),
-      .by = dplyr::all_of(c(keys, "interval_label", "date_start", "date_end", "month"))
+      .by = dplyr::all_of(c(keys, "year", "month"))
     )
 }
