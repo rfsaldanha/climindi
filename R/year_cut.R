@@ -16,8 +16,9 @@
 #'
 year_cut <- function(.x, date_var = NULL, n){
   # Assertions
-  checkmate::assert_tibble(x = .x)
-  checkmate::assert_numeric(x = n, lower = 1)
+  checkmate::assert_data_frame(x = .x)
+  checkmate::assert_integerish(x = n, lower = 1)
+
 
   # Date variable
   if(is.null(date_var)){
@@ -31,8 +32,8 @@ year_cut <- function(.x, date_var = NULL, n){
   # Compute interval
   .x |>
     dplyr::mutate(
-      date_start = lubridate::floor_date(!!dplyr::sym(date_var), lubridate::years(n)),
-      date_end = lubridate::ceiling_date(!!dplyr::sym(date_var), lubridate::years(n))-1,
-      interval_label = paste0(lubridate::year(date_start),"--",lubridate::year(date_end))
+      year_date_start = lubridate::floor_date(!!dplyr::sym(date_var), lubridate::years(n)),
+      year_date_end = lubridate::ceiling_date(!!dplyr::sym(date_var), lubridate::years(n))-1,
+      year_interval = paste0(lubridate::year(year_date_start),"--",lubridate::year(year_date_end)+1)
     )
 }

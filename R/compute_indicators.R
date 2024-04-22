@@ -1,6 +1,6 @@
-compute_indicators <- function(.x, date_var = NULL, value_var = NULL, keys){
+compute_indicators <- function(.x, y, keys, date_var = NULL, value_var = NULL){
   # Assertions
-  checkmate::assert_tibble(x = .x)
+  checkmate::assert_data_frame(x = .x)
 
   # Date variable
   if(is.null(date_var)){
@@ -23,9 +23,10 @@ compute_indicators <- function(.x, date_var = NULL, value_var = NULL, keys){
   # Assert keys
   checkmate::assert_subset(x = keys, choices = names(.x))
 
-  # Compute normals
+  # Compute indicators
   .x |>
-    dplyr::mutate(year = lubridate::year(!!dplyr::sym(date_var))) |>
+    dplyr::arrange(keys, !!dplyr::sym(date_var)) |>
+    year_cut(date_var = date_var, n = y) |>
     dplyr::mutate(month = lubridate::month(!!dplyr::sym(date_var))) |>
     dplyr::summarise(
       n = dplyr::n(),
@@ -38,6 +39,6 @@ compute_indicators <- function(.x, date_var = NULL, value_var = NULL, keys){
       days_a2 = sum(!!dplyr::sym(value_var) > avg + (2 * sd), na.rm = TRUE),
       days_b1 = sum(!!dplyr::sym(value_var) < avg - (1 * sd), na.rm = TRUE),
       days_b2 = sum(!!dplyr::sym(value_var) < avg - (2 * sd), na.rm = TRUE),
-      .by = dplyr::all_of(c(keys, "year", "month"))
+      .by = dplyr::all_of(c(keys, "year_interval", "month"))
     )
 }
