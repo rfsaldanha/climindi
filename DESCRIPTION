@@ -1,10 +1,10 @@
 Package: climindi
-Title: Compute Climate Indicators
+Title: Climate Indicators Helper Functions
 Version: 0.0.0.9000
 Authors@R: 
     person("Raphael", "Saldanha", , "raphael.de-freitas-saldanha@inria.fr", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-0652-8466"))
-Description: Compute climate indicators, normals and outliers.
+Description: Helper functions to compute climate indicators to be used in a 'dplyr' pipeline.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -14,7 +14,8 @@ BugReports: https://github.com/rfsaldanha/climindi/issues
 Imports: 
     checkmate,
     dplyr,
-    lubridate
+    lubridate,
+    nseq
 Depends: 
     R (>= 2.10)
 LazyData: true
