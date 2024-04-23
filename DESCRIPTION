@@ -15,7 +15,9 @@ Imports:
     checkmate,
     dplyr,
     lubridate,
-    nseq
+    nseq,
+    rlang,
+    stats
 Depends: 
     R (>= 2.10)
 LazyData: true
