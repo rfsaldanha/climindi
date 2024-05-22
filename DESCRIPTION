@@ -12,6 +12,7 @@ RoxygenNote: 7.3.1
 URL: https://github.com/rfsaldanha/climindi
 BugReports: https://github.com/rfsaldanha/climindi/issues
 Imports: 
+    caTools,
     checkmate,
     dplyr,
     lubridate,
