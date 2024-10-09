@@ -13,8 +13,6 @@
 #'
 #' @examples
 #' temp_max_data |>
-#'  # Kelvin to celsius
-#'  dplyr::mutate(value = value - 273.15) |>
 #'  # Group by municipalities
 #'  dplyr::group_by(code_muni) |>
 #'  # Compute normals

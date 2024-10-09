@@ -5,12 +5,12 @@
 \alias{temp_max_data}
 \title{Maximum temperature data}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 106652 rows and 3 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 90584 rows and 3 columns.
 }
 \usage{
 temp_max_data
 }
 \description{
-Example dataset with daily maximum temperature on Kelvin for four Brazilian municipalities (Rio de Janeiro - RJ, Nova Friburgo - RJ, Juiz de Fora - MG, Belo Horizonte - MG), from 1950 to 2022.
+Example dataset with daily maximum temperature (celsius degree) for four Brazilian municipalities (3304557 = Rio de Janeiro - RJ, 3303401 = Nova Friburgo - RJ, 3136702 = Juiz de Fora - MG, 3106200 = Belo Horizonte - MG), from 1961 to 2023.
 }
 \keyword{datasets}

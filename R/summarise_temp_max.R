@@ -35,14 +35,11 @@
 #' @examples
 #' # Compute normals
 #' normals <- temp_max_data |>
-#'   dplyr::mutate(value = value - 273.15) |>
 #'   dplyr::group_by(code_muni) |>
 #'   summarise_normal(date_var = date, value_var = value, year_start = 1961, year_end = 1990) |>
 #'   dplyr::ungroup()
 #' 
 #' temp_max_data |>
-#'  # Kelvin to celsius
-#'  dplyr::mutate(value = value - 273.15) |>
 #'  # Identify year
 #'  dplyr::mutate(year = lubridate::year(date)) |>
 #'  # Group by municipality code and year
@@ -69,7 +66,7 @@ summarise_temp_max <- function(.x, value_var, normals_df, id_var){
       normal = mean(.data[["normal"]], na.rm = TRUE),
       avg = mean({{value_var}}, na.rm = TRUE),
       sd = stats::sd({{value_var}}, na.rm = TRUE),
-      se = .data[["sd"]]/sqrt(.data[["n"]]),
+      se = .data[["sd"]]/sqrt(.data[["count"]]),
       max = max({{value_var}}, na.rm = TRUE),
       min = min({{value_var}}, na.rm = TRUE),
       p10 = caTools::runquantile({{value_var}}, k = 5, p = 0.1)[1],

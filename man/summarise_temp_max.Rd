@@ -44,14 +44,11 @@ The following variables are computed.
 \examples{
 # Compute normals
 normals <- temp_max_data |>
-  dplyr::mutate(value = value - 273.15) |>
   dplyr::group_by(code_muni) |>
   summarise_normal(date_var = date, value_var = value, year_start = 1961, year_end = 1990) |>
   dplyr::ungroup()
 
 temp_max_data |>
- # Kelvin to celsius
- dplyr::mutate(value = value - 273.15) |>
  # Identify year
  dplyr::mutate(year = lubridate::year(date)) |>
  # Group by municipality code and year
