@@ -8,3 +8,7 @@ test_that("summarise_temp works", {
 
   expect_true(all(c("days_a1", "days_a2") %in% names(res)))
 })
+
+test_that("summarise_temp not works with ungrouped data", {
+  expect_error(summarise_temp(var = temp_max_data))
+})
