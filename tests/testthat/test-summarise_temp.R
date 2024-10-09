@@ -1,12 +1,18 @@
 test_that("summarise_temp works", {
+  normals <- temp_max_data |>
+    dplyr::mutate(value = value -273.15) |>
+    dplyr::group_by(code_muni) |>
+    summarise_normal(date_var = date, value_var = value, year_start = 1961, year_end = 1990) |>
+    dplyr::ungroup()
+  
   res <- temp_max_data |>
-    dplyr::mutate(decade = year_interval(date, 10)) |>
+    dplyr::mutate(year = lubridate::year(date)) |>
     dplyr::mutate(month = lubridate::month(date)) |>
-    dplyr::group_by(code_muni, decade, month) |>
-    summarise_temp(var = value) |>
+    dplyr::group_by(code_muni, year, month) |>
+    summarise_temp(id_var = "code_muni", value_var = value, normals_df = normals) |>
     dplyr::ungroup()
 
-  expect_true(all(c("days_a1", "days_a2") %in% names(res)))
+  expect_true(all(c("heat_waves", "tx90p") %in% names(res)))
 })
 
 test_that("summarise_temp not works with ungrouped data", {
