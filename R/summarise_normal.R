@@ -1,3 +1,27 @@
+#' Compute normals from grouped data
+#'
+#' The function computes normals (average) of a variable for each group.
+#'
+#' @param .x grouped data, created with `dplyr::group_by()`
+#' @param date_var name of the variable with dates.
+#' @param value_var name of the variable with values.
+#' @param year_start starting year of the normal
+#' @param year_end ending year of the normal
+#'
+#' @return A tibble.
+#' @export
+#'
+#' @examples
+#' temp_max_data |>
+#'  # Kelvin to celsius
+#'  dplyr::mutate(value = value - 273.15) |>
+#'  # Group by municipalities
+#'  dplyr::group_by(code_muni) |>
+#'  # Compute normals
+#'  summarise_normal(date_var = date, value_var = value, year_start = 1961, year_end = 1990) |>
+#'  # Ungroup
+#'  dplyr::ungroup()
+#' 
 summarise_normal <- function(.x, date_var, value_var, year_start, year_end){
   # Assertions
   checkmate::assert_data_frame(x = .x)

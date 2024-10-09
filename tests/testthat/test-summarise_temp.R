@@ -1,15 +1,16 @@
 test_that("summarise_temp works", {
   normals <- temp_max_data |>
-    dplyr::mutate(value = value -273.15) |>
+    dplyr::mutate(value = value - 273.15) |>
     dplyr::group_by(code_muni) |>
     summarise_normal(date_var = date, value_var = value, year_start = 1961, year_end = 1990) |>
     dplyr::ungroup()
   
   res <- temp_max_data |>
+    dplyr::mutate(value = value - 273.15) |>
     dplyr::mutate(year = lubridate::year(date)) |>
     dplyr::mutate(month = lubridate::month(date)) |>
     dplyr::group_by(code_muni, year, month) |>
-    summarise_temp(id_var = "code_muni", value_var = value, normals_df = normals) |>
+    summarise_temp(value_var = value, normals_df = normals, id_var = "code_muni") |>
     dplyr::ungroup()
 
   expect_true(all(c("heat_waves", "tx90p") %in% names(res)))

@@ -1,6 +1,37 @@
+#' Compute temperature indicators from grouped data
+#'
+#' The function computes several temperature indicators from grouped data.
+#'
+#' @param .x grouped data, created with `dplyr::group_by()`
+#' @param value_var name of the variable with temperature values.
+#' @param normals_df normals data, created with `summarise_normal()`
+#' @param id_var id variable to join normals with temperature data
+#'
+#' @return A tibble.
+#' @export
 #' @importFrom rlang .data
-
-summarise_temp <- function(.x, id_var, value_var, normals_df){
+#'
+#' @examples
+#' # Compute normals
+#' normals <- temp_max_data |>
+#'   dplyr::mutate(value = value - 273.15) |>
+#'   dplyr::group_by(code_muni) |>
+#'   summarise_normal(date_var = date, value_var = value, year_start = 1961, year_end = 1990) |>
+#'   dplyr::ungroup()
+#' 
+#' temp_max_data |>
+#'  # Kelvin to celsius
+#'  dplyr::mutate(value = value - 273.15) |>
+#'  # Identify year
+#'  dplyr::mutate(year = lubridate::year(date)) |>
+#'  # Group by municipality code and year
+#'  dplyr::group_by(code_muni, year) |>
+#'  # Compute temperature indicators
+#'  summarise_temp(value_var = value, normals_df = normals, id_var = "code_muni") |>
+#'  # Ungroup
+#'  dplyr::ungroup()
+#' 
+summarise_temp <- function(.x, value_var, normals_df, id_var){
   # Assertions
   checkmate::assert_data_frame(x = .x)
 
@@ -20,12 +51,11 @@ summarise_temp <- function(.x, id_var, value_var, normals_df){
       se = .data[["sd"]]/sqrt(.data[["n"]]),
       max = max({{value_var}}, na.rm = TRUE),
       min = min({{value_var}}, na.rm = TRUE),
-      p10 = window_percentile({{value_var}}, k = 5, p = 0.1),
-      p90 = window_percentile({{value_var}}, k = 5, p = 0.9),
+      p10 = caTools::runquantile({{value_var}}, k = 5, p = 0.1)[1],
+      p90 = caTools::runquantile({{value_var}}, k = 5, p = 0.9)[1],
       heat_waves = nseq::trle_cond(x = {{value_var}}, a = 5, a_op = "gte", b = .data[["normal"]] + 5, b_op = "gte"),
       tx90p = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = .data[["p90"]], b_op = "gte"),
     )
-
 }
 
 
@@ -34,32 +64,3 @@ summarise_temp <- function(.x, id_var, value_var, normals_df){
 
 
 
-summarise_temp_old <- function(.x, var, upper_ref){
-  # Assertions
-  checkmate::assert_data_frame(x = .x)
-
-  # Assert group
-  if(!dplyr::is_grouped_df(.x))(
-    stop(".x must be a grouped data frame")
-  )
-
-  # Compute indicators
-  .x |>
-    dplyr::summarise(
-      n = dplyr::n(),
-      avg = mean({{var}}, na.rm = TRUE),
-      sd = stats::sd({{var}}, na.rm = TRUE),
-      se = .data[["sd"]]/sqrt(.data[["n"]]),
-      max = max({{var}}, na.rm = TRUE),
-      min = min({{var}}, na.rm = TRUE),
-      n_a1 = sum({{var}} > .data[["avg"]] + (1 * .data[["sd"]]), na.rm = TRUE),
-      n_a2 = sum({{var}} > .data[["avg"]] + (2 * .data[["sd"]]), na.rm = TRUE),
-      n_b1 = sum({{var}} < .data[["avg"]] - (1 * .data[["sd"]]), na.rm = TRUE),
-      n_b2 = sum({{var}} < .data[["avg"]] - (2 * .data[["sd"]]), na.rm = TRUE),
-      n_c1 = nseq::trle_cond({{var}}, a = 3, b = .data[["avg"]]),
-      n_c2 = nseq::trle_cond({{var}}, a = 5, b = .data[["avg"]]),
-      n_d1 = nseq::trle_cond({{var}}, a = 3, b_op = "lte", b = .data[["avg"]]),
-      n_d2 = nseq::trle_cond({{var}}, a = 5, b_op = "lte", b = .data[["avg"]]),
-      n_ar = sum({{var}} > {{upper_ref}}, na.rm = TRUE)
-    )
-}
