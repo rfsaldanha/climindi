@@ -1,6 +1,6 @@
-#' Compute temperature indicators from grouped data
+#' Compute maximum temperature indicators from grouped data
 #'
-#' The function computes several temperature indicators from grouped data.
+#' The function computes several maximum temperature indicators from grouped data.
 #'
 #' @param .x grouped data, created with `dplyr::group_by()`
 #' @param value_var name of the variable with temperature values.
@@ -27,11 +27,11 @@
 #'  # Group by municipality code and year
 #'  dplyr::group_by(code_muni, year) |>
 #'  # Compute temperature indicators
-#'  summarise_temp(value_var = value, normals_df = normals, id_var = "code_muni") |>
+#'  summarise_temp_max(value_var = value, normals_df = normals, id_var = "code_muni") |>
 #'  # Ungroup
 #'  dplyr::ungroup()
 #' 
-summarise_temp <- function(.x, value_var, normals_df, id_var){
+summarise_temp_max <- function(.x, value_var, normals_df, id_var){
   # Assertions
   checkmate::assert_data_frame(x = .x)
 
