@@ -101,9 +101,3 @@ summarise_temp_max <- function(.x, value_var, normals_df){
   
 }
 
-
-
-
-
-
-
