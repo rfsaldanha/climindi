@@ -3,7 +3,7 @@
 #' The function computes minimum temperature indicators from grouped data. Expects temperature in celsius degrees.
 #' 
 #' @details
-#' The heat waves indicators are computed based on climatological normals, created with the `summarise_normal()` function and passed with the `normals_df` argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
+#' The cold spells indicators are computed based on climatological normals, created with the `summarise_normal()` function and passed with the `normals_df` argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
 #' 
 #' The following indicators are computed for each group.
 #' \itemize{
