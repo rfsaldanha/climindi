@@ -4,12 +4,14 @@
 \alias{summarise_solar_radiation}
 \title{Compute solar radiation indicators from grouped data}
 \usage{
-summarise_solar_radiation(.x, value_var)
+summarise_solar_radiation(.x, value_var, normals_df)
 }
 \arguments{
 \item{.x}{grouped data, created with \code{dplyr::group_by()}}
 
 \item{value_var}{name of the variable with temperature values.}
+
+\item{normals_df}{normals data, created with \code{summarise_normal()}}
 }
 \value{
 A tibble.
@@ -18,6 +20,8 @@ A tibble.
 The function computes solar radiation indicators from grouped data. Expects solar radiation in MJm-2.
 }
 \details{
+The dark and light days indicators are computed based on climatological normals, created with the \code{summarise_normal()} function and passed with the \code{normals_df} argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
+
 The following indicators are computed for each group.
 \itemize{
 \item{\code{count} Count of data points}
@@ -31,13 +35,24 @@ The following indicators are computed for each group.
 \item{\code{p25} 25th percentile}
 \item{\code{p75} 75th percentile}
 \item{\code{p90} 90th percentile}
-\item{\code{dark_3} Count of sequences of 3 days or more with solar radiation bellow 5}
-\item{\code{dark_5} Count of sequences of 5 days or more with solar radiation bellow 5}
-\item{\code{light_3} Count of sequences of 3 days or more with solar radiation above 25}
-\item{\code{light_5} Count of sequences of 5 days or more with solar radiation above 25}
+\item{\code{dark_3} Count of sequences of 3 days or more with solar radiation bellow the climatological normal}
+\item{\code{dark_5} Count of sequences of 5 days or more with solar radiation bellow the climatological normal}
+\item{\code{light_3} Count of sequences of 3 days or more with solar radiation above the climatological normal}
+\item{\code{light_5} Count of sequences of 5 days or more with solar radiation above the climatological normal}
 }
 }
 \examples{
+# Compute monthly normals
+normals <- solar_radiation_data |>
+  # Identify year
+  dplyr::mutate(year = lubridate::year(date)) |>
+  # Identify month
+  dplyr::mutate(month = lubridate::month(date)) |>
+  # Group by id variable, year and month
+  dplyr::group_by(code_muni, year, month) |>
+  summarise_normal(date_var = date, value_var = value, year_start = 1961, year_end = 1990) |>
+  dplyr::ungroup()
+
 # Compute indicators
 solar_radiation_data |>
  # Identify year
@@ -47,7 +62,7 @@ solar_radiation_data |>
  # Group by id variable, year and month
  dplyr::group_by(code_muni, year, month) |>
  # Compute precipitation indicators
- summarise_solar_radiation(value_var = value) |>
+ summarise_solar_radiation(value_var = value, normals_df = normals) |>
  # Ungroup
  dplyr::ungroup()
 
