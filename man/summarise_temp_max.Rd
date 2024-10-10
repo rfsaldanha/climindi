@@ -4,7 +4,7 @@
 \alias{summarise_temp_max}
 \title{Compute maximum temperature indicators from grouped data}
 \usage{
-summarise_temp_max(.x, value_var, normals_df, id_var)
+summarise_temp_max(.x, value_var, normals_df)
 }
 \arguments{
 \item{.x}{grouped data, created with \code{dplyr::group_by()}}
@@ -12,8 +12,6 @@ summarise_temp_max(.x, value_var, normals_df, id_var)
 \item{value_var}{name of the variable with temperature values.}
 
 \item{normals_df}{normals data, created with \code{summarise_normal()}}
-
-\item{id_var}{id variable to join normals with temperature data}
 }
 \value{
 A tibble.
@@ -22,6 +20,8 @@ A tibble.
 The function computes maximum temperature indicators from grouped data. Expects temperature in celsius degrees.
 }
 \details{
+The heat waves indicators are computed based on climatological normals, created with the \code{summarise_normal()} function and passed with the \code{normals_df} argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
+
 The following indicators are computed for each group.
 \itemize{
 \item{\code{count} Count of data points}
@@ -36,9 +36,8 @@ The following indicators are computed for each group.
 \item{\code{p25} 25th percentile}
 \item{\code{p75} 75th percentile}
 \item{\code{p90} 10th percentile}
-\item{\code{p10_w} 10th percentile from a rolling window of size 5}
-\item{\code{p90_w} 90th percentile from a rolling window of size 5}
-\item{\code{heat_waves} Count of heat waves occurences, 5 or more consecutive days with maximum temperature above the climatological normal value plus 5 celsius degrees}
+\item{\code{heat_waves_3d} Count of heat waves occurences, with 3 or more consecutive days with maximum temperature above the climatological normal value plus 5 celsius degrees}
+\item{\code{heat_waves_5d} Count of heat waves occurences, with 5 or more consecutive days with maximum temperature above the climatological normal value plus 5 celsius degrees}
 \item{\code{tx90p} Count of warm days, days with maximum temperatures above the 90th percentile}
 \item{\code{t_25} Count of days with temperatures above or equal to 25 celsius degrees}
 \item{\code{t_30} Count of days with temperatures above or equal to 30 celsius degrees}
@@ -47,19 +46,27 @@ The following indicators are computed for each group.
 }
 }
 \examples{
-# Compute normals
+# Compute monthly normals
 normals <- temp_max_data |>
-  dplyr::group_by(code_muni) |>
+  # Identify year
+  dplyr::mutate(year = lubridate::year(date)) |>
+  # Identify month
+  dplyr::mutate(month = lubridate::month(date)) |>
+  # Group by id variable, year and month
+  dplyr::group_by(code_muni, year, month) |>
   summarise_normal(date_var = date, value_var = value, year_start = 1961, year_end = 1990) |>
   dplyr::ungroup()
 
+# Compute indicators
 temp_max_data |>
  # Identify year
  dplyr::mutate(year = lubridate::year(date)) |>
- # Group by municipality code and year
- dplyr::group_by(code_muni, year) |>
- # Compute temperature indicators
- summarise_temp_max(value_var = value, normals_df = normals, id_var = "code_muni") |>
+ # Identify month
+ dplyr::mutate(month = lubridate::month(date)) |>
+ # Group by id variable, year and month
+ dplyr::group_by(code_muni, year, month) |>
+ # Compute maximum temperature indicators
+ summarise_temp_max(value_var = value, normals_df = normals) |>
  # Ungroup
  dplyr::ungroup()
 
