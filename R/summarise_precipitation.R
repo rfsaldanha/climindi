@@ -3,7 +3,7 @@
 #' The function computes precipitation indicators from grouped data. Expects precipitation in millimeters (mm).
 #' 
 #' @details
-#' The dry and wet spells indicators are computed based on climatological normals, created with the `summarise_normal()` function and passed with the `normals_df` argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
+#' The rain spells indicators are computed based on climatological normals, created with the `summarise_normal()` function and passed with the `normals_df` argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
 #' 
 #' The following indicators are computed for each group.
 #' \itemize{
