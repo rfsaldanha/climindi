@@ -17,5 +17,5 @@ test_that("summarise_temp_max works", {
 })
 
 test_that("summarise_temp not works with ungrouped data", {
-  expect_error(summarise_temp(var = temp_max_data))
+  expect_error(summarise_temp_max(var = temp_max_data))
 })

@@ -57,7 +57,7 @@
 #'  dplyr::mutate(month = lubridate::month(date)) |>
 #'  # Group by id variable, year and month
 #'  dplyr::group_by(code_muni, year, month) |>
-#'  # Compute maximum temperature indicators
+#'  # Compute minimum temperature indicators
 #'  summarise_temp_min(value_var = value, normals_df = normals) |>
 #'  # Ungroup
 #'  dplyr::ungroup()
