@@ -1,6 +1,6 @@
 #' Compute evapotranspirations indicators from grouped data
 #'
-#' The function computes evapotranspirations (ETo) indicators from grouped data. Expects solar radiation in millimeters (mm).
+#' The function computes evapotranspirations (ETo) indicators from grouped data. Expects evapotranspiration in millimeters (mm).
 #' 
 #' @details
 #' The high and low ETo indicators are computed based on climatological normals, created with the `summarise_normal()` function and passed with the `normals_df` argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
