@@ -8,6 +8,7 @@
 #' The following indicators are computed for each group.
 #' \itemize{
 #'  \item{`count` Count of data points}
+#'  \item{`normal` Climatological normal, from `normals_df` argument}
 #'  \item{`mean` Average}
 #'  \item{`median` Median}
 #'  \item{`sd` Standard deviation}

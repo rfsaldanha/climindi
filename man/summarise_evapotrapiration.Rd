@@ -24,7 +24,7 @@ A tibble.
 \description{
 The function computes evapotranspirations (ETo) indicators from grouped data. Expects evapotranspiration in millimeters (mm).
 
-The function computes windspeed (u2) indicators from grouped data. Expects solar radiation in millimeters (mm).
+The function computes windspeed (u2) indicators from grouped data. Expects windspeed in meters per second (m/s).
 }
 \details{
 The high and low ETo indicators are computed based on climatological normals, created with the \code{summarise_normal()} function and passed with the \code{normals_df} argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
@@ -32,6 +32,7 @@ The high and low ETo indicators are computed based on climatological normals, cr
 The following indicators are computed for each group.
 \itemize{
 \item{\code{count} Count of data points}
+\item{\code{normal} Climatological normal, from \code{normals_df} argument}
 \item{\code{mean} Average}
 \item{\code{median} Median}
 \item{\code{sd} Standard deviation}
@@ -48,7 +49,7 @@ The following indicators are computed for each group.
 \item{\code{h_eto_5} Count of sequences of 5 days or more with evapotranspirations above the climatological normal}
 }
 
-The high and low ETo indicators are computed based on climatological normals, created with the \code{summarise_normal()} function and passed with the \code{normals_df} argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
+The high and low u2 indicators are computed based on climatological normals, created with the \code{summarise_normal()} function and passed with the \code{normals_df} argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
 
 The following indicators are computed for each group.
 \itemize{
