@@ -18,7 +18,7 @@
 #'  \item{`p10` 10th percentile}
 #'  \item{`p25` 25th percentile}
 #'  \item{`p75` 75th percentile}
-#'  \item{`p90` 10th percentile}
+#'  \item{`p90` 90th percentile}
 #'  \item{`dry_spells_3d` Count of dry spells occurences, with 3 or more consecutive days with relative humidity bellow the climatological normal value minus 10 percent}
 #'  \item{`dry_spells_5d` Count of dry spells occurences, with 5 or more consecutive days with relative humidity bellow the climatological normal value minus 10 percent}
 #'  \item{`wet_spells_3d` Count of wet spells occurences, with 3 or more consecutive days with relative humidity above the climatological normal value plus 10 percent}

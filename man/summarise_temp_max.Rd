@@ -35,7 +35,7 @@ The following indicators are computed for each group.
 \item{\code{p10} 10th percentile}
 \item{\code{p25} 25th percentile}
 \item{\code{p75} 75th percentile}
-\item{\code{p90} 10th percentile}
+\item{\code{p90} 90th percentile}
 \item{\code{heat_waves_3d} Count of heat waves occurences, with 3 or more consecutive days with maximum temperature above the climatological normal value plus 5 celsius degrees}
 \item{\code{heat_waves_5d} Count of heat waves occurences, with 5 or more consecutive days with maximum temperature above the climatological normal value plus 5 celsius degrees}
 \item{\code{hot_days} Count of warm days, when the maximum temperature is above the 90th percentile}
