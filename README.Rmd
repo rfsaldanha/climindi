@@ -1,0 +1,97 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# climindi
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+This package offers helper functions to compute climatological normals and aggregated variables for several climate indicators in a [tidy](https://www.tidyverse.org/) approach.
+
+## Installation
+
+You can install the development version of climindi from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("pak")
+pak::pak("rfsaldanha/climindi")
+```
+
+## Example
+
+The package cames with dataset examples for seven different climate indicators. Let's use the maximum temperature indicator `temp_max_data`.
+
+### Climatological normals
+
+We can compute a climatological normal with the `summarise_normal()` function.
+
+
+```{r example}
+library(dplyr)
+library(climindi)
+
+temp_max_normals <- temp_max_data |>
+  # Identify year
+  mutate(year = lubridate::year(date)) |>
+  # Identify month
+  mutate(month = lubridate::month(date)) |>
+  # Group by id variable, year and month
+  group_by(code_muni, year, month) |>
+  summarise_normal(date_var = date, value_var = value, year_start = 1961, year_end = 1990) |>
+  ungroup()
+```
+
+On this example, the function `summarise_normal()` will receive the grouped data by municipality id, year and month, and compute the climatological normal for those groups considering the values between 1961 and 1990
+
+```{r}
+temp_max_normals
+```
+
+### Indicators
+
+With the summarize functions available at the package, it is possible to compute several aggregated indicators, and some of them use the normals computed above. Thus, supply the data using the same groups structures of the normals.
+
+```{r}
+indi_temp_max <- temp_max_data |>
+ # Identify year
+ dplyr::mutate(year = lubridate::year(date)) |>
+ # Identify month
+ dplyr::mutate(month = lubridate::month(date)) |>
+ # Group by id variable, year and month
+ dplyr::group_by(code_muni, year, month) |>
+ # Compute maximum temperature indicators
+ summarise_temp_max(value_var = value, normals_df = temp_max_normals) |>
+ # Ungroup
+ dplyr::ungroup()
+```
+
+```{r}
+indi_temp_max
+```
+
+The function `summarise_temp_max()` computes a total of 19 indicators. Let's plot one of them.
+
+```{r}
+library(ggplot2)
+
+indi_temp_max |>
+  mutate(date = as.Date(paste0(year,"-",month,"-01"))) |>
+  ggplot(aes(x = date, y = p90)) +
+  geom_line(stat = "identity") +
+  geom_smooth() +
+  facet_wrap(~ code_muni)
+
+```
+
