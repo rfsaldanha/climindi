@@ -1,4 +1,4 @@
-#' Example dataset
+#' Example datasets
 #'
 #' Example datasets of climate indicators for four Brazilian municipalities with daily data, from 1961 to 2023.
 #' 
