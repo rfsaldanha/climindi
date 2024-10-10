@@ -9,6 +9,7 @@
 #' * `rel_humidity_data` Relative humidity (percent)
 #' * `precipitation_data` Precipitation (mm)
 #' * `solar_radiation_data` Solar radiation (MJm-2)
+#' * `evapotranspiration_data` Evapotranspiration (mm)
 #' 
 #' ## Municipality codes
 #' 
@@ -29,3 +30,5 @@
 "precipitation_data"
 #' @rdname example_datasets
 "solar_radiation_data"
+#' @rdname example_datasets
+"evapotranspiration_data"
