@@ -3,6 +3,7 @@
 export(summarise_normal)
 export(summarise_precipitation)
 export(summarise_rel_humidity)
+export(summarise_solar_radiation)
 export(summarise_temp_max)
 export(summarise_temp_min)
 export(year_interval)
