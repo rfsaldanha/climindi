@@ -19,22 +19,27 @@ summarise_temp_max(.x, value_var, normals_df, id_var)
 A tibble.
 }
 \description{
-The function computes several maximum temperature indicators from grouped data.
+The function computes maximum temperature indicators from grouped data. Expects temperature in celsius degrees.
 }
 \details{
-The following variables are computed.
+The following indicators are computed for each group.
 \itemize{
 \item{\code{count} Count of data points}
 \item{\code{normal} Climatological normal, from \code{normals_df} argument}
-\item{\code{avg} Average}
+\item{\code{mean} Average}
+\item{\code{median} Median}
 \item{\code{sd} Standard deviation}
 \item{\code{se} Standard error}
 \item{\code{max} Maximum value}
 \item{\code{min} Minimum value}
-\item{\code{p10} 10th percentile from a rolling window of size 5}
-\item{\code{p90} 90th percentile from a rolling window of size 5}
-\item{\code{heat_waves} Count of heat waves occurences, ie. 5 or more consecutive days with maximum temperature above the normal value plus 5 celsius degrees}
-\item{\code{tx90p} Count of warm days, ie. count of days with maximum temperatures above the 90th percentile}
+\item{\code{p10} 10th percentile}
+\item{\code{p25} 25th percentile}
+\item{\code{p75} 75th percentile}
+\item{\code{p90} 10th percentile}
+\item{\code{p10_w} 10th percentile from a rolling window of size 5}
+\item{\code{p90_w} 90th percentile from a rolling window of size 5}
+\item{\code{heat_waves} Count of heat waves occurences, 5 or more consecutive days with maximum temperature above the climatological normal value plus 5 celsius degrees}
+\item{\code{tx90p} Count of warm days, days with maximum temperatures above the 90th percentile}
 \item{\code{t_25} Count of days with temperatures above or equal to 25 celsius degrees}
 \item{\code{t_30} Count of days with temperatures above or equal to 30 celsius degrees}
 \item{\code{t_35} Count of days with temperatures above or equal to 35 celsius degrees}
