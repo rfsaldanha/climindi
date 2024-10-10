@@ -52,7 +52,7 @@
 #'  dplyr::mutate(month = lubridate::month(date)) |>
 #'  # Group by id variable, year and month
 #'  dplyr::group_by(code_muni, year, month) |>
-#'  # Compute precipitation indicators
+#'  # Compute solar radiation indicators
 #'  summarise_solar_radiation(value_var = value, normals_df = normals) |>
 #'  # Ungroup
 #'  dplyr::ungroup()
