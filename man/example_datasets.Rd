@@ -9,8 +9,11 @@
 \alias{precipitation_data}
 \alias{solar_radiation_data}
 \alias{evapotranspiration_data}
+\alias{windspeed_data}
 \title{Example datasets}
 \format{
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 92040 rows and 3 columns.
+
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 92040 rows and 3 columns.
 
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 92040 rows and 3 columns.
@@ -35,6 +38,8 @@ precipitation_data
 solar_radiation_data
 
 evapotranspiration_data
+
+windspeed_data
 }
 \description{
 Example datasets of climate indicators for four Brazilian municipalities with daily data, from 1961 to 2023.
@@ -48,6 +53,7 @@ Example datasets of climate indicators for four Brazilian municipalities with da
 \item \code{precipitation_data} Precipitation (mm)
 \item \code{solar_radiation_data} Solar radiation (MJm-2)
 \item \code{evapotranspiration_data} Evapotranspiration (mm)
+\item \code{windspeed_data} Windspeed at 2m height (m/s)
 }
 }
 

@@ -10,6 +10,7 @@
 #' * `precipitation_data` Precipitation (mm)
 #' * `solar_radiation_data` Solar radiation (MJm-2)
 #' * `evapotranspiration_data` Evapotranspiration (mm)
+#' * `windspeed_data` Windspeed at 2m height (m/s)
 #' 
 #' ## Municipality codes
 #' 
@@ -32,3 +33,5 @@
 "solar_radiation_data"
 #' @rdname example_datasets
 "evapotranspiration_data"
+#' @rdname example_datasets
+"windspeed_data"
