@@ -7,6 +7,7 @@
 #' * `temp_max_data` Maximum temperature (celsius degree)
 #' * `temp_min_data` Minimum temperature (celsius degree)
 #' * `rel_humidity_data` Relative humidity (percent)
+#' * `precipitation_data` Precipitation (mm)
 #' 
 #' ## Municipality codes
 #' 
@@ -23,3 +24,5 @@
 "temp_min_data"
 #' @rdname example_datasets
 "rel_humidity_data"
+#' @rdname example_datasets
+"precipitation_data"

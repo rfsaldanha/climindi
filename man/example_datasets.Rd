@@ -6,8 +6,11 @@
 \alias{temp_max_data}
 \alias{temp_min_data}
 \alias{rel_humidity_data}
+\alias{precipitation_data}
 \title{Example datasets}
 \format{
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 92040 rows and 3 columns.
+
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 92040 rows and 3 columns.
 
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 92040 rows and 3 columns.
@@ -20,6 +23,8 @@ temp_max_data
 temp_min_data
 
 rel_humidity_data
+
+precipitation_data
 }
 \description{
 Example datasets of climate indicators for four Brazilian municipalities with daily data, from 1961 to 2023.
@@ -30,6 +35,7 @@ Example datasets of climate indicators for four Brazilian municipalities with da
 \item \code{temp_max_data} Maximum temperature (celsius degree)
 \item \code{temp_min_data} Minimum temperature (celsius degree)
 \item \code{rel_humidity_data} Relative humidity (percent)
+\item \code{precipitation_data} Precipitation (mm)
 }
 }
 
