@@ -8,6 +8,7 @@
 #' * `temp_min_data` Minimum temperature (celsius degree)
 #' * `rel_humidity_data` Relative humidity (percent)
 #' * `precipitation_data` Precipitation (mm)
+#' * `solar_radiation_data` Solar radiation (MJm-2)
 #' 
 #' ## Municipality codes
 #' 
@@ -26,3 +27,5 @@
 "rel_humidity_data"
 #' @rdname example_datasets
 "precipitation_data"
+#' @rdname example_datasets
+"solar_radiation_data"
