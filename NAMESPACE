@@ -2,5 +2,6 @@
 
 export(summarise_normal)
 export(summarise_temp_max)
+export(summarise_temp_min)
 export(year_interval)
 importFrom(rlang,.data)

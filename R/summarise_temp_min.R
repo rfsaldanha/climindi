@@ -1,6 +1,6 @@
-#' Compute maximum temperature indicators from grouped data
+#' Compute minimum temperature indicators from grouped data
 #'
-#' The function computes maximum temperature indicators from grouped data. Expects temperature in celsius degrees.
+#' The function computes minimum temperature indicators from grouped data. Expects temperature in celsius degrees.
 #' 
 #' @details
 #' The heat waves indicators are computed based on climatological normals, created with the `summarise_normal()` function and passed with the `normals_df` argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
@@ -19,13 +19,14 @@
 #'  \item{`p25` 25th percentile}
 #'  \item{`p75` 75th percentile}
 #'  \item{`p90` 10th percentile}
-#'  \item{`heat_waves_3d` Count of heat waves occurences, with 3 or more consecutive days with maximum temperature above the climatological normal value plus 5 celsius degrees}
-#'  \item{`heat_waves_5d` Count of heat waves occurences, with 5 or more consecutive days with maximum temperature above the climatological normal value plus 5 celsius degrees}
-#'  \item{`hot_days` Count of warm days, when the maximum temperature is above the 90th percentile}
-#'  \item{`t_25` Count of days with temperatures above or equal to 25 celsius degrees}
-#'  \item{`t_30` Count of days with temperatures above or equal to 30 celsius degrees}
-#'  \item{`t_35` Count of days with temperatures above or equal to 35 celsius degrees}
-#'  \item{`t_40` Count of days with temperatures above or equal to 40 celsius degrees}
+#'  \item{`cold_spells_3d` Count of cold spells occurences, with 3 or more consecutive days with minimum temperature bellow the climatological normal value minus 5 celsius degrees}
+#'  \item{`cold_spells_5d` Count of cold spells occurences, with 5 or more consecutive days with minimum temperature bellow the climatological normal value minus 5 celsius degrees}
+#'  \item{`cold_days` Count of cold days, when the minimum temperature is bellow the 10th percentile}
+#'  \item{`t_0` Count of days with temperatures bellow or equal to 0 celsius degrees}
+#'  \item{`t_5` Count of days with temperatures bellow or equal to 5 celsius degrees}
+#'  \item{`t_10` Count of days with temperatures bellow or equal to 10 celsius degrees}
+#'  \item{`t_15` Count of days with temperatures bellow or equal to 15 celsius degrees}
+#'  \item{`t_20` Count of days with temperatures bellow or equal to 20 celsius degrees}
 #' }
 #' 
 #' @param .x grouped data, created with `dplyr::group_by()`
@@ -38,7 +39,7 @@
 #'
 #' @examples
 #' # Compute monthly normals
-#' normals <- temp_max_data |>
+#' normals <- temp_min_data |>
 #'   # Identify year
 #'   dplyr::mutate(year = lubridate::year(date)) |>
 #'   # Identify month
@@ -49,7 +50,7 @@
 #'   dplyr::ungroup()
 #' 
 #' # Compute indicators
-#' temp_max_data |>
+#' temp_min_data |>
 #'  # Identify year
 #'  dplyr::mutate(year = lubridate::year(date)) |>
 #'  # Identify month
@@ -57,11 +58,11 @@
 #'  # Group by id variable, year and month
 #'  dplyr::group_by(code_muni, year, month) |>
 #'  # Compute maximum temperature indicators
-#'  summarise_temp_max(value_var = value, normals_df = normals) |>
+#'  summarise_temp_min(value_var = value, normals_df = normals) |>
 #'  # Ungroup
 #'  dplyr::ungroup()
 #' 
-summarise_temp_max <- function(.x, value_var, normals_df){
+summarise_temp_min <- function(.x, value_var, normals_df){
   # Assertions
   checkmate::assert_data_frame(x = .x)
 
@@ -89,13 +90,14 @@ summarise_temp_max <- function(.x, value_var, normals_df){
       p_90 = stats::quantile({{value_var}}, probs = 0.90, names = FALSE),
       #p10_w = caTools::runquantile({{value_var}}, k = 5, p = 0.1)[1],
       #p90_w = caTools::runquantile({{value_var}}, k = 5, p = 0.9)[1],
-      heat_waves_3d = nseq::trle_cond(x = {{value_var}}, a = 3, a_op = "gte", b = .data[["normal"]] + 5, b_op = "gte"),
-      heat_waves_5d = nseq::trle_cond(x = {{value_var}}, a = 5, a_op = "gte", b = .data[["normal"]] + 5, b_op = "gte"),
-      hot_days = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = .data[["p_90"]], b_op = "gte"),
-      t_25 = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = 25, b_op = "gte"),
-      t_30 = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = 30, b_op = "gte"),
-      t_35 = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = 35, b_op = "gte"),
-      t_40 = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = 40, b_op = "gte"),
+      cold_spells_3d = nseq::trle_cond(x = {{value_var}}, a = 3, a_op = "gte", b = .data[["normal"]] - 5, b_op = "lte"),
+      cold_spells_5d = nseq::trle_cond(x = {{value_var}}, a = 5, a_op = "gte", b = .data[["normal"]] - 5, b_op = "lte"),
+      cold_days = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = .data[["p_10"]], b_op = "lte"),
+      t_0 = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = 0, b_op = "lte"),
+      t_5 = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = 5, b_op = "lte"),
+      t_10 = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = 10, b_op = "lte"),
+      t_15 = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = 15, b_op = "lte"),
+      t_20 = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = 20, b_op = "lte"),
     )
   )
   
