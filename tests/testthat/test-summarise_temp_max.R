@@ -1,4 +1,4 @@
-test_that("summarise_temp works", {
+test_that("summarise_temp_max works", {
   normals <- temp_max_data |>
     dplyr::mutate(year = lubridate::year(date)) |>
     dplyr::mutate(month = lubridate::month(date)) |>
@@ -13,7 +13,7 @@ test_that("summarise_temp works", {
     summarise_temp_max(value_var = value, normals_df = normals) |>
     dplyr::ungroup()
 
-  expect_true(all(c("heat_waves_5d", "tx90p") %in% names(res)))
+  expect_true(all(c("heat_waves_5d", "hot_days") %in% names(res)))
 })
 
 test_that("summarise_temp not works with ungrouped data", {
