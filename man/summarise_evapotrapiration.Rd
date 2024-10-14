@@ -25,7 +25,9 @@ The high and low ETo indicators are computed based on climatological normals, cr
 The following indicators are computed for each group.
 \itemize{
 \item{\code{count} Count of data points}
-\item{\code{normal} Climatological normal, from \code{normals_df} argument}
+\item{\code{normal_mean} Climatological normal mean, from \code{normals_df} argument}
+\item{\code{normal_p10} Climatological 10th percentile, from \code{normals_df} argument}
+\item{\code{normal_p90} Climatological 90th percentile, from \code{normals_df} argument}
 \item{\code{mean} Average}
 \item{\code{median} Median}
 \item{\code{sd} Standard deviation}
@@ -36,10 +38,10 @@ The following indicators are computed for each group.
 \item{\code{p25} 25th percentile}
 \item{\code{p75} 75th percentile}
 \item{\code{p90} 90th percentile}
-\item{\code{l_eto_3} Count of sequences of 3 days or more with evapotranspirations bellow the climatological normal}
-\item{\code{l_eto_5} Count of sequences of 5 days or more with evapotranspirations bellow the climatological normal}
-\item{\code{h_eto_3} Count of sequences of 3 days or more with evapotranspirations above the climatological normal}
-\item{\code{h_eto_5} Count of sequences of 5 days or more with evapotranspirations above the climatological normal}
+\item{\code{l_eto_3} Count of sequences of 3 days or more with evapotranspirations bellow the climatological average normal}
+\item{\code{l_eto_5} Count of sequences of 5 days or more with evapotranspirations bellow the climatological average normal}
+\item{\code{h_eto_3} Count of sequences of 3 days or more with evapotranspirations above the climatological average normal}
+\item{\code{h_eto_5} Count of sequences of 5 days or more with evapotranspirations above the climatological average normal}
 }
 }
 \examples{
