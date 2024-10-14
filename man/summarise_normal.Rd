@@ -25,11 +25,11 @@ The function computes normals (mean, 10th and 90th percentile) of a variable for
 }
 \examples{
 temp_max_data |>
- # Group by municipalities
- dplyr::group_by(code_muni) |>
- # Compute normals
- summarise_normal(date_var = date, value_var = value, year_start = 1961, year_end = 1990) |>
- # Ungroup
- dplyr::ungroup()
+  # Identify month
+  dplyr::mutate(month = lubridate::month(date)) |>
+  # Group by id variable and month
+  dplyr::group_by(code_muni, month) |>
+  summarise_normal(date_var = date, value_var = value, year_start = 1961, year_end = 1990) |>
+  dplyr::ungroup()
 
 }

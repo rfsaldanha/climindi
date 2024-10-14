@@ -49,12 +49,10 @@
 #' 
 #' # Compute indicators
 #' windspeed_data |>
-#'  # Identify year
-#'  dplyr::mutate(year = lubridate::year(date)) |>
 #'  # Identify month
 #'  dplyr::mutate(month = lubridate::month(date)) |>
-#'  # Group by id variable, year and month
-#'  dplyr::group_by(code_muni, year, month) |>
+#'  # Group by id variable and month
+#'  dplyr::group_by(code_muni, month) |>
 #'  # Compute windspeed indicators
 #'  summarise_windspeed(value_var = value, normals_df = normals) |>
 #'  # Ungroup
