@@ -8,7 +8,9 @@
 #' The following indicators are computed for each group.
 #' \itemize{
 #'  \item{`count` Count of data points}
-#'  \item{`normal` Climatological normal, from `normals_df` argument}
+#'  \item{`normal_mean` Climatological normal mean, from `normals_df` argument}
+#'  \item{`normal_p10` Climatological 10th percentile, from `normals_df` argument}
+#'  \item{`normal_p90` Climatological 90th percentile, from `normals_df` argument}
 #'  \item{`mean` Average}
 #'  \item{`median` Median}
 #'  \item{`sd` Standard deviation}
@@ -21,7 +23,7 @@
 #'  \item{`p90` 90th percentile}
 #'  \item{`heat_waves_3d` Count of heat waves occurences, with 3 or more consecutive days with maximum temperature above the climatological normal value plus 5 celsius degrees}
 #'  \item{`heat_waves_5d` Count of heat waves occurences, with 5 or more consecutive days with maximum temperature above the climatological normal value plus 5 celsius degrees}
-#'  \item{`hot_days` Count of warm days, when the maximum temperature is above the 90th percentile}
+#'  \item{`hot_days` Count of warm days, when the maximum temperature is above the normal 90th percentile}
 #'  \item{`t_25` Count of days with temperatures above or equal to 25 celsius degrees}
 #'  \item{`t_30` Count of days with temperatures above or equal to 30 celsius degrees}
 #'  \item{`t_35` Count of days with temperatures above or equal to 35 celsius degrees}
@@ -76,7 +78,9 @@ summarise_temp_max <- function(.x, value_var, normals_df){
     dplyr::inner_join(normals_df) |>
     dplyr::summarise(
       count = dplyr::n(),
-      normal = mean(.data[["normal"]], na.rm = TRUE),
+      normal_mean = head(.data[["normal_mean"]], 1),
+      normal_p10 = head(.data[["normal_p10"]], 1),
+      normal_p90 = head(.data[["normal_p90"]], 1),
       mean = mean({{value_var}}, na.rm = TRUE),
       median = stats::median({{value_var}}, na.rm = TRUE),
       sd = stats::sd({{value_var}}, na.rm = TRUE),
@@ -89,9 +93,9 @@ summarise_temp_max <- function(.x, value_var, normals_df){
       p90 = stats::quantile({{value_var}}, probs = 0.90, names = FALSE),
       #p10_w = caTools::runquantile({{value_var}}, k = 5, p = 0.1)[1],
       #p90_w = caTools::runquantile({{value_var}}, k = 5, p = 0.9)[1],
-      heat_waves_3d = nseq::trle_cond(x = {{value_var}}, a = 3, a_op = "gte", b = .data[["normal"]] + 5, b_op = "gte"),
-      heat_waves_5d = nseq::trle_cond(x = {{value_var}}, a = 5, a_op = "gte", b = .data[["normal"]] + 5, b_op = "gte"),
-      hot_days = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = .data[["p90"]], b_op = "gte"),
+      heat_waves_3d = nseq::trle_cond(x = {{value_var}}, a = 3, a_op = "gte", b = .data[["normal_mean"]] + 5, b_op = "gte"),
+      heat_waves_5d = nseq::trle_cond(x = {{value_var}}, a = 5, a_op = "gte", b = .data[["normal_mean"]] + 5, b_op = "gte"),
+      hot_days = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = .data[["normal_p90"]], b_op = "gte"),
       t_25 = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = 25, b_op = "gte"),
       t_30 = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = 30, b_op = "gte"),
       t_35 = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = 35, b_op = "gte"),

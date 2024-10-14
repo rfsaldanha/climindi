@@ -25,7 +25,9 @@ The heat waves indicators are computed based on climatological normals, created 
 The following indicators are computed for each group.
 \itemize{
 \item{\code{count} Count of data points}
-\item{\code{normal} Climatological normal, from \code{normals_df} argument}
+\item{\code{normal_mean} Climatological normal mean, from \code{normals_df} argument}
+\item{\code{normal_p10} Climatological 10th percentile, from \code{normals_df} argument}
+\item{\code{normal_p90} Climatological 90th percentile, from \code{normals_df} argument}
 \item{\code{mean} Average}
 \item{\code{median} Median}
 \item{\code{sd} Standard deviation}
@@ -38,7 +40,7 @@ The following indicators are computed for each group.
 \item{\code{p90} 90th percentile}
 \item{\code{heat_waves_3d} Count of heat waves occurences, with 3 or more consecutive days with maximum temperature above the climatological normal value plus 5 celsius degrees}
 \item{\code{heat_waves_5d} Count of heat waves occurences, with 5 or more consecutive days with maximum temperature above the climatological normal value plus 5 celsius degrees}
-\item{\code{hot_days} Count of warm days, when the maximum temperature is above the 90th percentile}
+\item{\code{hot_days} Count of warm days, when the maximum temperature is above the normal 90th percentile}
 \item{\code{t_25} Count of days with temperatures above or equal to 25 celsius degrees}
 \item{\code{t_30} Count of days with temperatures above or equal to 30 celsius degrees}
 \item{\code{t_35} Count of days with temperatures above or equal to 35 celsius degrees}
