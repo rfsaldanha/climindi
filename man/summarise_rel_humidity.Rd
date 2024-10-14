@@ -25,7 +25,9 @@ The dry and wet spells indicators are computed based on climatological normals, 
 The following indicators are computed for each group.
 \itemize{
 \item{\code{count} Count of data points}
-\item{\code{normal} Climatological normal, from \code{normals_df} argument}
+\item{\code{normal_mean} Climatological normal mean, from \code{normals_df} argument}
+\item{\code{normal_p10} Climatological 10th percentile, from \code{normals_df} argument}
+\item{\code{normal_p90} Climatological 90th percentile, from \code{normals_df} argument}
 \item{\code{mean} Average}
 \item{\code{median} Median}
 \item{\code{sd} Standard deviation}
@@ -40,8 +42,8 @@ The following indicators are computed for each group.
 \item{\code{dry_spells_5d} Count of dry spells occurences, with 5 or more consecutive days with relative humidity bellow the climatological normal value minus 10 percent}
 \item{\code{wet_spells_3d} Count of wet spells occurences, with 3 or more consecutive days with relative humidity above the climatological normal value plus 10 percent}
 \item{\code{wet_spells_5d} Count of wet spells occurences, with 5 or more consecutive days with relative humidity above the climatological normal value plus 10 percent}
-\item{\code{dry_days} Count of dry days, when the relative humidity is bellow the 10th percentile}
-\item{\code{wet_days} Count of wet days, when the relative humidity is above the 90th percentile}
+\item{\code{dry_days} Count of dry days, when the relative humidity is bellow the normal 10th percentile}
+\item{\code{wet_days} Count of wet days, when the relative humidity is above the normal 90th percentile}
 \item{\code{h_21_30} Count of days with relative humidity between 21\% and 30\%. Attention level}
 \item{\code{h_12_20} Count of days with relative humidity between 12\% and 20\%. Alert level}
 \item{\code{h_11} Count of days with relative humidity bellow 12\%. Emergence level}
