@@ -25,7 +25,9 @@ The cold spells indicators are computed based on climatological normals, created
 The following indicators are computed for each group.
 \itemize{
 \item{\code{count} Count of data points}
-\item{\code{normal} Climatological normal, from \code{normals_df} argument}
+\item{\code{normal_mean} Climatological normal mean, from \code{normals_df} argument}
+\item{\code{normal_p10} Climatological 10th percentile, from \code{normals_df} argument}
+\item{\code{normal_p90} Climatological 90th percentile, from \code{normals_df} argument}
 \item{\code{mean} Average}
 \item{\code{median} Median}
 \item{\code{sd} Standard deviation}
@@ -38,7 +40,7 @@ The following indicators are computed for each group.
 \item{\code{p90} 90th percentile}
 \item{\code{cold_spells_3d} Count of cold spells occurences, with 3 or more consecutive days with minimum temperature bellow the climatological normal value minus 5 celsius degrees}
 \item{\code{cold_spells_5d} Count of cold spells occurences, with 5 or more consecutive days with minimum temperature bellow the climatological normal value minus 5 celsius degrees}
-\item{\code{cold_days} Count of cold days, when the minimum temperature is bellow the 10th percentile}
+\item{\code{cold_days} Count of cold days, when the minimum temperature is bellow the normal 10th percentile}
 \item{\code{t_0} Count of days with temperatures bellow or equal to 0 celsius degrees}
 \item{\code{t_5} Count of days with temperatures bellow or equal to 5 celsius degrees}
 \item{\code{t_10} Count of days with temperatures bellow or equal to 10 celsius degrees}

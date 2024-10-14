@@ -8,7 +8,9 @@
 #' The following indicators are computed for each group.
 #' \itemize{
 #'  \item{`count` Count of data points}
-#'  \item{`normal` Climatological normal, from `normals_df` argument}
+#'  \item{`normal_mean` Climatological normal mean, from `normals_df` argument}
+#'  \item{`normal_p10` Climatological 10th percentile, from `normals_df` argument}
+#'  \item{`normal_p90` Climatological 90th percentile, from `normals_df` argument}
 #'  \item{`mean` Average}
 #'  \item{`median` Median}
 #'  \item{`sd` Standard deviation}
@@ -21,7 +23,7 @@
 #'  \item{`p90` 90th percentile}
 #'  \item{`cold_spells_3d` Count of cold spells occurences, with 3 or more consecutive days with minimum temperature bellow the climatological normal value minus 5 celsius degrees}
 #'  \item{`cold_spells_5d` Count of cold spells occurences, with 5 or more consecutive days with minimum temperature bellow the climatological normal value minus 5 celsius degrees}
-#'  \item{`cold_days` Count of cold days, when the minimum temperature is bellow the 10th percentile}
+#'  \item{`cold_days` Count of cold days, when the minimum temperature is bellow the normal 10th percentile}
 #'  \item{`t_0` Count of days with temperatures bellow or equal to 0 celsius degrees}
 #'  \item{`t_5` Count of days with temperatures bellow or equal to 5 celsius degrees}
 #'  \item{`t_10` Count of days with temperatures bellow or equal to 10 celsius degrees}
@@ -77,7 +79,9 @@ summarise_temp_min <- function(.x, value_var, normals_df){
     dplyr::inner_join(normals_df) |>
     dplyr::summarise(
       count = dplyr::n(),
-      normal = mean(.data[["normal"]], na.rm = TRUE),
+      normal_mean = head(.data[["normal_mean"]], 1),
+      normal_p10 = head(.data[["normal_p10"]], 1),
+      normal_p90 = head(.data[["normal_p90"]], 1),
       mean = mean({{value_var}}, na.rm = TRUE),
       median = stats::median({{value_var}}, na.rm = TRUE),
       sd = stats::sd({{value_var}}, na.rm = TRUE),
@@ -90,9 +94,9 @@ summarise_temp_min <- function(.x, value_var, normals_df){
       p90 = stats::quantile({{value_var}}, probs = 0.90, names = FALSE),
       #p10_w = caTools::runquantile({{value_var}}, k = 5, p = 0.1)[1],
       #p90_w = caTools::runquantile({{value_var}}, k = 5, p = 0.9)[1],
-      cold_spells_3d = nseq::trle_cond(x = {{value_var}}, a = 3, a_op = "gte", b = .data[["normal"]] - 5, b_op = "lte"),
-      cold_spells_5d = nseq::trle_cond(x = {{value_var}}, a = 5, a_op = "gte", b = .data[["normal"]] - 5, b_op = "lte"),
-      cold_days = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = .data[["p10"]], b_op = "lte"),
+      cold_spells_3d = nseq::trle_cond(x = {{value_var}}, a = 3, a_op = "gte", b = .data[["normal_mean"]] - 5, b_op = "lte"),
+      cold_spells_5d = nseq::trle_cond(x = {{value_var}}, a = 5, a_op = "gte", b = .data[["normal_mean"]] - 5, b_op = "lte"),
+      cold_days = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = .data[["normal_p10"]], b_op = "lte"),
       t_0 = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = 0, b_op = "lte"),
       t_5 = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = 5, b_op = "lte"),
       t_10 = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = 10, b_op = "lte"),
