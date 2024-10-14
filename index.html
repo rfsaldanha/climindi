@@ -70,7 +70,7 @@
 <div class="section level3">
 <h3 id="climatological-normals">Climatological normals<a class="anchor" aria-label="anchor" href="#climatological-normals"></a>
 </h3>
-<p>We can compute a climatological normal with the <code><a href="reference/summarise_normal.html">summarise_normal()</a></code> function.</p>
+<p>We can compute climatological monthly normals with the <code><a href="reference/summarise_normal.html">summarise_normal()</a></code> function.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -84,31 +84,29 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rfsaldanha/climindi" class="external-link">climindi</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">temp_max_normals</span> <span class="op">&lt;-</span> <span class="va">temp_max_data</span> <span class="op">|&gt;</span></span>
-<span>  <span class="co"># Identify year</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/year.html" class="external-link">year</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># Identify month</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>month <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html" class="external-link">month</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># Group by id variable, year and month</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">code_muni</span>, <span class="va">year</span>, <span class="va">month</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">code_muni</span>, <span class="va">month</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/summarise_normal.html">summarise_normal</a></span><span class="op">(</span>date_var <span class="op">=</span> <span class="va">date</span>, value_var <span class="op">=</span> <span class="va">value</span>, year_start <span class="op">=</span> <span class="fl">1961</span>, year_end <span class="op">=</span> <span class="fl">1990</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>On this example, the function <code><a href="reference/summarise_normal.html">summarise_normal()</a></code> will receive the grouped data by municipality id, year and month, and compute the climatological normal for those groups considering the values between 1961 and 1990</p>
+<p>On this example, the function <code><a href="reference/summarise_normal.html">summarise_normal()</a></code> will receive the grouped data by municipality id and month, and compute the climatological monthly normal considering the values between 1961 and 1990.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">temp_max_normals</span></span>
-<span><span class="co">#&gt; # A tibble: 1,440 × 4</span></span>
-<span><span class="co">#&gt;    code_muni  year month normal</span></span>
-<span><span class="co">#&gt;        &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1   3106200  1961     1   25.9</span></span>
-<span><span class="co">#&gt;  2   3106200  1961     2   28.2</span></span>
-<span><span class="co">#&gt;  3   3106200  1961     3   28.3</span></span>
-<span><span class="co">#&gt;  4   3106200  1961     4   28.1</span></span>
-<span><span class="co">#&gt;  5   3106200  1961     5   25.5</span></span>
-<span><span class="co">#&gt;  6   3106200  1961     6   24.8</span></span>
-<span><span class="co">#&gt;  7   3106200  1961     7   25.2</span></span>
-<span><span class="co">#&gt;  8   3106200  1961     8   27.8</span></span>
-<span><span class="co">#&gt;  9   3106200  1961     9   31.8</span></span>
-<span><span class="co">#&gt; 10   3106200  1961    10   28.4</span></span>
-<span><span class="co">#&gt; # ℹ 1,430 more rows</span></span></code></pre></div>
+<span><span class="co">#&gt; # A tibble: 48 × 5</span></span>
+<span><span class="co">#&gt;    code_muni month normal_mean normal_p10 normal_p90</span></span>
+<span><span class="co">#&gt;        &lt;int&gt; &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1   3106200     1        27.9       24.0       31.2</span></span>
+<span><span class="co">#&gt;  2   3106200     2        28.5       25.5       30.9</span></span>
+<span><span class="co">#&gt;  3   3106200     3        28.3       25.4       30.9</span></span>
+<span><span class="co">#&gt;  4   3106200     4        27.2       24.6       29.6</span></span>
+<span><span class="co">#&gt;  5   3106200     5        25.8       22.8       28.3</span></span>
+<span><span class="co">#&gt;  6   3106200     6        24.7       21.9       27.3</span></span>
+<span><span class="co">#&gt;  7   3106200     7        24.4       20.9       27.2</span></span>
+<span><span class="co">#&gt;  8   3106200     8        26.1       22.2       29.8</span></span>
+<span><span class="co">#&gt;  9   3106200     9        27.1       22.6       31.1</span></span>
+<span><span class="co">#&gt; 10   3106200    10        27.5       23.0       31.5</span></span>
+<span><span class="co">#&gt; # ℹ 38 more rows</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="indicators">Indicators<a class="anchor" aria-label="anchor" href="#indicators"></a>
@@ -128,23 +126,23 @@
 <span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">indi_temp_max</span></span>
-<span><span class="co">#&gt; # A tibble: 1,440 × 22</span></span>
-<span><span class="co">#&gt;    code_muni  year month count normal  mean median    sd    se   max   min   p10</span></span>
-<span><span class="co">#&gt;        &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1   3106200  1961     1    31   25.9  25.9   26.1  2.59 0.465  31.2  20.7  22.5</span></span>
-<span><span class="co">#&gt;  2   3106200  1961     2    28   28.2  28.2   28.7  2.61 0.493  31.8  20.0  25.0</span></span>
-<span><span class="co">#&gt;  3   3106200  1961     3    31   28.3  28.3   28.9  2.02 0.364  31.2  22.8  25.6</span></span>
-<span><span class="co">#&gt;  4   3106200  1961     4    30   28.1  28.1   28.1  1.33 0.243  30.1  25.0  26.5</span></span>
-<span><span class="co">#&gt;  5   3106200  1961     5    31   25.5  25.5   25.5  1.75 0.314  28.6  21.4  24.1</span></span>
-<span><span class="co">#&gt;  6   3106200  1961     6    30   24.8  24.8   24.9  1.96 0.357  27.8  20.6  22.2</span></span>
-<span><span class="co">#&gt;  7   3106200  1961     7    31   25.2  25.2   25.1  1.58 0.284  28.1  22.2  23.0</span></span>
-<span><span class="co">#&gt;  8   3106200  1961     8    31   27.8  27.8   27.7  1.94 0.348  31.7  24.1  25.1</span></span>
-<span><span class="co">#&gt;  9   3106200  1961     9    30   31.8  31.8   32.7  2.31 0.422  34.6  26.2  28.2</span></span>
-<span><span class="co">#&gt; 10   3106200  1961    10    31   28.4  28.4   29.3  2.73 0.491  31.9  19.7  25.2</span></span>
-<span><span class="co">#&gt; # ℹ 1,430 more rows</span></span>
-<span><span class="co">#&gt; # ℹ 10 more variables: p25 &lt;dbl&gt;, p75 &lt;dbl&gt;, p90 &lt;dbl&gt;, heat_waves_3d &lt;int&gt;,</span></span>
-<span><span class="co">#&gt; #   heat_waves_5d &lt;int&gt;, hot_days &lt;int&gt;, t_25 &lt;int&gt;, t_30 &lt;int&gt;, t_35 &lt;int&gt;,</span></span>
-<span><span class="co">#&gt; #   t_40 &lt;int&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; # A tibble: 3,024 × 24</span></span>
+<span><span class="co">#&gt;    code_muni  year month count normal_mean normal_p10 normal_p90  mean median</span></span>
+<span><span class="co">#&gt;        &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;       &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1   3106200  1961     1    31        27.9       24.0       31.2  25.9   26.1</span></span>
+<span><span class="co">#&gt;  2   3106200  1961     2    28        28.5       25.5       30.9  28.2   28.7</span></span>
+<span><span class="co">#&gt;  3   3106200  1961     3    31        28.3       25.4       30.9  28.3   28.9</span></span>
+<span><span class="co">#&gt;  4   3106200  1961     4    30        27.2       24.6       29.6  28.1   28.1</span></span>
+<span><span class="co">#&gt;  5   3106200  1961     5    31        25.8       22.8       28.3  25.5   25.5</span></span>
+<span><span class="co">#&gt;  6   3106200  1961     6    30        24.7       21.9       27.3  24.8   24.9</span></span>
+<span><span class="co">#&gt;  7   3106200  1961     7    31        24.4       20.9       27.2  25.2   25.1</span></span>
+<span><span class="co">#&gt;  8   3106200  1961     8    31        26.1       22.2       29.8  27.8   27.7</span></span>
+<span><span class="co">#&gt;  9   3106200  1961     9    30        27.1       22.6       31.1  31.8   32.7</span></span>
+<span><span class="co">#&gt; 10   3106200  1961    10    31        27.5       23.0       31.5  28.4   29.3</span></span>
+<span><span class="co">#&gt; # ℹ 3,014 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 15 more variables: sd &lt;dbl&gt;, se &lt;dbl&gt;, max &lt;dbl&gt;, min &lt;dbl&gt;, p10 &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   p25 &lt;dbl&gt;, p75 &lt;dbl&gt;, p90 &lt;dbl&gt;, heat_waves_3d &lt;int&gt;, heat_waves_5d &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   hot_days &lt;int&gt;, t_25 &lt;int&gt;, t_30 &lt;int&gt;, t_35 &lt;int&gt;, t_40 &lt;int&gt;</span></span></code></pre></div>
 <p>The function <code><a href="reference/summarise_temp_max.html">summarise_temp_max()</a></code> computes a total of 19 indicators. Let’s plot one of them.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
