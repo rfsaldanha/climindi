@@ -69,7 +69,9 @@
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The high and low ETo indicators are computed based on climatological normals, created with the <code><a href="summarise_normal.html">summarise_normal()</a></code> function and passed with the <code>normals_df</code> argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.</p>
 <p>The following indicators are computed for each group.</p><ul><li><p><code>count</code> Count of data points</p></li>
-<li><p><code>normal</code> Climatological normal, from <code>normals_df</code> argument</p></li>
+<li><p><code>normal_mean</code> Climatological normal mean, from <code>normals_df</code> argument</p></li>
+<li><p><code>normal_p10</code> Climatological 10th percentile, from <code>normals_df</code> argument</p></li>
+<li><p><code>normal_p90</code> Climatological 90th percentile, from <code>normals_df</code> argument</p></li>
 <li><p><code>mean</code> Average</p></li>
 <li><p><code>median</code> Median</p></li>
 <li><p><code>sd</code> Standard deviation</p></li>
@@ -80,22 +82,20 @@
 <li><p><code>p25</code> 25th percentile</p></li>
 <li><p><code>p75</code> 75th percentile</p></li>
 <li><p><code>p90</code> 90th percentile</p></li>
-<li><p><code>l_eto_3</code> Count of sequences of 3 days or more with evapotranspirations bellow the climatological normal</p></li>
-<li><p><code>l_eto_5</code> Count of sequences of 5 days or more with evapotranspirations bellow the climatological normal</p></li>
-<li><p><code>h_eto_3</code> Count of sequences of 3 days or more with evapotranspirations above the climatological normal</p></li>
-<li><p><code>h_eto_5</code> Count of sequences of 5 days or more with evapotranspirations above the climatological normal</p></li>
+<li><p><code>l_eto_3</code> Count of sequences of 3 days or more with evapotranspirations bellow the climatological average normal</p></li>
+<li><p><code>l_eto_5</code> Count of sequences of 5 days or more with evapotranspirations bellow the climatological average normal</p></li>
+<li><p><code>h_eto_3</code> Count of sequences of 3 days or more with evapotranspirations above the climatological average normal</p></li>
+<li><p><code>h_eto_5</code> Count of sequences of 5 days or more with evapotranspirations above the climatological average normal</p></li>
 </ul></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Compute monthly normals</span></span></span>
 <span class="r-in"><span><span class="va">normals</span> <span class="op">&lt;-</span> <span class="va">evapotranspiration_data</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="co"># Identify year</span></span></span>
-<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/year.html" class="external-link">year</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="co"># Identify month</span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>month <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html" class="external-link">month</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="co"># Group by id variable, year and month</span></span></span>
-<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">code_muni</span>, <span class="va">year</span>, <span class="va">month</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="co"># Group by id variable and month</span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">code_muni</span>, <span class="va">month</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="summarise_normal.html">summarise_normal</a></span><span class="op">(</span>date_var <span class="op">=</span> <span class="va">date</span>, value_var <span class="op">=</span> <span class="va">value</span>, year_start <span class="op">=</span> <span class="fl">1961</span>, year_end <span class="op">=</span> <span class="fl">1990</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -111,10 +111,23 @@
 <span class="r-in"><span> <span class="fu">summarise_evapotrapiration</span><span class="op">(</span>value_var <span class="op">=</span> <span class="va">value</span>, normals_df <span class="op">=</span> <span class="va">normals</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span> <span class="co"># Ungroup</span></span></span>
 <span class="r-in"><span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dplyr::summarise(dplyr::inner_join(.x, normals_df), count = dplyr::n(),     normal = mean(.data[["normal"]], na.rm = TRUE), mean = mean({        {            value_var        }    }, na.rm = TRUE), median = stats::median({        {            value_var        }    }, na.rm = TRUE), sd = stats::sd({        {            value_var        }    }, na.rm = TRUE), se = .data[["sd"]]/sqrt(.data[["count"]]),     max = max({        {            value_var        }    }, na.rm = TRUE), min = min({        {            value_var        }    }, na.rm = TRUE), p10 = stats::quantile({        {            value_var        }    }, probs = 0.1, names = FALSE), p25 = stats::quantile({        {            value_var        }    }, probs = 0.25, names = FALSE), p75 = stats::quantile({        {            value_var        }    }, probs = 0.75, names = FALSE), p90 = stats::quantile({        {            value_var        }    }, probs = 0.9, names = FALSE), l_eto_3 = nseq::trle_cond(x = {        {            value_var        }    }, a = 3, a_op = "gte", b = .data[["normal"]], b_op = "lte"),     l_eto_5 = nseq::trle_cond(x = {        {            value_var        }    }, a = 5, a_op = "gte", b = .data[["normal"]], b_op = "lte"),     h_eto_3 = nseq::trle_cond(x = {        {            value_var        }    }, a = 3, a_op = "gte", b = .data[["normal"]], b_op = "gte"),     h_eto_5 = nseq::trle_cond(x = {        {            value_var        }    }, a = 5, a_op = "gte", b = .data[["normal"]], b_op = "gte"),     ):</span> <span style="color: #00BBBB;">ℹ</span> In argument: `normal = mean(.data[["normal"]], na.rm = TRUE)`.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In group 1: `code_muni = 3106200`, `year = 1961`, `month = 1`.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `.data[["normal"]]`:</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Column `normal` not found in `.data`.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3,024 × 21</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    code_muni  year month count normal_mean normal_p10 normal_p90  mean median</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     1    31        4.04       2.38       5.59  3.11   3.01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     2    28        4.15       2.56       5.31  3.92   3.93</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     3    31        3.75       2.38       4.73  3.93   4.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     4    30        3.24       2.34       3.91  3.56   3.63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     5    31        2.63       1.99       3.12  2.63   2.73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     6    30        2.35       1.97       2.67  2.50   2.54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     7    31        2.51       2.07       2.93  2.75   2.81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     8    31        3.18       2.47       3.83  3.70   3.64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     9    30        3.68       2.38       4.60  4.46   4.59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961    10    31        3.87       2.32       5.16  4.53   4.90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3,014 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 12 more variables: sd &lt;dbl&gt;, se &lt;dbl&gt;, max &lt;dbl&gt;, min &lt;dbl&gt;, p10 &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   p25 &lt;dbl&gt;, p75 &lt;dbl&gt;, p90 &lt;dbl&gt;, l_eto_3 &lt;int&gt;, l_eto_5 &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   h_eto_3 &lt;int&gt;, h_eto_5 &lt;int&gt;</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
