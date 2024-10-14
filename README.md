@@ -32,19 +32,12 @@ We can compute climatological monthly normals with the
 
 ``` r
 library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
+library(lubridate)
 library(climindi)
 
 temp_max_normals <- temp_max_data |>
   # Identify month
-  mutate(month = lubridate::month(date)) |>
+  mutate(month = month(date)) |>
   # Group by id variable, year and month
   group_by(code_muni, month) |>
   summarise_normal(date_var = date, value_var = value, year_start = 1961, year_end = 1990) |>
@@ -84,15 +77,15 @@ of the normals.
 ``` r
 indi_temp_max <- temp_max_data |>
  # Identify year
- dplyr::mutate(year = lubridate::year(date)) |>
+ mutate(year = year(date)) |>
  # Identify month
- dplyr::mutate(month = lubridate::month(date)) |>
+ mutate(month = month(date)) |>
  # Group by id variable, year and month
- dplyr::group_by(code_muni, year, month) |>
+ group_by(code_muni, year, month) |>
  # Compute maximum temperature indicators
  summarise_temp_max(value_var = value, normals_df = temp_max_normals) |>
  # Ungroup
- dplyr::ungroup()
+ ungroup()
 ```
 
 ``` r
@@ -131,4 +124,4 @@ indi_temp_max |>
 #> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
 ```
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
