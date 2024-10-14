@@ -8,7 +8,9 @@
 #' The following indicators are computed for each group.
 #' \itemize{
 #'  \item{`count` Count of data points}
-#'  \item{`normal` Climatological normal, from `normals_df` argument}
+#'  \item{`normal_mean` Climatological normal mean, from `normals_df` argument}
+#'  \item{`normal_p10` Climatological 10th percentile, from `normals_df` argument}
+#'  \item{`normal_p90` Climatological 90th percentile, from `normals_df` argument}
 #'  \item{`mean` Average}
 #'  \item{`median` Median}
 #'  \item{`sd` Standard deviation}
@@ -73,7 +75,9 @@ summarise_windspeed <- function(.x, value_var, normals_df){
     dplyr::inner_join(normals_df) |>
     dplyr::summarise(
       count = dplyr::n(),
-      normal = mean(.data[["normal"]], na.rm = TRUE),
+      normal_mean = head(.data[["normal_mean"]], 1),
+      normal_p10 = head(.data[["normal_p10"]], 1),
+      normal_p90 = head(.data[["normal_p90"]], 1),
       mean = mean({{value_var}}, na.rm = TRUE),
       median = stats::median({{value_var}}, na.rm = TRUE),
       sd = stats::sd({{value_var}}, na.rm = TRUE),
@@ -86,10 +90,10 @@ summarise_windspeed <- function(.x, value_var, normals_df){
       p90 = stats::quantile({{value_var}}, probs = 0.90, names = FALSE),
       #p10_w = caTools::runquantile({{value_var}}, k = 5, p = 0.1)[1],
       #p90_w = caTools::runquantile({{value_var}}, k = 5, p = 0.9)[1],
-      l_u2_3 = nseq::trle_cond(x = {{value_var}}, a = 3, a_op = "gte", b = .data[["normal"]], b_op = "lte"),
-      l_u2_5 = nseq::trle_cond(x = {{value_var}}, a = 5, a_op = "gte", b = .data[["normal"]], b_op = "lte"),
-      h_u2_3 = nseq::trle_cond(x = {{value_var}}, a = 3, a_op = "gte", b = .data[["normal"]], b_op = "gte"),
-      h_u2_5 = nseq::trle_cond(x = {{value_var}}, a = 5, a_op = "gte", b = .data[["normal"]], b_op = "gte"),
+      l_u2_3 = nseq::trle_cond(x = {{value_var}}, a = 3, a_op = "gte", b = .data[["normal_mean"]], b_op = "lte"),
+      l_u2_5 = nseq::trle_cond(x = {{value_var}}, a = 5, a_op = "gte", b = .data[["normal_mean"]], b_op = "lte"),
+      h_u2_3 = nseq::trle_cond(x = {{value_var}}, a = 3, a_op = "gte", b = .data[["normal_mean"]], b_op = "gte"),
+      h_u2_5 = nseq::trle_cond(x = {{value_var}}, a = 5, a_op = "gte", b = .data[["normal_mean"]], b_op = "gte"),
     )
   ) 
 }
