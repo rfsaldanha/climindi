@@ -21,7 +21,7 @@ summarise_normal(.x, date_var, value_var, year_start, year_end)
 A tibble.
 }
 \description{
-The function computes normals (average) of a variable for each group.
+The function computes normals (mean, 10th and 90th percentile) of a variable for each group.
 }
 \examples{
 temp_max_data |>

@@ -1,6 +1,6 @@
 #' Compute normals from grouped data
 #'
-#' The function computes normals (average) of a variable for each group.
+#' The function computes normals (mean, 10th and 90th percentile) of a variable for each group.
 #'
 #' @param .x grouped data, created with `dplyr::group_by()`
 #' @param date_var name of the variable with dates.
