@@ -25,6 +25,9 @@ The dark and light days indicators are computed based on climatological normals,
 The following indicators are computed for each group.
 \itemize{
 \item{\code{count} Count of data points}
+\item{\code{normal_mean} Climatological normal mean, from \code{normals_df} argument}
+\item{\code{normal_p10} Climatological 10th percentile, from \code{normals_df} argument}
+\item{\code{normal_p90} Climatological 90th percentile, from \code{normals_df} argument}
 \item{\code{mean} Average}
 \item{\code{median} Median}
 \item{\code{sd} Standard deviation}
