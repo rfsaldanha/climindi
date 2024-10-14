@@ -25,7 +25,9 @@ The rain spells indicators are computed based on climatological normals, created
 The following indicators are computed for each group.
 \itemize{
 \item{\code{count} Count of data points}
-\item{\code{normal} Climatological normal, from \code{normals_df} argument}
+\item{\code{normal_mean} Climatological normal mean, from \code{normals_df} argument}
+\item{\code{normal_p10} Climatological 10th percentile, from \code{normals_df} argument}
+\item{\code{normal_p90} Climatological 90th percentile, from \code{normals_df} argument}
 \item{\code{mean} Average}
 \item{\code{median} Median}
 \item{\code{sd} Standard deviation}
@@ -36,8 +38,8 @@ The following indicators are computed for each group.
 \item{\code{p25} 25th percentile}
 \item{\code{p75} 75th percentile}
 \item{\code{p90} 90th percentile}
-\item{\code{rain_spells_3d} Count of rain spells occurences, with 3 or more consecutive days with rain above the climatological normal value}
-\item{\code{rain_spells_5d} Count of rain spells occurences, with 5 or more consecutive days with rain above the climatological normal value}
+\item{\code{rain_spells_3d} Count of rain spells occurences, with 3 or more consecutive days with rain above the climatological normal average value}
+\item{\code{rain_spells_5d} Count of rain spells occurences, with 5 or more consecutive days with rain above the climatological normal average value}
 \item{\code{p_1} Count of days with precipitation above 1mm}
 \item{\code{p_5} Count of days with precipitation above 5mm}
 \item{\code{p_10} Count of days with precipitation above 10mm}
