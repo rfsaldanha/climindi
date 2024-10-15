@@ -60,10 +60,10 @@
 #' 
 summarise_solar_radiation <- function(.x, value_var, normals_df){
   # Assertions
-  checkmate::assert_data_frame(x = .x)
-
+  checkmate::assert_multi_class(x = .x, classes = c("data.frame", "tibble", "multidplyr_party_df"))
+  
   # Assert group
-  if(!dplyr::is_grouped_df(.x))(
+  if(all(!dplyr::is_grouped_df(.x), class(.x) != "multidplyr_party_df"))(
     stop(".x must be a grouped data frame")
   )
 
