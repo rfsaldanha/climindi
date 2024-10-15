@@ -36,7 +36,7 @@ summarise_normal <- function(.x, date_var, value_var, year_start, year_end){
     ) |>
     dplyr::summarise(
       normal_mean = mean({{value_var}}, na.rm = TRUE),
-      normal_p10 = stats::quantile({{value_var}}, probs = 0.10, names = FALSE),
-      normal_p90 = stats::quantile({{value_var}}, probs = 0.90, names = FALSE)
+      normal_p10 = stats::quantile({{value_var}}, probs = 0.10, names = FALSE, na.rm = TRUE),
+      normal_p90 = stats::quantile({{value_var}}, probs = 0.90, names = FALSE, na.rm = TRUE)
     )
 }
