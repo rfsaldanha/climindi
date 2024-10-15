@@ -22,8 +22,9 @@
 #' 
 summarise_normal <- function(.x, date_var, value_var, year_start, year_end){
   # Assertions
-  checkmate::assert_data_frame(x = .x)
+  checkmate::assert_multi_class(x = .x, classes = c("data.frame", "tibble", "multidplyr_party_df"))
 
+  
   # Assert group
   if(!dplyr::is_grouped_df(.x))(
     stop(".x must be a grouped data frame")
