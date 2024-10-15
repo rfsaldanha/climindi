@@ -26,7 +26,7 @@ summarise_normal <- function(.x, date_var, value_var, year_start, year_end){
 
   
   # Assert group
-  if(!dplyr::is_grouped_df(.x))(
+  if(all(!dplyr::is_grouped_df(.x), class(.x) != "multidplyr_party_df"))(
     stop(".x must be a grouped data frame")
   )
 
