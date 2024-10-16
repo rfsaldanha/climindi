@@ -60,10 +60,10 @@
 #' 
 summarise_evapotrapiration <- function(.x, value_var, normals_df){
   # Assertions
-  checkmate::assert_multi_class(x = .x, classes = c("data.frame", "tibble", "multidplyr_party_df"))
-  
+  checkmate::assert_data_frame(x = .x)
+
   # Assert group
-  if(all(!dplyr::is_grouped_df(.x), class(.x) != "multidplyr_party_df"))(
+  if(!dplyr::is_grouped_df(.x))(
     stop(".x must be a grouped data frame")
   )
 
