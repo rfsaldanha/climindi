@@ -21,10 +21,10 @@
 #'  \item{`p25` 25th percentile}
 #'  \item{`p75` 75th percentile}
 #'  \item{`p90` 90th percentile}
-#'  \item{`l_eto_3` Count of sequences of 3 days or more with evapotranspirations bellow the climatological normal}
-#'  \item{`l_eto_5` Count of sequences of 5 days or more with evapotranspirations bellow the climatological normal}
-#'  \item{`h_eto_3` Count of sequences of 3 days or more with evapotranspirations above the climatological normal}
-#'  \item{`h_eto_5` Count of sequences of 5 days or more with evapotranspirations above the climatological normal}
+#'  \item{`l_eto_3` Count of sequences of 3 days or more with windspeed bellow the climatological normal}
+#'  \item{`l_eto_5` Count of sequences of 5 days or more with windspeed bellow the climatological normal}
+#'  \item{`h_eto_3` Count of sequences of 3 days or more with windspeed above the climatological normal}
+#'  \item{`h_eto_5` Count of sequences of 5 days or more with windspeed above the climatological normal}
 #' }
 #' 
 #' @param .x grouped data, created with `dplyr::group_by()`

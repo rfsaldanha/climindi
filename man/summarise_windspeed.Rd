@@ -38,10 +38,10 @@ The following indicators are computed for each group.
 \item{\code{p25} 25th percentile}
 \item{\code{p75} 75th percentile}
 \item{\code{p90} 90th percentile}
-\item{\code{l_eto_3} Count of sequences of 3 days or more with evapotranspirations bellow the climatological normal}
-\item{\code{l_eto_5} Count of sequences of 5 days or more with evapotranspirations bellow the climatological normal}
-\item{\code{h_eto_3} Count of sequences of 3 days or more with evapotranspirations above the climatological normal}
-\item{\code{h_eto_5} Count of sequences of 5 days or more with evapotranspirations above the climatological normal}
+\item{\code{l_eto_3} Count of sequences of 3 days or more with windspeed bellow the climatological normal}
+\item{\code{l_eto_5} Count of sequences of 5 days or more with windspeed bellow the climatological normal}
+\item{\code{h_eto_3} Count of sequences of 3 days or more with windspeed above the climatological normal}
+\item{\code{h_eto_5} Count of sequences of 5 days or more with windspeed above the climatological normal}
 }
 }
 \examples{
