@@ -1,10 +1,10 @@
 #' Compute precipitation indicators from grouped data
 #'
 #' The function computes precipitation indicators from grouped data. Expects precipitation in millimeters (mm).
-#' 
+#'
 #' @details
 #' The rain spells indicators are computed based on climatological normals, created with the `summarise_normal()` function and passed with the `normals_df` argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
-#' 
+#'
 #' The following indicators are computed for each group.
 #' \itemize{
 #'  \item{`count` Count of data points}
@@ -35,7 +35,7 @@
 #'  \item{`d_20` Count of sequences of 20 days or more without precipitation}
 #'  \item{`d_25` Count of sequences of 25 days or more without precipitation}
 #' }
-#' 
+#'
 #' @param .x grouped data, created with `dplyr::group_by()`
 #' @param value_var name of the variable with temperature values.
 #' @param normals_df normals data, created with `summarise_normal()`
@@ -53,7 +53,7 @@
 #'   dplyr::group_by(code_muni, month) |>
 #'   summarise_normal(date_var = date, value_var = value, year_start = 1961, year_end = 1990) |>
 #'   dplyr::ungroup()
-#' 
+#'
 #' # Compute indicators
 #' precipitation_data |>
 #'  # Identify year
@@ -66,51 +66,116 @@
 #'  summarise_precipitation(value_var = value, normals_df = normals) |>
 #'  # Ungroup
 #'  dplyr::ungroup()
-#' 
-summarise_precipitation <- function(.x, value_var, normals_df){
+#'
+summarise_precipitation <- function(.x, value_var, normals_df) {
   # Assertions
   checkmate::assert_data_frame(x = .x)
 
   # Assert group
-  if(!dplyr::is_grouped_df(.x))(
-    stop(".x must be a grouped data frame")
-  )
+  if (!dplyr::is_grouped_df(.x)) (stop(".x must be a grouped data frame"))
 
   # Compute indicators
   suppressMessages(
     .x |>
-    dplyr::inner_join(normals_df) |>
-    dplyr::summarise(
-      count = dplyr::n(),
-      normal_mean = utils::head(.data[["normal_mean"]], 1),
-      normal_p10 = utils::head(.data[["normal_p10"]], 1),
-      normal_p90 = utils::head(.data[["normal_p90"]], 1),
-      mean = mean({{value_var}}, na.rm = TRUE),
-      median = stats::median({{value_var}}, na.rm = TRUE),
-      sd = stats::sd({{value_var}}, na.rm = TRUE),
-      se = .data[["sd"]]/sqrt(.data[["count"]]),
-      max = max({{value_var}}, na.rm = TRUE),
-      min = min({{value_var}}, na.rm = TRUE),
-      p10 = stats::quantile({{value_var}}, probs = 0.10, names = FALSE, na.rm = TRUE),
-      p25 = stats::quantile({{value_var}}, probs = 0.25, names = FALSE, na.rm = TRUE),
-      p75 = stats::quantile({{value_var}}, probs = 0.75, names = FALSE, na.rm = TRUE),
-      p90 = stats::quantile({{value_var}}, probs = 0.90, names = FALSE, na.rm = TRUE),
-      #p10_w = caTools::runquantile({{value_var}}, k = 5, p = 0.1)[1],
-      #p90_w = caTools::runquantile({{value_var}}, k = 5, p = 0.9)[1],
-      rain_spells_3d = nseq::trle_cond(x = {{value_var}}, a = 3, a_op = "gte", b = .data[["normal_mean"]], b_op = "gte"),
-      rain_spells_5d = nseq::trle_cond(x = {{value_var}}, a = 5, a_op = "gte", b = .data[["normal_mean"]], b_op = "gte"),
-      p_1 = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = 1, b_op = "gte"),
-      p_5 = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = 5, b_op = "gte"),
-      p_10 = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = 10, b_op = "gte"),
-      p_50 = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = 50, b_op = "gte"),
-      p_100 = nseq::trle_cond(x = {{value_var}}, a = 1, a_op = "gte", b = 100, b_op = "gte"),
-      d_3 = nseq::trle_cond(x = {{value_var}}, a = 3, a_op = "gte", b = 0, b_op = "e"),
-      d_5 = nseq::trle_cond(x = {{value_var}}, a = 5, a_op = "gte", b = 0, b_op = "e"),
-      d_10 = nseq::trle_cond(x = {{value_var}}, a = 10, a_op = "gte", b = 0, b_op = "e"),
-      d_15 = nseq::trle_cond(x = {{value_var}}, a = 15, a_op = "gte", b = 0, b_op = "e"),
-      d_20 = nseq::trle_cond(x = {{value_var}}, a = 20, a_op = "gte", b = 0, b_op = "e"),
-      d_25 = nseq::trle_cond(x = {{value_var}}, a = 25, a_op = "gte", b = 0, b_op = "e"),
-    )
-  ) 
+      dplyr::inner_join(normals_df) |>
+      dplyr::summarise(
+        count = dplyr::n(),
+        normal_mean = utils::head(.data[["normal_mean"]], 1),
+        normal_p10 = utils::head(.data[["normal_p10"]], 1),
+        normal_p90 = utils::head(.data[["normal_p90"]], 1),
+        mean = mean({{ value_var }}, na.rm = TRUE),
+        median = stats::median({{ value_var }}, na.rm = TRUE),
+        sd = stats::sd({{ value_var }}, na.rm = TRUE),
+        se = .data[["sd"]] / sqrt(.data[["count"]]),
+        max = max({{ value_var }}, na.rm = TRUE),
+        min = min({{ value_var }}, na.rm = TRUE),
+        p10 = stats::quantile(
+          {{ value_var }},
+          probs = 0.10,
+          names = FALSE,
+          na.rm = TRUE
+        ),
+        p25 = stats::quantile(
+          {{ value_var }},
+          probs = 0.25,
+          names = FALSE,
+          na.rm = TRUE
+        ),
+        p75 = stats::quantile(
+          {{ value_var }},
+          probs = 0.75,
+          names = FALSE,
+          na.rm = TRUE
+        ),
+        p90 = stats::quantile(
+          {{ value_var }},
+          probs = 0.90,
+          names = FALSE,
+          na.rm = TRUE
+        ),
+        #p10_w = caTools::runquantile({{value_var}}, k = 5, p = 0.1)[1],
+        #p90_w = caTools::runquantile({{value_var}}, k = 5, p = 0.9)[1],
+        rain_spells_3d = nseq::trle_cond(
+          x = {{ value_var }},
+          a = 3,
+          a_op = "gte",
+          b = .data[["normal_mean"]],
+          b_op = "gte"
+        ),
+        rain_spells_5d = nseq::trle_cond(
+          x = {{ value_var }},
+          a = 5,
+          a_op = "gte",
+          b = .data[["normal_mean"]],
+          b_op = "gte"
+        ),
+        p_1 = sum({{ value_var }} >= 1),
+        p_5 = sum({{ value_var }} >= 5),
+        p_10 = sum({{ value_var }} >= 10),
+        p_50 = sum({{ value_var }} >= 50),
+        p_100 = sum({{ value_var }} >= 100),
+        d_3 = nseq::trle_cond(
+          x = {{ value_var }},
+          a = 3,
+          a_op = "gte",
+          b = 0,
+          b_op = "e"
+        ),
+        d_5 = nseq::trle_cond(
+          x = {{ value_var }},
+          a = 5,
+          a_op = "gte",
+          b = 0,
+          b_op = "e"
+        ),
+        d_10 = nseq::trle_cond(
+          x = {{ value_var }},
+          a = 10,
+          a_op = "gte",
+          b = 0,
+          b_op = "e"
+        ),
+        d_15 = nseq::trle_cond(
+          x = {{ value_var }},
+          a = 15,
+          a_op = "gte",
+          b = 0,
+          b_op = "e"
+        ),
+        d_20 = nseq::trle_cond(
+          x = {{ value_var }},
+          a = 20,
+          a_op = "gte",
+          b = 0,
+          b_op = "e"
+        ),
+        d_25 = nseq::trle_cond(
+          x = {{ value_var }},
+          a = 25,
+          a_op = "gte",
+          b = 0,
+          b_op = "e"
+        ),
+      )
+  )
 }
-
