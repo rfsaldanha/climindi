@@ -66,11 +66,15 @@ summarise_temp_max <- function(.x, value_var, normals_df) {
   checkmate::assert_data_frame(x = .x)
 
   # Assert group
-  if (!dplyr::is_grouped_df(.x)) (stop(".x must be a grouped data frame"))
+  if (!dplyr::is_grouped_df(.x)) {
+    (stop(".x must be a grouped data frame"))
+  }
 
   # Compute indicators
   suppressMessages(
     .x |>
+      add_heatwave(normals_df = normals_df, size = 3, var_name = "hw3") |>
+      add_heatwave(normals_df = normals_df, size = 5, var_name = "hw5") |>
       dplyr::inner_join(normals_df) |>
       dplyr::summarise(
         count = dplyr::n(),
@@ -109,20 +113,8 @@ summarise_temp_max <- function(.x, value_var, normals_df) {
         ),
         #p10_w = caTools::runquantile({{value_var}}, k = 5, p = 0.1)[1],
         #p90_w = caTools::runquantile({{value_var}}, k = 5, p = 0.9)[1],
-        heat_waves_3d = nseq::trle_cond(
-          x = {{ value_var }},
-          a = 3,
-          a_op = "gte",
-          b = .data[["normal_mean"]] + 5,
-          b_op = "gte"
-        ),
-        heat_waves_5d = nseq::trle_cond(
-          x = {{ value_var }},
-          a = 5,
-          a_op = "gte",
-          b = .data[["normal_mean"]] + 5,
-          b_op = "gte"
-        ),
+        hw3 = sum(.data[["hw3"]], na.rm = TRUE),
+        hw5 = sum(.data[["hw5"]], na.rm = TRUE),
         hot_days = sum({{ value_var }} >= .data[["normal_p90"]]),
         t_25 = sum({{ value_var }} >= 25),
         t_30 = sum({{ value_var }} >= 30),
