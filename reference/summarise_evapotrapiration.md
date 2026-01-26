@@ -106,7 +106,8 @@ evapotranspiration_data |>
  summarise_evapotrapiration(value_var = value, normals_df = normals) |>
  # Ungroup
  dplyr::ungroup()
-#> Error in purrr::map(.x = res, .f = iden): ℹ In index: 1.
-#> Caused by error in `nseq::trle_cond()`:
-#> ! unused argument (pos = TRUE)
+#> Error in dplyr::summarise(dplyr::inner_join(.x, normals_df), count = dplyr::n(),     normal_mean = utils::head(.data[["normal_mean"]], 1), normal_p10 = utils::head(.data[["normal_p10"]],         1), normal_p90 = utils::head(.data[["normal_p90"]], 1),     mean = mean({        {            value_var        }    }, na.rm = TRUE), median = stats::median({        {            value_var        }    }, na.rm = TRUE), sd = stats::sd({        {            value_var        }    }, na.rm = TRUE), se = .data[["sd"]]/sqrt(.data[["count"]]),     max = max({        {            value_var        }    }, na.rm = TRUE), min = min({        {            value_var        }    }, na.rm = TRUE), p10 = stats::quantile({        {            value_var        }    }, probs = 0.1, names = FALSE, na.rm = TRUE), p25 = stats::quantile({        {            value_var        }    }, probs = 0.25, names = FALSE, na.rm = TRUE), p75 = stats::quantile({        {            value_var        }    }, probs = 0.75, names = FALSE, na.rm = TRUE), p90 = stats::quantile({        {            value_var        }    }, probs = 0.9, names = FALSE, na.rm = TRUE), l_eto_3 = sum(.data[["l_eto_3"]],         na.rm = TRUE), l_eto_5 = sum(.data[["l_eto_5"]], na.rm = TRUE),     h_eto_3 = sum(.data[["h_eto_3"]], na.rm = TRUE), h_eto_5 = sum(.data[["h_eto_5"]],         na.rm = TRUE)): ℹ In argument: `l_eto_3 = sum(.data[["l_eto_3"]], na.rm = TRUE)`.
+#> ℹ In group 1: `code_muni = 3106200`, `year = 1961`, `month = 1`.
+#> Caused by error in `.data[["l_eto_3"]]`:
+#> ! Column `l_eto_3` not found in `.data`.
 ```
