@@ -11,6 +11,22 @@ test_that("summarise_temp_min works", {
     dplyr::ungroup()
 
   res <- temp_min_data |>
+    dplyr::group_by(code_muni) |>
+    add_wave(
+      normals_df = normals,
+      threshold = -5,
+      threshold_cond = "lte",
+      size = 3,
+      var_name = "cw3"
+    ) |>
+    add_wave(
+      normals_df = normals,
+      threshold = -5,
+      threshold_cond = "lte",
+      size = 5,
+      var_name = "cw5"
+    ) |>
+    dplyr::ungroup() |>
     dplyr::mutate(year = lubridate::year(date)) |>
     dplyr::mutate(month = lubridate::month(date)) |>
     dplyr::group_by(code_muni, year, month) |>

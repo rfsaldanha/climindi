@@ -74,20 +74,6 @@ summarise_temp_min <- function(.x, value_var, normals_df) {
   # Compute indicators
   suppressMessages(
     .x |>
-      add_wave(
-        normals_df = normals_df,
-        threshold = -5,
-        threshold_cond = "lte",
-        size = 3,
-        var_name = "cw3"
-      ) |>
-      add_wave(
-        normals_df = normals_df,
-        threshold = -5,
-        threshold_cond = "lte",
-        size = 5,
-        var_name = "cw5"
-      ) |>
       dplyr::inner_join(normals_df) |>
       dplyr::summarise(
         count = dplyr::n(),
