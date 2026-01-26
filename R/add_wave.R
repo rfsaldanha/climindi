@@ -80,11 +80,12 @@ add_wave <- function(
   # Identify sequences
   res2 <- purrr::map(.x = res, .f = iden) |> purrr::list_rbind()
 
-  # Regroup data
+  # Regroup data and remove normal variables
   res3 <- dplyr::group_by(
     res2,
     dplyr::across(dplyr::all_of(dplyr::group_vars(.x)))
-  )
+  ) |>
+    dplyr::select(-.data$normal_mean, -.data$normal_p10, -.data$normal_p90)
 
   # Return
   return(res3)
