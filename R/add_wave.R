@@ -1,3 +1,5 @@
+# @importFrom rlang .data
+
 add_wave <- function(
   .x,
   date_var,
@@ -27,12 +29,20 @@ add_wave <- function(
     if (threshold_cond == "gte") {
       tmp2 <- tmp1 |>
         dplyr::mutate(
-          ref = ifelse(test = value >= normal_mean + threshold, yes = 1, no = 0)
+          ref = ifelse(
+            test = .data$value >= .data$normal_mean + threshold,
+            yes = 1,
+            no = 0
+          )
         )
     } else if (threshold_cond == "lte") {
       tmp2 <- tmp1 |>
         dplyr::mutate(
-          ref = ifelse(test = value <= normal_mean + threshold, yes = 1, no = 0)
+          ref = ifelse(
+            test = .data$value <= .data$normal_mean + threshold,
+            yes = 1,
+            no = 0
+          )
         )
     }
 
