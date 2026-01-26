@@ -126,20 +126,6 @@ summarise_temp_min <- function(.x, value_var, normals_df) {
         ),
         #p10_w = caTools::runquantile({{value_var}}, k = 5, p = 0.1)[1],
         #p90_w = caTools::runquantile({{value_var}}, k = 5, p = 0.9)[1],
-        # cold_spells_3d = nseq::trle_cond(
-        #   x = {{ value_var }},
-        #   a = 3,
-        #   a_op = "gte",
-        #   b = .data[["normal_mean"]] - 5,
-        #   b_op = "lte"
-        # ),
-        # cold_spells_5d = nseq::trle_cond(
-        #   x = {{ value_var }},
-        #   a = 5,
-        #   a_op = "gte",
-        #   b = .data[["normal_mean"]] - 5,
-        #   b_op = "lte"
-        # ),
         cw3 = sum(.data[["cw3"]], na.rm = TRUE),
         cw5 = sum(.data[["cw5"]], na.rm = TRUE),
         cold_days = sum({{ value_var }} <= .data[["normal_p10"]]),
