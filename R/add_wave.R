@@ -1,5 +1,17 @@
+#' Add waves
+#'
+#' @param .x data
+#' @param date_var date var
+#' @param normals_df normal df
+#' @param threshold threshold
+#' @param threshold_cond threshold_cond
+#' @param size size
+#' @param var_name var_name
+#'
+#' @returns data frame
+#'
+#' @export
 # @importFrom rlang .data
-
 add_wave <- function(
   .x,
   date_var,
