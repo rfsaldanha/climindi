@@ -124,23 +124,7 @@ precipitation_data |>
  summarise_precipitation(value_var = value, normals_df = normals) |>
  # Ungroup
  dplyr::ungroup()
-#> # A tibble: 3,024 × 30
-#>    code_muni  year month count normal_mean normal_p10 normal_p90     mean median
-#>        <int> <dbl> <dbl> <int>       <dbl>      <dbl>      <dbl>    <dbl>  <dbl>
-#>  1   3106200  1961     1    31      10.1            0     29.8    2.33e+1 13.0  
-#>  2   3106200  1961     2    28       6.88           0     21.4    8.75e+0  0.741
-#>  3   3106200  1961     3    31       5.26           0     16.8    6.71e+0  0.668
-#>  4   3106200  1961     4    30       2.12           0      5.86   1.64e+0  0    
-#>  5   3106200  1961     5    31       0.986          0      2.08   4.18e-1  0    
-#>  6   3106200  1961     6    30       0.521          0      0.321  1.14e-1  0    
-#>  7   3106200  1961     7    31       0.565          0      0.345  1.93e-1  0    
-#>  8   3106200  1961     8    31       0.489          0      0.269  4.72e-4  0    
-#>  9   3106200  1961     9    30       1.40           0      3.12   0        0    
-#> 10   3106200  1961    10    31       4.29           0     15.7    1.19e+0  0    
-#> # ℹ 3,014 more rows
-#> # ℹ 21 more variables: sd <dbl>, se <dbl>, max <dbl>, min <dbl>, p10 <dbl>,
-#> #   p25 <dbl>, p75 <dbl>, p90 <dbl>, rain_spells_3d <int>,
-#> #   rain_spells_5d <int>, p_1 <int>, p_5 <int>, p_10 <int>, p_50 <int>,
-#> #   p_100 <int>, d_3 <int>, d_5 <int>, d_10 <int>, d_15 <int>, d_20 <int>,
-#> #   d_25 <int>
+#> Error in purrr::map(.x = res, .f = iden): ℹ In index: 1.
+#> Caused by error in `nseq::trle_cond()`:
+#> ! unused argument (pos = TRUE)
 ```

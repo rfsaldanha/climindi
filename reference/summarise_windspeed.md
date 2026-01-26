@@ -106,21 +106,7 @@ windspeed_data |>
  summarise_windspeed(value_var = value, normals_df = normals) |>
  # Ungroup
  dplyr::ungroup()
-#> # A tibble: 48 × 20
-#>    code_muni month count normal_mean normal_p10 normal_p90  mean median    sd
-#>        <int> <dbl> <int>       <dbl>      <dbl>      <dbl> <dbl>  <dbl> <dbl>
-#>  1   3106200     1 58590       1.14       0.645       1.57  1.20  1.11  0.465
-#>  2   3106200     2 53370       0.934      0.531       1.35  1.20  1.12  0.455
-#>  3   3106200     3 58590       1.33       0.727       2.15  1.14  1.03  0.475
-#>  4   3106200     4 56700       1.17       0.811       1.52  1.15  1.04  0.486
-#>  5   3106200     5 58590       1.01       0.530       1.35  1.11  0.997 0.483
-#>  6   3106200     6 56700       1.37       0.587       2.02  1.13  1.02  0.498
-#>  7   3106200     7 58590       1.27       0.792       1.66  1.22  1.12  0.530
-#>  8   3106200     8 58590       1.41       0.796       1.94  1.41  1.31  0.586
-#>  9   3106200     9 56700       1.35       0.727       2.20  1.54  1.44  0.595
-#> 10   3106200    10 58590       1.98       1.26        2.72  1.45  1.33  0.596
-#> # ℹ 38 more rows
-#> # ℹ 11 more variables: se <dbl>, max <dbl>, min <dbl>, p10 <dbl>, p25 <dbl>,
-#> #   p75 <dbl>, p90 <dbl>, l_u2_3 <int>, l_u2_5 <int>, h_u2_3 <int>,
-#> #   h_u2_5 <int>
+#> Error in purrr::map(.x = res, .f = iden): ℹ In index: 1.
+#> Caused by error in `nseq::trle_cond()`:
+#> ! unused argument (pos = TRUE)
 ```

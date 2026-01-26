@@ -120,22 +120,7 @@ temp_min_data |>
  summarise_temp_min(value_var = value, normals_df = normals) |>
  # Ungroup
  dplyr::ungroup()
-#> # A tibble: 3,024 × 25
-#>    code_muni  year month count normal_mean normal_p10 normal_p90  mean median
-#>        <int> <dbl> <dbl> <int>       <dbl>      <dbl>      <dbl> <dbl>  <dbl>
-#>  1   3106200  1961     1    31        18.1      16.5        19.6  18.1   18.4
-#>  2   3106200  1961     2    28        18.4      17.1        19.8  18.5   18.6
-#>  3   3106200  1961     3    31        18.0      16.3        19.5  17.9   18.4
-#>  4   3106200  1961     4    30        16.3      13.6        18.6  16.6   16.8
-#>  5   3106200  1961     5    31        14.0      10.8        16.7  14.2   14.2
-#>  6   3106200  1961     6    30        12.3       9.18       15.0  12.9   13.1
-#>  7   3106200  1961     7    31        11.9       8.95       14.4  12.0   12.2
-#>  8   3106200  1961     8    31        13.2      10.8        15.8  13.0   12.5
-#>  9   3106200  1961     9    30        15.3      12.7        17.6  16.5   16.4
-#> 10   3106200  1961    10    31        16.9      14.5        18.9  17.2   17.1
-#> # ℹ 3,014 more rows
-#> # ℹ 16 more variables: sd <dbl>, se <dbl>, max <dbl>, min <dbl>, p10 <dbl>,
-#> #   p25 <dbl>, p75 <dbl>, p90 <dbl>, cold_spells_3d <int>,
-#> #   cold_spells_5d <int>, cold_days <int>, t_0 <int>, t_5 <int>, t_10 <int>,
-#> #   t_15 <int>, t_20 <int>
+#> Error in purrr::map(.x = res, .f = iden): ℹ In index: 1.
+#> Caused by error in `nseq::trle_cond()`:
+#> ! unused argument (pos = TRUE)
 ```

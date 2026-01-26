@@ -106,21 +106,7 @@ evapotranspiration_data |>
  summarise_evapotrapiration(value_var = value, normals_df = normals) |>
  # Ungroup
  dplyr::ungroup()
-#> # A tibble: 3,024 × 21
-#>    code_muni  year month count normal_mean normal_p10 normal_p90  mean median
-#>        <int> <dbl> <dbl> <int>       <dbl>      <dbl>      <dbl> <dbl>  <dbl>
-#>  1   3106200  1961     1    31        4.04       2.38       5.59  3.11   3.01
-#>  2   3106200  1961     2    28        4.15       2.56       5.31  3.92   3.93
-#>  3   3106200  1961     3    31        3.75       2.38       4.73  3.93   4.13
-#>  4   3106200  1961     4    30        3.24       2.34       3.91  3.56   3.63
-#>  5   3106200  1961     5    31        2.63       1.99       3.12  2.63   2.73
-#>  6   3106200  1961     6    30        2.35       1.97       2.67  2.50   2.54
-#>  7   3106200  1961     7    31        2.51       2.07       2.93  2.75   2.81
-#>  8   3106200  1961     8    31        3.18       2.47       3.83  3.70   3.64
-#>  9   3106200  1961     9    30        3.68       2.38       4.60  4.46   4.59
-#> 10   3106200  1961    10    31        3.87       2.32       5.16  4.53   4.90
-#> # ℹ 3,014 more rows
-#> # ℹ 12 more variables: sd <dbl>, se <dbl>, max <dbl>, min <dbl>, p10 <dbl>,
-#> #   p25 <dbl>, p75 <dbl>, p90 <dbl>, l_eto_3 <int>, l_eto_5 <int>,
-#> #   h_eto_3 <int>, h_eto_5 <int>
+#> Error in purrr::map(.x = res, .f = iden): ℹ In index: 1.
+#> Caused by error in `nseq::trle_cond()`:
+#> ! unused argument (pos = TRUE)
 ```
