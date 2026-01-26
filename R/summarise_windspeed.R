@@ -63,11 +63,41 @@ summarise_windspeed <- function(.x, value_var, normals_df) {
   checkmate::assert_data_frame(x = .x)
 
   # Assert group
-  if (!dplyr::is_grouped_df(.x)) (stop(".x must be a grouped data frame"))
+  if (!dplyr::is_grouped_df(.x)) {
+    (stop(".x must be a grouped data frame"))
+  }
 
   # Compute indicators
   suppressMessages(
     .x |>
+      add_wave(
+        normals_df = normals_df,
+        threshold = 0,
+        threshold_cond = "lte",
+        size = 3,
+        var_name = "l_u2_3"
+      ) |>
+      add_wave(
+        normals_df = normals_df,
+        threshold = 0,
+        threshold_cond = "lte",
+        size = 5,
+        var_name = "l_u2_5"
+      ) |>
+      add_wave(
+        normals_df = normals_df,
+        threshold = 0,
+        threshold_cond = "gte",
+        size = 3,
+        var_name = "h_u2_3"
+      ) |>
+      add_wave(
+        normals_df = normals_df,
+        threshold = 0,
+        threshold_cond = "gte",
+        size = 5,
+        var_name = "h_u2_5"
+      ) |>
       dplyr::inner_join(normals_df) |>
       dplyr::summarise(
         count = dplyr::n(),
@@ -106,34 +136,10 @@ summarise_windspeed <- function(.x, value_var, normals_df) {
         ),
         #p10_w = caTools::runquantile({{value_var}}, k = 5, p = 0.1)[1],
         #p90_w = caTools::runquantile({{value_var}}, k = 5, p = 0.9)[1],
-        l_u2_3 = nseq::trle_cond(
-          x = {{ value_var }},
-          a = 3,
-          a_op = "gte",
-          b = .data[["normal_mean"]],
-          b_op = "lte"
-        ),
-        l_u2_5 = nseq::trle_cond(
-          x = {{ value_var }},
-          a = 5,
-          a_op = "gte",
-          b = .data[["normal_mean"]],
-          b_op = "lte"
-        ),
-        h_u2_3 = nseq::trle_cond(
-          x = {{ value_var }},
-          a = 3,
-          a_op = "gte",
-          b = .data[["normal_mean"]],
-          b_op = "gte"
-        ),
-        h_u2_5 = nseq::trle_cond(
-          x = {{ value_var }},
-          a = 5,
-          a_op = "gte",
-          b = .data[["normal_mean"]],
-          b_op = "gte"
-        ),
+        l_u2_3 = sum(.data[["l_u2_3"]], na.rm = TRUE),
+        l_u2_5 = sum(.data[["l_u2_5"]], na.rm = TRUE),
+        h_u2_3 = sum(.data[["h_u2_3"]], na.rm = TRUE),
+        h_u2_5 = sum(.data[["h_u2_5"]], na.rm = TRUE)
       )
   )
 }
