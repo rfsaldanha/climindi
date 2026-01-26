@@ -2,6 +2,8 @@
 
 ## All functions
 
+- [`add_wave()`](https://rfsaldanha.github.io/climindi/reference/add_wave.md)
+  : Add waves
 - [`temp_max_data`](https://rfsaldanha.github.io/climindi/reference/example_datasets.md)
   [`temp_min_data`](https://rfsaldanha.github.io/climindi/reference/example_datasets.md)
   [`rel_humidity_data`](https://rfsaldanha.github.io/climindi/reference/example_datasets.md)
