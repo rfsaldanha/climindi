@@ -11,6 +11,22 @@ test_that("summarise_temp_max works", {
     dplyr::ungroup()
 
   res <- temp_max_data |>
+    dplyr::group_by(code_muni) |>
+    add_wave(
+      normals_df = normals,
+      threshold = 5,
+      threshold_cond = "gte",
+      size = 3,
+      var_name = "hw3"
+    ) |>
+    add_wave(
+      normals_df = normals,
+      threshold = 5,
+      threshold_cond = "gte",
+      size = 5,
+      var_name = "hw5"
+    ) |>
+    dplyr::ungroup() |>
     dplyr::mutate(year = lubridate::year(date)) |>
     dplyr::mutate(month = lubridate::month(date)) |>
     dplyr::group_by(code_muni, year, month) |>
