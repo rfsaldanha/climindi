@@ -11,6 +11,22 @@ test_that("summarise_precipitation works", {
     dplyr::ungroup()
 
   res <- precipitation_data |>
+    dplyr::group_by(code_muni) |>
+    add_wave(
+      normals_df = normals,
+      threshold = 0,
+      threshold_cond = "gte",
+      size = 3,
+      var_name = "rs3"
+    ) |>
+    add_wave(
+      normals_df = normals,
+      threshold = 0,
+      threshold_cond = "gte",
+      size = 5,
+      var_name = "rs5"
+    ) |>
+    dplyr::ungroup() |>
     dplyr::mutate(year = lubridate::year(date)) |>
     dplyr::mutate(month = lubridate::month(date)) |>
     dplyr::group_by(code_muni, year, month) |>
