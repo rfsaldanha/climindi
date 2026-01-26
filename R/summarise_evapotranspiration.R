@@ -70,34 +70,6 @@ summarise_evapotrapiration <- function(.x, value_var, normals_df) {
   # Compute indicators
   suppressMessages(
     .x |>
-      add_wave(
-        normals_df = normals_df,
-        threshold = 0,
-        threshold_cond = "lte",
-        size = 3,
-        var_name = "l_eto_3"
-      ) |>
-      add_wave(
-        normals_df = normals_df,
-        threshold = 0,
-        threshold_cond = "lte",
-        size = 5,
-        var_name = "l_eto_5"
-      ) |>
-      add_wave(
-        normals_df = normals_df,
-        threshold = 0,
-        threshold_cond = "gte",
-        size = 3,
-        var_name = "h_eto_3"
-      ) |>
-      add_wave(
-        normals_df = normals_df,
-        threshold = 0,
-        threshold_cond = "gte",
-        size = 5,
-        var_name = "h_eto_5"
-      ) |>
       dplyr::inner_join(normals_df) |>
       dplyr::summarise(
         count = dplyr::n(),
