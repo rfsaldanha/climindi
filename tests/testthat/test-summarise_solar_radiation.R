@@ -1,11 +1,46 @@
 test_that("summarise_solar_radiation works", {
- normals <- solar_radiation_data |>
-  dplyr::mutate(month = lubridate::month(date)) |>
-  dplyr::group_by(code_muni, month) |>
-  summarise_normal(date_var = date, value_var = value, year_start = 1961, year_end = 1990) |>
-  dplyr::ungroup()
-  
+  normals <- solar_radiation_data |>
+    dplyr::mutate(month = lubridate::month(date)) |>
+    dplyr::group_by(code_muni, month) |>
+    summarise_normal(
+      date_var = date,
+      value_var = value,
+      year_start = 1961,
+      year_end = 1990
+    ) |>
+    dplyr::ungroup()
+
   res <- solar_radiation_data |>
+    dplyr::group_by(code_muni) |>
+    add_wave(
+      normals_df = normals,
+      threshold = 0,
+      threshold_cond = "lte",
+      size = 3,
+      var_name = "d3"
+    ) |>
+    add_wave(
+      normals_df = normals,
+      threshold = 0,
+      threshold_cond = "lte",
+      size = 5,
+      var_name = "d5"
+    ) |>
+    add_wave(
+      normals_df = normals,
+      threshold = 0,
+      threshold_cond = "gte",
+      size = 3,
+      var_name = "l3"
+    ) |>
+    add_wave(
+      normals_df = normals,
+      threshold = 0,
+      threshold_cond = "gte",
+      size = 5,
+      var_name = "l5"
+    ) |>
+    dplyr::ungroup() |>
     dplyr::mutate(year = lubridate::year(date)) |>
     dplyr::mutate(month = lubridate::month(date)) |>
     dplyr::group_by(code_muni, year, month) |>

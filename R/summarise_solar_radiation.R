@@ -63,7 +63,9 @@ summarise_solar_radiation <- function(.x, value_var, normals_df) {
   checkmate::assert_data_frame(x = .x)
 
   # Assert group
-  if (!dplyr::is_grouped_df(.x)) (stop(".x must be a grouped data frame"))
+  if (!dplyr::is_grouped_df(.x)) {
+    (stop(".x must be a grouped data frame"))
+  }
 
   # Compute indicators
   suppressMessages(
@@ -106,34 +108,10 @@ summarise_solar_radiation <- function(.x, value_var, normals_df) {
         ),
         #p10_w = caTools::runquantile({{value_var}}, k = 5, p = 0.1)[1],
         #p90_w = caTools::runquantile({{value_var}}, k = 5, p = 0.9)[1],
-        dark_3 = nseq::trle_cond(
-          x = {{ value_var }},
-          a = 3,
-          a_op = "gte",
-          b = .data[["normal_mean"]],
-          b_op = "lte"
-        ),
-        dark_5 = nseq::trle_cond(
-          x = {{ value_var }},
-          a = 5,
-          a_op = "gte",
-          b = .data[["normal_mean"]],
-          b_op = "lte"
-        ),
-        light_3 = nseq::trle_cond(
-          x = {{ value_var }},
-          a = 3,
-          a_op = "gte",
-          b = .data[["normal_mean"]],
-          b_op = "gte"
-        ),
-        light_5 = nseq::trle_cond(
-          x = {{ value_var }},
-          a = 5,
-          a_op = "gte",
-          b = .data[["normal_mean"]],
-          b_op = "gte"
-        ),
+        d3 = sum(.data[["d3"]], na.rm = TRUE),
+        d5 = sum(.data[["d5"]], na.rm = TRUE),
+        l3 = sum(.data[["l3"]], na.rm = TRUE),
+        l5 = sum(.data[["l5"]], na.rm = TRUE)
       )
   )
 }
