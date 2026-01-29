@@ -68,7 +68,9 @@ summarise_rel_humidity <- function(.x, value_var, normals_df) {
   checkmate::assert_data_frame(x = .x)
 
   # Assert group
-  if (!dplyr::is_grouped_df(.x)) (stop(".x must be a grouped data frame"))
+  if (!dplyr::is_grouped_df(.x)) {
+    (stop(".x must be a grouped data frame"))
+  }
 
   # Compute indicators
   suppressMessages(
@@ -111,34 +113,10 @@ summarise_rel_humidity <- function(.x, value_var, normals_df) {
         ),
         #p10_w = caTools::runquantile({{value_var}}, k = 5, p = 0.1)[1],
         #p90_w = caTools::runquantile({{value_var}}, k = 5, p = 0.9)[1],
-        dry_spells_3d = nseq::trle_cond(
-          x = {{ value_var }},
-          a = 3,
-          a_op = "gte",
-          b = .data[["normal_mean"]] - 10,
-          b_op = "lte"
-        ),
-        dry_spells_5d = nseq::trle_cond(
-          x = {{ value_var }},
-          a = 5,
-          a_op = "gte",
-          b = .data[["normal_mean"]] - 10,
-          b_op = "lte"
-        ),
-        wet_spells_3d = nseq::trle_cond(
-          x = {{ value_var }},
-          a = 3,
-          a_op = "gte",
-          b = .data[["normal_mean"]] + 10,
-          b_op = "gte"
-        ),
-        wet_spells_5d = nseq::trle_cond(
-          x = {{ value_var }},
-          a = 5,
-          a_op = "gte",
-          b = .data[["normal_mean"]] + 10,
-          b_op = "gte"
-        ),
+        ds3 = sum(.data[["ds3"]], na.rm = TRUE),
+        ds5 = sum(.data[["ds5"]], na.rm = TRUE),
+        ws3 = sum(.data[["ws3"]], na.rm = TRUE),
+        ws5 = sum(.data[["ws5"]], na.rm = TRUE),
         dry_days = sum({{ value_var }} <= .data[["normal_p10"]]),
         wet_days = sum({{ value_var }} >= .data[["normal_p90"]]),
         h_30 = sum({{ value_var }} >= 30),
