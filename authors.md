@@ -11,12 +11,12 @@ Source:
 [`DESCRIPTION`](https://github.com/rfsaldanha/climindi/blob/main/DESCRIPTION)
 
 Saldanha R (2026). *climindi: Climate Indicators Helper Functions*. R
-package version 0.1.0, <https://github.com/rfsaldanha/climindi>.
+package version 0.2.0, <https://github.com/rfsaldanha/climindi>.
 
     @Manual{,
       title = {climindi: Climate Indicators Helper Functions},
       author = {Raphael Saldanha},
       year = {2026},
-      note = {R package version 0.1.0},
+      note = {R package version 0.2.0},
       url = {https://github.com/rfsaldanha/climindi},
     }
