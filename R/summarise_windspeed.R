@@ -111,7 +111,56 @@ summarise_windspeed <- function(.x, value_var, normals_df) {
         l_u2_3 = sum(.data[["l_u2_3"]], na.rm = TRUE),
         l_u2_5 = sum(.data[["l_u2_5"]], na.rm = TRUE),
         h_u2_3 = sum(.data[["h_u2_3"]], na.rm = TRUE),
-        h_u2_5 = sum(.data[["h_u2_5"]], na.rm = TRUE)
+        h_u2_5 = sum(.data[["h_u2_5"]], na.rm = TRUE),
+        b0 = sum(ifelse({{ value_var }} < 2, 1, 0), na.rm = TRUE),
+        b1 = sum(
+          ifelse({{ value_var }} >= 2 & {{ value_var }} <= 5, 1, 0),
+          na.rm = TRUE
+        ),
+        b2 = sum(
+          ifelse({{ value_var }} >= 6 & {{ value_var }} <= 11, 1, 0),
+          na.rm = TRUE
+        ),
+        b3 = sum(
+          ifelse({{ value_var }} >= 12 & {{ value_var }} <= 19, 1, 0),
+          na.rm = TRUE
+        ),
+        b4 = sum(
+          ifelse({{ value_var }} >= 20 & {{ value_var }} <= 28, 1, 0),
+          na.rm = TRUE
+        ),
+        b5 = sum(
+          ifelse({{ value_var }} >= 29 & {{ value_var }} <= 38, 1, 0),
+          na.rm = TRUE
+        ),
+        b6 = sum(
+          ifelse({{ value_var }} >= 39 & {{ value_var }} <= 49, 1, 0),
+          na.rm = TRUE
+        ),
+        b7 = sum(
+          ifelse({{ value_var }} >= 50 & {{ value_var }} <= 61, 1, 0),
+          na.rm = TRUE
+        ),
+        b8 = sum(
+          ifelse({{ value_var }} >= 62 & {{ value_var }} <= 74, 1, 0),
+          na.rm = TRUE
+        ),
+        b9 = sum(
+          ifelse({{ value_var }} >= 75 & {{ value_var }} <= 88, 1, 0),
+          na.rm = TRUE
+        ),
+        b10 = sum(
+          ifelse({{ value_var }} >= 89 & {{ value_var }} <= 102, 1, 0),
+          na.rm = TRUE
+        ),
+        b11 = sum(
+          ifelse({{ value_var }} >= 103 & {{ value_var }} <= 117, 1, 0),
+          na.rm = TRUE
+        ),
+        b12 = sum(
+          ifelse({{ value_var }} >= 118, 1, 0),
+          na.rm = TRUE
+        )
       )
   )
 }

@@ -1,5 +1,6 @@
 test_that("summarise_windspeed works", {
   normals <- windspeed_data |>
+    dplyr::mutate(value = value * 3.6) |>
     dplyr::mutate(month = lubridate::month(date)) |>
     dplyr::group_by(code_muni, month) |>
     summarise_normal(
@@ -11,6 +12,7 @@ test_that("summarise_windspeed works", {
     dplyr::ungroup()
 
   res <- windspeed_data |>
+    dplyr::mutate(value = value * 3.6) |>
     dplyr::group_by(code_muni) |>
     add_wave(
       normals_df = normals,
