@@ -17,10 +17,11 @@ summarise_windspeed(.x, value_var, normals_df)
 A tibble.
 }
 \description{
-The function computes windspeed (u2) indicators from grouped data. Expects windspeed in meters per second (m/s).
+The function computes windspeed (u2) indicators from grouped data. Expects windspeed in kilometers per hour (km/h). 1 m/s equals to 3.6 km/h.
 }
 \details{
 The high and low u2 indicators are computed based on climatological normals, created with the \code{summarise_normal()} function and passed with the \code{normals_df} argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
+The variables \code{l_u2_3}, \code{l_u2_5}, \code{h_u2_3} and \code{h_u2_5} must be present in the dataset. Those variables can be computed with the \code{add_wave()} function. Plase follow this function example for the correct arguments.
 
 The following indicators are computed for each group.
 \itemize{
@@ -58,6 +59,37 @@ normals <- windspeed_data |>
 
 # Compute indicators
 windspeed_data |>
+# Create wave variables
+dplyr::group_by(code_muni) |>
+   add_wave(
+     normals_df = normals,
+     threshold = 0,
+     threshold_cond = "lte",
+     size = 3,
+     var_name = "l_u2_3"
+   ) |>
+   add_wave(
+     normals_df = normals,
+     threshold = 0,
+     threshold_cond = "lte",
+     size = 5,
+     var_name = "l_u2_5"
+   ) |>
+   add_wave(
+     normals_df = normals,
+     threshold = 0,
+     threshold_cond = "gte",
+     size = 3,
+     var_name = "h_u2_3"
+   ) |>
+   add_wave(
+     normals_df = normals,
+     threshold = 0,
+     threshold_cond = "gte",
+     size = 5,
+     var_name = "h_u2_5"
+   ) |>
+   dplyr::ungroup() |>
  # Identify month
  dplyr::mutate(month = lubridate::month(date)) |>
  # Group by id variable and month

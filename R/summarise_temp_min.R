@@ -4,6 +4,7 @@
 #'
 #' @details
 #' The cold spells indicators are computed based on climatological normals, created with the `summarise_normal()` function and passed with the `normals_df` argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
+#' The variables `cw3` and `cw5` must be present in the dataset. Those variables can be computed with the `add_wave()` function. Plase follow this function example for the correct arguments.
 #'
 #' The following indicators are computed for each group.
 #' \itemize{
@@ -51,6 +52,23 @@
 #'
 #' # Compute indicators
 #' temp_min_data |>
+#' # Create wave variables
+#' dplyr::group_by(code_muni) |>
+#'    add_wave(
+#'      normals_df = normals,
+#'      threshold = -5,
+#'      threshold_cond = "lte",
+#'      size = 3,
+#'      var_name = "cw3"
+#'    ) |>
+#'    add_wave(
+#'      normals_df = normals,
+#'      threshold = -5,
+#'      threshold_cond = "lte",
+#'      size = 5,
+#'      var_name = "cw5"
+#'    ) |>
+#'    dplyr::ungroup() |>
 #'  # Identify year
 #'  dplyr::mutate(year = lubridate::year(date)) |>
 #'  # Identify month
@@ -65,6 +83,9 @@
 summarise_temp_min <- function(.x, value_var, normals_df) {
   # Assertions
   checkmate::assert_data_frame(x = .x)
+  checkmate::assert_true(
+    all(c("cw3", "cw5") %in% names(.x))
+  )
 
   # Assert group
   if (!dplyr::is_grouped_df(.x)) {

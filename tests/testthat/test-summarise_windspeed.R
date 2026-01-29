@@ -12,7 +12,6 @@ test_that("summarise_windspeed works", {
     dplyr::ungroup()
 
   res <- windspeed_data |>
-    dplyr::mutate(value = value * 3.6) |>
     dplyr::group_by(code_muni) |>
     add_wave(
       normals_df = normals,

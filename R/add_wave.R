@@ -1,20 +1,26 @@
 #' Add waves
 #'
-#' @param .x data
-#' @param date_var date var
-#' @param normals_df normal df
-#' @param threshold threshold
-#' @param threshold_cond threshold_cond
-#' @param size size
-#' @param var_name var_name
+#' Detect sequence of events (aka. waves) in a ordered vector considering its normal values.
 #'
-#' @returns data frame
+#' This is a helper function to detect sequence of events in a ordered vector considering historical normal values.
+#'
+#' An event is considered as a sequence of values of a certain size (`size` argument) that are greather and less than (`threshold_cond` argument) an historical normal (`normal` argument) plus an threshold (`threshold` value).
+#'
+#' The function will fill the variable `var_name` with `TRUE` if the record belongs to an event.
+#'
+#' @param .x A data.frame object.
+#' @param normals_df A data.frame object with normal values, computed with `summarise_normal()`.
+#' @param threshold numeric. A positive of negative threshold value to be added to the normal mean value. Use value zero to consider only the normal value.
+#' @param threshold_cond string. A threshold condition. Use `gte` for "greather than or equal" or `lte` for less than or equal.
+#' @param size numeric. Minimum size of the sequence.
+#' @param var_name string. Variable name with the outputs result.
+#'
+#' @returns A data.frame with the `var_name` variable with logical values.
 #'
 #' @export
 # @importFrom rlang .data
 add_wave <- function(
   .x,
-  date_var,
   normals_df,
   threshold = 5,
   threshold_cond = "gte",

@@ -4,6 +4,7 @@
 #'
 #' @details
 #' The heat waves indicators are computed based on climatological normals, created with the `summarise_normal()` function and passed with the `normals_df` argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
+#' The variables `hw3` and `hw5` must be present in the dataset. Those variables can be computed with the `add_wave()` function. Plase follow this function example for the correct arguments.
 #'
 #' The following indicators are computed for each group.
 #' \itemize{
@@ -50,6 +51,23 @@
 #'
 #' # Compute indicators
 #' temp_max_data |>
+#' # Create wave variables
+#' dplyr::group_by(code_muni) |>
+#'    add_wave(
+#'      normals_df = normals,
+#'      threshold = 5,
+#'      threshold_cond = "gte",
+#'      size = 3,
+#'      var_name = "hw3"
+#'    ) |>
+#'    add_wave(
+#'      normals_df = normals,
+#'      threshold = 5,
+#'      threshold_cond = "gte",
+#'      size = 5,
+#'      var_name = "hw5"
+#'    ) |>
+#'    dplyr::ungroup() |>
 #'  # Identify year
 #'  dplyr::mutate(year = lubridate::year(date)) |>
 #'  # Identify month
@@ -64,6 +82,9 @@
 summarise_temp_max <- function(.x, value_var, normals_df) {
   # Assertions
   checkmate::assert_data_frame(x = .x)
+  checkmate::assert_true(
+    all(c("hw3", "hw5") %in% names(.x))
+  )
 
   # Assert group
   if (!dplyr::is_grouped_df(.x)) {

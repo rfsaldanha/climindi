@@ -1,9 +1,10 @@
 #' Compute windspeed indicators from grouped data
 #'
-#' The function computes windspeed (u2) indicators from grouped data. Expects windspeed in meters per second (m/s).
+#' The function computes windspeed (u2) indicators from grouped data. Expects windspeed in kilometers per hour (km/h). 1 m/s equals to 3.6 km/h.
 #'
 #' @details
 #' The high and low u2 indicators are computed based on climatological normals, created with the `summarise_normal()` function and passed with the `normals_df` argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
+#' The variables `l_u2_3`, `l_u2_5`, `h_u2_3` and `h_u2_5` must be present in the dataset. Those variables can be computed with the `add_wave()` function. Plase follow this function example for the correct arguments.
 #'
 #' The following indicators are computed for each group.
 #' \itemize{
@@ -49,6 +50,37 @@
 #'
 #' # Compute indicators
 #' windspeed_data |>
+#' # Create wave variables
+#' dplyr::group_by(code_muni) |>
+#'    add_wave(
+#'      normals_df = normals,
+#'      threshold = 0,
+#'      threshold_cond = "lte",
+#'      size = 3,
+#'      var_name = "l_u2_3"
+#'    ) |>
+#'    add_wave(
+#'      normals_df = normals,
+#'      threshold = 0,
+#'      threshold_cond = "lte",
+#'      size = 5,
+#'      var_name = "l_u2_5"
+#'    ) |>
+#'    add_wave(
+#'      normals_df = normals,
+#'      threshold = 0,
+#'      threshold_cond = "gte",
+#'      size = 3,
+#'      var_name = "h_u2_3"
+#'    ) |>
+#'    add_wave(
+#'      normals_df = normals,
+#'      threshold = 0,
+#'      threshold_cond = "gte",
+#'      size = 5,
+#'      var_name = "h_u2_5"
+#'    ) |>
+#'    dplyr::ungroup() |>
 #'  # Identify month
 #'  dplyr::mutate(month = lubridate::month(date)) |>
 #'  # Group by id variable and month
@@ -61,6 +93,9 @@
 summarise_windspeed <- function(.x, value_var, normals_df) {
   # Assertions
   checkmate::assert_data_frame(x = .x)
+  checkmate::assert_true(
+    all(c("l_u2_3", "l_u2_5", "h_u2_3", "h_u2_5") %in% names(.x))
+  )
 
   # Assert group
   if (!dplyr::is_grouped_df(.x)) {
@@ -112,53 +147,53 @@ summarise_windspeed <- function(.x, value_var, normals_df) {
         l_u2_5 = sum(.data[["l_u2_5"]], na.rm = TRUE),
         h_u2_3 = sum(.data[["h_u2_3"]], na.rm = TRUE),
         h_u2_5 = sum(.data[["h_u2_5"]], na.rm = TRUE),
-        b0 = sum(ifelse({{ value_var }} < 2, 1, 0), na.rm = TRUE),
+        b0 = sum(ifelse({{ value_var }} < .2, 1, 0), na.rm = TRUE),
         b1 = sum(
-          ifelse({{ value_var }} >= 2 & {{ value_var }} <= 5, 1, 0),
+          ifelse({{ value_var }} >= .3 & {{ value_var }} <= 1.5, 1, 0),
           na.rm = TRUE
         ),
         b2 = sum(
-          ifelse({{ value_var }} >= 6 & {{ value_var }} <= 11, 1, 0),
+          ifelse({{ value_var }} >= 1.6 & {{ value_var }} <= 3.3, 1, 0),
           na.rm = TRUE
         ),
         b3 = sum(
-          ifelse({{ value_var }} >= 12 & {{ value_var }} <= 19, 1, 0),
+          ifelse({{ value_var }} >= 3.4 & {{ value_var }} <= 5.4, 1, 0),
           na.rm = TRUE
         ),
         b4 = sum(
-          ifelse({{ value_var }} >= 20 & {{ value_var }} <= 28, 1, 0),
+          ifelse({{ value_var }} >= 5.5 & {{ value_var }} <= 7.9, 1, 0),
           na.rm = TRUE
         ),
         b5 = sum(
-          ifelse({{ value_var }} >= 29 & {{ value_var }} <= 38, 1, 0),
+          ifelse({{ value_var }} >= 8 & {{ value_var }} <= 10.7, 1, 0),
           na.rm = TRUE
         ),
         b6 = sum(
-          ifelse({{ value_var }} >= 39 & {{ value_var }} <= 49, 1, 0),
+          ifelse({{ value_var }} >= 10.8 & {{ value_var }} <= 13.8, 1, 0),
           na.rm = TRUE
         ),
         b7 = sum(
-          ifelse({{ value_var }} >= 50 & {{ value_var }} <= 61, 1, 0),
+          ifelse({{ value_var }} >= 13.9 & {{ value_var }} <= 17.1, 1, 0),
           na.rm = TRUE
         ),
         b8 = sum(
-          ifelse({{ value_var }} >= 62 & {{ value_var }} <= 74, 1, 0),
+          ifelse({{ value_var }} >= 17.2 & {{ value_var }} <= 20.7, 1, 0),
           na.rm = TRUE
         ),
         b9 = sum(
-          ifelse({{ value_var }} >= 75 & {{ value_var }} <= 88, 1, 0),
+          ifelse({{ value_var }} >= 20.8 & {{ value_var }} <= 24.4, 1, 0),
           na.rm = TRUE
         ),
         b10 = sum(
-          ifelse({{ value_var }} >= 89 & {{ value_var }} <= 102, 1, 0),
+          ifelse({{ value_var }} >= 24.5 & {{ value_var }} <= 28.4, 1, 0),
           na.rm = TRUE
         ),
         b11 = sum(
-          ifelse({{ value_var }} >= 103 & {{ value_var }} <= 117, 1, 0),
+          ifelse({{ value_var }} >= 28.5 & {{ value_var }} <= 32.6, 1, 0),
           na.rm = TRUE
         ),
         b12 = sum(
-          ifelse({{ value_var }} >= 118, 1, 0),
+          ifelse({{ value_var }} >= 32.7, 1, 0),
           na.rm = TRUE
         )
       )

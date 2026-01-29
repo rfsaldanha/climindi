@@ -21,6 +21,7 @@ The function computes precipitation indicators from grouped data. Expects precip
 }
 \details{
 The rain spells indicators are computed based on climatological normals, created with the \code{summarise_normal()} function and passed with the \code{normals_df} argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
+The variables \code{rs3} and \code{rs5} must be present in the dataset. Those variables can be computed with the \code{add_wave()} function. Plase follow this function example for the correct arguments.
 
 The following indicators are computed for each group.
 \itemize{
@@ -65,6 +66,23 @@ normals <- precipitation_data |>
 
 # Compute indicators
 precipitation_data |>
+# Create wave variables
+dplyr::group_by(code_muni) |>
+   add_wave(
+     normals_df = normals,
+     threshold = 0,
+     threshold_cond = "gte",
+     size = 3,
+     var_name = "rs3"
+   ) |>
+   add_wave(
+     normals_df = normals,
+     threshold = 0,
+     threshold_cond = "gte",
+     size = 5,
+     var_name = "rs5"
+   ) |>
+   dplyr::ungroup() |>
  # Identify year
  dplyr::mutate(year = lubridate::year(date)) |>
  # Identify month

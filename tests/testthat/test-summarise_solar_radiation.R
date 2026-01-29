@@ -47,7 +47,7 @@ test_that("summarise_solar_radiation works", {
     summarise_solar_radiation(value_var = value, normals_df = normals) |>
     dplyr::ungroup()
 
-  expect_true(all(c("dark_3", "light_3") %in% names(res)))
+  expect_true(all(c("d3", "l5") %in% names(res)))
 })
 
 test_that("summarise_solar_radiation not works with ungrouped data", {

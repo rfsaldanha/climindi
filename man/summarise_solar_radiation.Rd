@@ -21,6 +21,7 @@ The function computes solar radiation indicators from grouped data. Expects sola
 }
 \details{
 The dark and light days indicators are computed based on climatological normals, created with the \code{summarise_normal()} function and passed with the \code{normals_df} argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
+The variables \code{d3}, \code{d5}, \code{l3} and \code{l5} must be present in the dataset. Those variables can be computed with the \code{add_wave()} function. Plase follow this function example for the correct arguments.
 
 The following indicators are computed for each group.
 \itemize{
@@ -38,10 +39,10 @@ The following indicators are computed for each group.
 \item{\code{p25} 25th percentile}
 \item{\code{p75} 75th percentile}
 \item{\code{p90} 90th percentile}
-\item{\code{dark_3} Count of sequences of 3 days or more with solar radiation bellow the climatological normal}
-\item{\code{dark_5} Count of sequences of 5 days or more with solar radiation bellow the climatological normal}
-\item{\code{light_3} Count of sequences of 3 days or more with solar radiation above the climatological normal}
-\item{\code{light_5} Count of sequences of 5 days or more with solar radiation above the climatological normal}
+\item{\code{d3} Count of sequences of 3 days or more with solar radiation bellow the climatological normal}
+\item{\code{d5} Count of sequences of 5 days or more with solar radiation bellow the climatological normal}
+\item{\code{l3} Count of sequences of 3 days or more with solar radiation above the climatological normal}
+\item{\code{l5} Count of sequences of 5 days or more with solar radiation above the climatological normal}
 }
 }
 \examples{
@@ -56,6 +57,37 @@ normals <- solar_radiation_data |>
 
 # Compute indicators
 solar_radiation_data |>
+# Create wave variables
+dplyr::group_by(code_muni) |>
+   add_wave(
+     normals_df = normals,
+     threshold = 0,
+     threshold_cond = "lte",
+     size = 3,
+     var_name = "d3"
+   ) |>
+   add_wave(
+     normals_df = normals,
+     threshold = 0,
+     threshold_cond = "lte",
+     size = 5,
+     var_name = "d5"
+   ) |>
+   add_wave(
+     normals_df = normals,
+     threshold = 0,
+     threshold_cond = "gte",
+     size = 3,
+     var_name = "l3"
+   ) |>
+   add_wave(
+     normals_df = normals,
+     threshold = 0,
+     threshold_cond = "gte",
+     size = 5,
+     var_name = "l5"
+   ) |>
+   dplyr::ungroup() |>
  # Identify year
  dplyr::mutate(year = lubridate::year(date)) |>
  # Identify month

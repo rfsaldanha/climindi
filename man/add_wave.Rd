@@ -6,7 +6,6 @@
 \usage{
 add_wave(
   .x,
-  date_var,
   normals_df,
   threshold = 5,
   threshold_cond = "gte",
@@ -15,23 +14,28 @@ add_wave(
 )
 }
 \arguments{
-\item{.x}{data}
+\item{.x}{A data.frame object.}
 
-\item{date_var}{date var}
+\item{normals_df}{A data.frame object with normal values, computed with \code{summarise_normal()}.}
 
-\item{normals_df}{normal df}
+\item{threshold}{numeric. A positive of negative threshold value to be added to the normal mean value. Use value zero to consider only the normal value.}
 
-\item{threshold}{threshold}
+\item{threshold_cond}{string. A threshold condition. Use \code{gte} for "greather than or equal" or \code{lte} for less than or equal.}
 
-\item{threshold_cond}{threshold_cond}
+\item{size}{numeric. Minimum size of the sequence.}
 
-\item{size}{size}
-
-\item{var_name}{var_name}
+\item{var_name}{string. Variable name with the outputs result.}
 }
 \value{
-data frame
+A data.frame with the \code{var_name} variable with logical values.
 }
 \description{
-Add waves
+Detect sequence of events (aka. waves) in a ordered vector considering its normal values.
+}
+\details{
+This is a helper function to detect sequence of events in a ordered vector considering historical normal values.
+
+An event is considered as a sequence of values of a certain size (\code{size} argument) that are greather and less than (\code{threshold_cond} argument) an historical normal (\code{normal} argument) plus an threshold (\code{threshold} value).
+
+The function will fill the variable \code{var_name} with \code{TRUE} if the record belongs to an event.
 }

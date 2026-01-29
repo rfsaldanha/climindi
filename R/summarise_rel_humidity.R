@@ -4,6 +4,7 @@
 #'
 #' @details
 #' The dry and wet spells indicators are computed based on climatological normals, created with the `summarise_normal()` function and passed with the `normals_df` argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
+#' The variables `ds3`, `ds5`, `ws3` and `ws5` must be present in the dataset. Those variables can be computed with the `add_wave()` function. Plase follow this function example for the correct arguments.
 #'
 #' The following indicators are computed for each group.
 #' \itemize{
@@ -21,10 +22,10 @@
 #'  \item{`p25` 25th percentile}
 #'  \item{`p75` 75th percentile}
 #'  \item{`p90` 90th percentile}
-#'  \item{`dry_spells_3d` Count of dry spells occurences, with 3 or more consecutive days with relative humidity bellow the climatological normal value minus 10 percent}
-#'  \item{`dry_spells_5d` Count of dry spells occurences, with 5 or more consecutive days with relative humidity bellow the climatological normal value minus 10 percent}
-#'  \item{`wet_spells_3d` Count of wet spells occurences, with 3 or more consecutive days with relative humidity above the climatological normal value plus 10 percent}
-#'  \item{`wet_spells_5d` Count of wet spells occurences, with 5 or more consecutive days with relative humidity above the climatological normal value plus 10 percent}
+#'  \item{`ds3` Count of dry spells occurences, with 3 or more consecutive days with relative humidity bellow the climatological normal value minus 10 percent}
+#'  \item{`ds5` Count of dry spells occurences, with 5 or more consecutive days with relative humidity bellow the climatological normal value minus 10 percent}
+#'  \item{`ws3` Count of wet spells occurences, with 3 or more consecutive days with relative humidity above the climatological normal value plus 10 percent}
+#'  \item{`ws5` Count of wet spells occurences, with 5 or more consecutive days with relative humidity above the climatological normal value plus 10 percent}
 #'  \item{`dry_days` Count of dry days, when the relative humidity is bellow the normal 10th percentile}
 #'  \item{`wet_days` Count of wet days, when the relative humidity is above the normal 90th percentile}
 #'  \item{`h_21_30` Count of days with relative humidity between 21% and 30%. Attention level}
@@ -52,6 +53,37 @@
 #'
 #' # Compute indicators
 #' rel_humidity_data |>
+#' # Create wave variables
+#' dplyr::group_by(code_muni) |>
+#'    add_wave(
+#'      normals_df = normals,
+#'      threshold = -10,
+#'      threshold_cond = "lte",
+#'      size = 3,
+#'      var_name = "ds3"
+#'    ) |>
+#'    add_wave(
+#'      normals_df = normals,
+#'      threshold = -10,
+#'      threshold_cond = "lte",
+#'      size = 5,
+#'      var_name = "ds5"
+#'    ) |>
+#'    add_wave(
+#'      normals_df = normals,
+#'      threshold = 10,
+#'      threshold_cond = "lte",
+#'      size = 3,
+#'      var_name = "ws3"
+#'    ) |>
+#'    add_wave(
+#'      normals_df = normals,
+#'      threshold = 10,
+#'      threshold_cond = "lte",
+#'      size = 5,
+#'      var_name = "ws5"
+#'    ) |>
+#'    dplyr::ungroup() |>
 #'  # Identify year
 #'  dplyr::mutate(year = lubridate::year(date)) |>
 #'  # Identify month
@@ -66,6 +98,9 @@
 summarise_rel_humidity <- function(.x, value_var, normals_df) {
   # Assertions
   checkmate::assert_data_frame(x = .x)
+  checkmate::assert_true(
+    all(c("ds3", "ds5", "ws3", "ws5") %in% names(.x))
+  )
 
   # Assert group
   if (!dplyr::is_grouped_df(.x)) {

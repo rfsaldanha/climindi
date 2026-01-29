@@ -4,6 +4,7 @@
 #'
 #' @details
 #' The dark and light days indicators are computed based on climatological normals, created with the `summarise_normal()` function and passed with the `normals_df` argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
+#' The variables `d3`, `d5`, `l3` and `l5` must be present in the dataset. Those variables can be computed with the `add_wave()` function. Plase follow this function example for the correct arguments.
 #'
 #' The following indicators are computed for each group.
 #' \itemize{
@@ -21,10 +22,10 @@
 #'  \item{`p25` 25th percentile}
 #'  \item{`p75` 75th percentile}
 #'  \item{`p90` 90th percentile}
-#'  \item{`dark_3` Count of sequences of 3 days or more with solar radiation bellow the climatological normal}
-#'  \item{`dark_5` Count of sequences of 5 days or more with solar radiation bellow the climatological normal}
-#'  \item{`light_3` Count of sequences of 3 days or more with solar radiation above the climatological normal}
-#'  \item{`light_5` Count of sequences of 5 days or more with solar radiation above the climatological normal}
+#'  \item{`d3` Count of sequences of 3 days or more with solar radiation bellow the climatological normal}
+#'  \item{`d5` Count of sequences of 5 days or more with solar radiation bellow the climatological normal}
+#'  \item{`l3` Count of sequences of 3 days or more with solar radiation above the climatological normal}
+#'  \item{`l5` Count of sequences of 5 days or more with solar radiation above the climatological normal}
 #' }
 #'
 #' @param .x grouped data, created with `dplyr::group_by()`
@@ -47,6 +48,37 @@
 #'
 #' # Compute indicators
 #' solar_radiation_data |>
+#' # Create wave variables
+#' dplyr::group_by(code_muni) |>
+#'    add_wave(
+#'      normals_df = normals,
+#'      threshold = 0,
+#'      threshold_cond = "lte",
+#'      size = 3,
+#'      var_name = "d3"
+#'    ) |>
+#'    add_wave(
+#'      normals_df = normals,
+#'      threshold = 0,
+#'      threshold_cond = "lte",
+#'      size = 5,
+#'      var_name = "d5"
+#'    ) |>
+#'    add_wave(
+#'      normals_df = normals,
+#'      threshold = 0,
+#'      threshold_cond = "gte",
+#'      size = 3,
+#'      var_name = "l3"
+#'    ) |>
+#'    add_wave(
+#'      normals_df = normals,
+#'      threshold = 0,
+#'      threshold_cond = "gte",
+#'      size = 5,
+#'      var_name = "l5"
+#'    ) |>
+#'    dplyr::ungroup() |>
 #'  # Identify year
 #'  dplyr::mutate(year = lubridate::year(date)) |>
 #'  # Identify month
@@ -61,6 +93,9 @@
 summarise_solar_radiation <- function(.x, value_var, normals_df) {
   # Assertions
   checkmate::assert_data_frame(x = .x)
+  checkmate::assert_true(
+    all(c("d3", "d5", "l3", "l5") %in% names(.x))
+  )
 
   # Assert group
   if (!dplyr::is_grouped_df(.x)) {

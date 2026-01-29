@@ -3,7 +3,8 @@
 #' The function computes evapotranspirations (ETo) indicators from grouped data. Expects evapotranspiration in millimeters (mm).
 #'
 #' @details
-#' The high and low ETo indicators are computed based on climatological normals, created with the `summarise_normal()` function and passed with the `normals_df` argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
+#' The high and low ETo indicators are computed based on climatological normals, created with the `summarise_normal()` function and passed with the `normals_df` argument. Keys to join the normals data must be present (like id, year, and month) and use the same names.
+#' The variables `l_eto_3`, `l_eto_5`, `h_eto_3` and `lheto_5` must be present in the dataset. Those variables can be computed with the `add_wave()` function. Plase follow this function example for the correct arguments.
 #'
 #' The following indicators are computed for each group.
 #' \itemize{
@@ -47,6 +48,37 @@
 #'
 #' # Compute indicators
 #' evapotranspiration_data |>
+#' # Create wave variables
+#' dplyr::group_by(code_muni) |>
+#'  add_wave(
+#'      normals_df = normals,
+#'      threshold = 0,
+#'      threshold_cond = "lte",
+#'      size = 3,
+#'      var_name = "l_eto_3"
+#'    ) |>
+#'    add_wave(
+#'      normals_df = normals,
+#'      threshold = 0,
+#'      threshold_cond = "lte",
+#'      size = 5,
+#'      var_name = "l_eto_5"
+#'    ) |>
+#'    add_wave(
+#'      normals_df = normals,
+#'      threshold = 0,
+#'      threshold_cond = "gte",
+#'      size = 3,
+#'      var_name = "h_eto_3"
+#'    ) |>
+#'    add_wave(
+#'      normals_df = normals,
+#'      threshold = 0,
+#'      threshold_cond = "gte",
+#'      size = 5,
+#'      var_name = "h_eto_5"
+#'    ) |>
+#'    dplyr::ungroup() |>
 #'  # Identify year
 #'  dplyr::mutate(year = lubridate::year(date)) |>
 #'  # Identify month
@@ -61,6 +93,9 @@
 summarise_evapotrapiration <- function(.x, value_var, normals_df) {
   # Assertions
   checkmate::assert_data_frame(x = .x)
+  checkmate::assert_true(
+    all(c("l_eto_3", "l_eto_5", "h_eto_3", "h_eto_5") %in% names(.x))
+  )
 
   # Assert group
   if (!dplyr::is_grouped_df(.x)) {
