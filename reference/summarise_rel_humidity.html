@@ -68,7 +68,8 @@
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The dry and wet spells indicators are computed based on climatological normals, created with the <code><a href="summarise_normal.html">summarise_normal()</a></code> function and passed with the <code>normals_df</code> argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.</p>
+    <p>The dry and wet spells indicators are computed based on climatological normals, created with the <code><a href="summarise_normal.html">summarise_normal()</a></code> function and passed with the <code>normals_df</code> argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
+The variables <code>ds3</code>, <code>ds5</code>, <code>ws3</code> and <code>ws5</code> must be present in the dataset. Those variables can be computed with the <code><a href="add_wave.html">add_wave()</a></code> function. Plase follow this function example for the correct arguments.</p>
 <p>The following indicators are computed for each group.</p><ul><li><p><code>count</code> Count of data points</p></li>
 <li><p><code>normal_mean</code> Climatological normal mean, from <code>normals_df</code> argument</p></li>
 <li><p><code>normal_p10</code> Climatological 10th percentile, from <code>normals_df</code> argument</p></li>
@@ -83,10 +84,10 @@
 <li><p><code>p25</code> 25th percentile</p></li>
 <li><p><code>p75</code> 75th percentile</p></li>
 <li><p><code>p90</code> 90th percentile</p></li>
-<li><p><code>dry_spells_3d</code> Count of dry spells occurences, with 3 or more consecutive days with relative humidity bellow the climatological normal value minus 10 percent</p></li>
-<li><p><code>dry_spells_5d</code> Count of dry spells occurences, with 5 or more consecutive days with relative humidity bellow the climatological normal value minus 10 percent</p></li>
-<li><p><code>wet_spells_3d</code> Count of wet spells occurences, with 3 or more consecutive days with relative humidity above the climatological normal value plus 10 percent</p></li>
-<li><p><code>wet_spells_5d</code> Count of wet spells occurences, with 5 or more consecutive days with relative humidity above the climatological normal value plus 10 percent</p></li>
+<li><p><code>ds3</code> Count of dry spells occurences, with 3 or more consecutive days with relative humidity bellow the climatological normal value minus 10 percent</p></li>
+<li><p><code>ds5</code> Count of dry spells occurences, with 5 or more consecutive days with relative humidity bellow the climatological normal value minus 10 percent</p></li>
+<li><p><code>ws3</code> Count of wet spells occurences, with 3 or more consecutive days with relative humidity above the climatological normal value plus 10 percent</p></li>
+<li><p><code>ws5</code> Count of wet spells occurences, with 5 or more consecutive days with relative humidity above the climatological normal value plus 10 percent</p></li>
 <li><p><code>dry_days</code> Count of dry days, when the relative humidity is bellow the normal 10th percentile</p></li>
 <li><p><code>wet_days</code> Count of wet days, when the relative humidity is above the normal 90th percentile</p></li>
 <li><p><code>h_21_30</code> Count of days with relative humidity between 21% and 30%. Attention level</p></li>
@@ -107,6 +108,37 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute indicators</span></span></span>
 <span class="r-in"><span><span class="va">rel_humidity_data</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span><span class="co"># Create wave variables</span></span></span>
+<span class="r-in"><span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">code_muni</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="add_wave.html">add_wave</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>     normals_df <span class="op">=</span> <span class="va">normals</span>,</span></span>
+<span class="r-in"><span>     threshold <span class="op">=</span> <span class="op">-</span><span class="fl">10</span>,</span></span>
+<span class="r-in"><span>     threshold_cond <span class="op">=</span> <span class="st">"lte"</span>,</span></span>
+<span class="r-in"><span>     size <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>     var_name <span class="op">=</span> <span class="st">"ds3"</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="add_wave.html">add_wave</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>     normals_df <span class="op">=</span> <span class="va">normals</span>,</span></span>
+<span class="r-in"><span>     threshold <span class="op">=</span> <span class="op">-</span><span class="fl">10</span>,</span></span>
+<span class="r-in"><span>     threshold_cond <span class="op">=</span> <span class="st">"lte"</span>,</span></span>
+<span class="r-in"><span>     size <span class="op">=</span> <span class="fl">5</span>,</span></span>
+<span class="r-in"><span>     var_name <span class="op">=</span> <span class="st">"ds5"</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="add_wave.html">add_wave</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>     normals_df <span class="op">=</span> <span class="va">normals</span>,</span></span>
+<span class="r-in"><span>     threshold <span class="op">=</span> <span class="fl">10</span>,</span></span>
+<span class="r-in"><span>     threshold_cond <span class="op">=</span> <span class="st">"lte"</span>,</span></span>
+<span class="r-in"><span>     size <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>     var_name <span class="op">=</span> <span class="st">"ws3"</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="add_wave.html">add_wave</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>     normals_df <span class="op">=</span> <span class="va">normals</span>,</span></span>
+<span class="r-in"><span>     threshold <span class="op">=</span> <span class="fl">10</span>,</span></span>
+<span class="r-in"><span>     threshold_cond <span class="op">=</span> <span class="st">"lte"</span>,</span></span>
+<span class="r-in"><span>     size <span class="op">=</span> <span class="fl">5</span>,</span></span>
+<span class="r-in"><span>     var_name <span class="op">=</span> <span class="st">"ws5"</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span> <span class="co"># Identify year</span></span></span>
 <span class="r-in"><span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/year.html" class="external-link">year</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span> <span class="co"># Identify month</span></span></span>
@@ -117,24 +149,9 @@
 <span class="r-in"><span> <span class="fu">summarise_rel_humidity</span><span class="op">(</span>value_var <span class="op">=</span> <span class="va">value</span>, normals_df <span class="op">=</span> <span class="va">normals</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span> <span class="co"># Ungroup</span></span></span>
 <span class="r-in"><span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3,024 × 26</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    code_muni  year month count normal_mean normal_p10 normal_p90  mean median</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     1    31        78.4       65.9       90.4  88.0   88.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     2    28        77.4       68.3       88.3  80.6   80.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     3    31        77.2       68.6       87.2  78.9   79.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     4    30        77.0       69.8       84.5  76.1   74.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     5    31        76.1       68.5       83.6  76.8   76.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     6    30        74.8       68.1       81.3  75.6   76.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     7    31        72.3       64.6       79.9  69.7   69.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     8    31        67.2       57.5       77.5  61.0   60.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     9    30        67.2       53.8       81.5  57.6   56.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961    10    31        72.2       58.2       85.9  65.3   63.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3,014 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 17 more variables: sd &lt;dbl&gt;, se &lt;dbl&gt;, max &lt;dbl&gt;, min &lt;dbl&gt;, p10 &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   p25 &lt;dbl&gt;, p75 &lt;dbl&gt;, p90 &lt;dbl&gt;, dry_spells_3d &lt;int&gt;, dry_spells_5d &lt;int&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   wet_spells_3d &lt;int&gt;, wet_spells_5d &lt;int&gt;, dry_days &lt;int&gt;, wet_days &lt;int&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   h_21_30 &lt;int&gt;, h_12_20 &lt;int&gt;, h_11 &lt;int&gt;</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in purrr::map(.x = res, .f = iden):</span> <span style="color: #00BBBB;">ℹ</span> In index: 1.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `nseq::trle_cond()`:</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> unused argument (pos = TRUE)</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

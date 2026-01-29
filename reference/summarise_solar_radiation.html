@@ -68,7 +68,8 @@
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The dark and light days indicators are computed based on climatological normals, created with the <code><a href="summarise_normal.html">summarise_normal()</a></code> function and passed with the <code>normals_df</code> argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.</p>
+    <p>The dark and light days indicators are computed based on climatological normals, created with the <code><a href="summarise_normal.html">summarise_normal()</a></code> function and passed with the <code>normals_df</code> argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.
+The variables <code>d3</code>, <code>d5</code>, <code>l3</code> and <code>l5</code> must be present in the dataset. Those variables can be computed with the <code><a href="add_wave.html">add_wave()</a></code> function. Plase follow this function example for the correct arguments.</p>
 <p>The following indicators are computed for each group.</p><ul><li><p><code>count</code> Count of data points</p></li>
 <li><p><code>normal_mean</code> Climatological normal mean, from <code>normals_df</code> argument</p></li>
 <li><p><code>normal_p10</code> Climatological 10th percentile, from <code>normals_df</code> argument</p></li>
@@ -83,10 +84,10 @@
 <li><p><code>p25</code> 25th percentile</p></li>
 <li><p><code>p75</code> 75th percentile</p></li>
 <li><p><code>p90</code> 90th percentile</p></li>
-<li><p><code>dark_3</code> Count of sequences of 3 days or more with solar radiation bellow the climatological normal</p></li>
-<li><p><code>dark_5</code> Count of sequences of 5 days or more with solar radiation bellow the climatological normal</p></li>
-<li><p><code>light_3</code> Count of sequences of 3 days or more with solar radiation above the climatological normal</p></li>
-<li><p><code>light_5</code> Count of sequences of 5 days or more with solar radiation above the climatological normal</p></li>
+<li><p><code>d3</code> Count of sequences of 3 days or more with solar radiation bellow the climatological normal</p></li>
+<li><p><code>d5</code> Count of sequences of 5 days or more with solar radiation bellow the climatological normal</p></li>
+<li><p><code>l3</code> Count of sequences of 3 days or more with solar radiation above the climatological normal</p></li>
+<li><p><code>l5</code> Count of sequences of 5 days or more with solar radiation above the climatological normal</p></li>
 </ul></div>
 
     <div class="section level2">
@@ -102,6 +103,37 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute indicators</span></span></span>
 <span class="r-in"><span><span class="va">solar_radiation_data</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span><span class="co"># Create wave variables</span></span></span>
+<span class="r-in"><span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">code_muni</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="add_wave.html">add_wave</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>     normals_df <span class="op">=</span> <span class="va">normals</span>,</span></span>
+<span class="r-in"><span>     threshold <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>     threshold_cond <span class="op">=</span> <span class="st">"lte"</span>,</span></span>
+<span class="r-in"><span>     size <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>     var_name <span class="op">=</span> <span class="st">"d3"</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="add_wave.html">add_wave</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>     normals_df <span class="op">=</span> <span class="va">normals</span>,</span></span>
+<span class="r-in"><span>     threshold <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>     threshold_cond <span class="op">=</span> <span class="st">"lte"</span>,</span></span>
+<span class="r-in"><span>     size <span class="op">=</span> <span class="fl">5</span>,</span></span>
+<span class="r-in"><span>     var_name <span class="op">=</span> <span class="st">"d5"</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="add_wave.html">add_wave</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>     normals_df <span class="op">=</span> <span class="va">normals</span>,</span></span>
+<span class="r-in"><span>     threshold <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>     threshold_cond <span class="op">=</span> <span class="st">"gte"</span>,</span></span>
+<span class="r-in"><span>     size <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>     var_name <span class="op">=</span> <span class="st">"l3"</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="add_wave.html">add_wave</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>     normals_df <span class="op">=</span> <span class="va">normals</span>,</span></span>
+<span class="r-in"><span>     threshold <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>     threshold_cond <span class="op">=</span> <span class="st">"gte"</span>,</span></span>
+<span class="r-in"><span>     size <span class="op">=</span> <span class="fl">5</span>,</span></span>
+<span class="r-in"><span>     var_name <span class="op">=</span> <span class="st">"l5"</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span> <span class="co"># Identify year</span></span></span>
 <span class="r-in"><span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/year.html" class="external-link">year</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span> <span class="co"># Identify month</span></span></span>
@@ -112,23 +144,9 @@
 <span class="r-in"><span> <span class="fu">summarise_solar_radiation</span><span class="op">(</span>value_var <span class="op">=</span> <span class="va">value</span>, normals_df <span class="op">=</span> <span class="va">normals</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span> <span class="co"># Ungroup</span></span></span>
 <span class="r-in"><span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3,024 × 21</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    code_muni  year month count normal_mean normal_p10 normal_p90  mean median</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     1    31        19.6       11.2       27.6  15.3   14.7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     2    28        20.2       12.1       26.3  19.3   19.4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     3    31        18.7       11.1       23.9  19.7   20.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     4    30        17.2       11.5       20.8  18.9   19.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     5    31        15.2       10.7       18.1  15.4   16.4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     6    30        14.4       11.4       16.4  14.9   15.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     7    31        15.1       11.9       17.4  16.2   16.4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     8    31        17.1       12.6       20.3  19.1   19.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961     9    30        17.8       10.6       22.4  20.2   20.7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>   3<span style="text-decoration: underline;">106</span>200  <span style="text-decoration: underline;">1</span>961    10    31        18.3       10.5       24.8  19.4   21.4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3,014 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 12 more variables: sd &lt;dbl&gt;, se &lt;dbl&gt;, max &lt;dbl&gt;, min &lt;dbl&gt;, p10 &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   p25 &lt;dbl&gt;, p75 &lt;dbl&gt;, p90 &lt;dbl&gt;, dark_3 &lt;int&gt;, dark_5 &lt;int&gt;, light_3 &lt;int&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   light_5 &lt;int&gt;</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in purrr::map(.x = res, .f = iden):</span> <span style="color: #00BBBB;">ℹ</span> In index: 1.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `nseq::trle_cond()`:</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> unused argument (pos = TRUE)</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

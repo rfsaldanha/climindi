@@ -68,7 +68,8 @@
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The high and low ETo indicators are computed based on climatological normals, created with the <code><a href="summarise_normal.html">summarise_normal()</a></code> function and passed with the <code>normals_df</code> argument. Keys to join the normals data must be present (like id, year, and month)  and use the same names.</p>
+    <p>The high and low ETo indicators are computed based on climatological normals, created with the <code><a href="summarise_normal.html">summarise_normal()</a></code> function and passed with the <code>normals_df</code> argument. Keys to join the normals data must be present (like id, year, and month) and use the same names.
+The variables <code>l_eto_3</code>, <code>l_eto_5</code>, <code>h_eto_3</code> and <code>lheto_5</code> must be present in the dataset. Those variables can be computed with the <code><a href="add_wave.html">add_wave()</a></code> function. Plase follow this function example for the correct arguments.</p>
 <p>The following indicators are computed for each group.</p><ul><li><p><code>count</code> Count of data points</p></li>
 <li><p><code>normal_mean</code> Climatological normal mean, from <code>normals_df</code> argument</p></li>
 <li><p><code>normal_p10</code> Climatological 10th percentile, from <code>normals_df</code> argument</p></li>
@@ -102,6 +103,37 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute indicators</span></span></span>
 <span class="r-in"><span><span class="va">evapotranspiration_data</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span><span class="co"># Create wave variables</span></span></span>
+<span class="r-in"><span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">code_muni</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span> <span class="fu"><a href="add_wave.html">add_wave</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>     normals_df <span class="op">=</span> <span class="va">normals</span>,</span></span>
+<span class="r-in"><span>     threshold <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>     threshold_cond <span class="op">=</span> <span class="st">"lte"</span>,</span></span>
+<span class="r-in"><span>     size <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>     var_name <span class="op">=</span> <span class="st">"l_eto_3"</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="add_wave.html">add_wave</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>     normals_df <span class="op">=</span> <span class="va">normals</span>,</span></span>
+<span class="r-in"><span>     threshold <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>     threshold_cond <span class="op">=</span> <span class="st">"lte"</span>,</span></span>
+<span class="r-in"><span>     size <span class="op">=</span> <span class="fl">5</span>,</span></span>
+<span class="r-in"><span>     var_name <span class="op">=</span> <span class="st">"l_eto_5"</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="add_wave.html">add_wave</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>     normals_df <span class="op">=</span> <span class="va">normals</span>,</span></span>
+<span class="r-in"><span>     threshold <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>     threshold_cond <span class="op">=</span> <span class="st">"gte"</span>,</span></span>
+<span class="r-in"><span>     size <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>     var_name <span class="op">=</span> <span class="st">"h_eto_3"</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="add_wave.html">add_wave</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>     normals_df <span class="op">=</span> <span class="va">normals</span>,</span></span>
+<span class="r-in"><span>     threshold <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>     threshold_cond <span class="op">=</span> <span class="st">"gte"</span>,</span></span>
+<span class="r-in"><span>     size <span class="op">=</span> <span class="fl">5</span>,</span></span>
+<span class="r-in"><span>     var_name <span class="op">=</span> <span class="st">"h_eto_5"</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span> <span class="co"># Identify year</span></span></span>
 <span class="r-in"><span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/year.html" class="external-link">year</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span> <span class="co"># Identify month</span></span></span>
@@ -112,10 +144,9 @@
 <span class="r-in"><span> <span class="fu">summarise_evapotrapiration</span><span class="op">(</span>value_var <span class="op">=</span> <span class="va">value</span>, normals_df <span class="op">=</span> <span class="va">normals</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span> <span class="co"># Ungroup</span></span></span>
 <span class="r-in"><span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dplyr::summarise(dplyr::inner_join(.x, normals_df), count = dplyr::n(),     normal_mean = utils::head(.data[["normal_mean"]], 1), normal_p10 = utils::head(.data[["normal_p10"]],         1), normal_p90 = utils::head(.data[["normal_p90"]], 1),     mean = mean({        {            value_var        }    }, na.rm = TRUE), median = stats::median({        {            value_var        }    }, na.rm = TRUE), sd = stats::sd({        {            value_var        }    }, na.rm = TRUE), se = .data[["sd"]]/sqrt(.data[["count"]]),     max = max({        {            value_var        }    }, na.rm = TRUE), min = min({        {            value_var        }    }, na.rm = TRUE), p10 = stats::quantile({        {            value_var        }    }, probs = 0.1, names = FALSE, na.rm = TRUE), p25 = stats::quantile({        {            value_var        }    }, probs = 0.25, names = FALSE, na.rm = TRUE), p75 = stats::quantile({        {            value_var        }    }, probs = 0.75, names = FALSE, na.rm = TRUE), p90 = stats::quantile({        {            value_var        }    }, probs = 0.9, names = FALSE, na.rm = TRUE), l_eto_3 = sum(.data[["l_eto_3"]],         na.rm = TRUE), l_eto_5 = sum(.data[["l_eto_5"]], na.rm = TRUE),     h_eto_3 = sum(.data[["h_eto_3"]], na.rm = TRUE), h_eto_5 = sum(.data[["h_eto_5"]],         na.rm = TRUE)):</span> <span style="color: #00BBBB;">ℹ</span> In argument: `l_eto_3 = sum(.data[["l_eto_3"]], na.rm = TRUE)`.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In group 1: `code_muni = 3106200`, `year = 1961`, `month = 1`.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `.data[["l_eto_3"]]`:</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Column `l_eto_3` not found in `.data`.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in purrr::map(.x = res, .f = iden):</span> <span style="color: #00BBBB;">ℹ</span> In index: 1.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `nseq::trle_cond()`:</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> unused argument (pos = TRUE)</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

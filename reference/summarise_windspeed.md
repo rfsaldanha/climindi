@@ -1,7 +1,8 @@
 # Compute windspeed indicators from grouped data
 
 The function computes windspeed (u2) indicators from grouped data.
-Expects windspeed in meters per second (m/s).
+Expects windspeed in kilometers per hour (km/h). 1 m/s equals to 3.6
+km/h.
 
 ## Usage
 
@@ -36,7 +37,10 @@ normals, created with the
 [`summarise_normal()`](https://rfsaldanha.github.io/climindi/reference/summarise_normal.md)
 function and passed with the `normals_df` argument. Keys to join the
 normals data must be present (like id, year, and month) and use the same
-names.
+names. The variables `l_u2_3`, `l_u2_5`, `h_u2_3` and `h_u2_5` must be
+present in the dataset. Those variables can be computed with the
+[`add_wave()`](https://rfsaldanha.github.io/climindi/reference/add_wave.md)
+function. Plase follow this function example for the correct arguments.
 
 The following indicators are computed for each group.
 
@@ -98,6 +102,37 @@ normals <- windspeed_data |>
 
 # Compute indicators
 windspeed_data |>
+# Create wave variables
+dplyr::group_by(code_muni) |>
+   add_wave(
+     normals_df = normals,
+     threshold = 0,
+     threshold_cond = "lte",
+     size = 3,
+     var_name = "l_u2_3"
+   ) |>
+   add_wave(
+     normals_df = normals,
+     threshold = 0,
+     threshold_cond = "lte",
+     size = 5,
+     var_name = "l_u2_5"
+   ) |>
+   add_wave(
+     normals_df = normals,
+     threshold = 0,
+     threshold_cond = "gte",
+     size = 3,
+     var_name = "h_u2_3"
+   ) |>
+   add_wave(
+     normals_df = normals,
+     threshold = 0,
+     threshold_cond = "gte",
+     size = 5,
+     var_name = "h_u2_5"
+   ) |>
+   dplyr::ungroup() |>
  # Identify month
  dplyr::mutate(month = lubridate::month(date)) |>
  # Group by id variable and month
@@ -106,8 +141,7 @@ windspeed_data |>
  summarise_windspeed(value_var = value, normals_df = normals) |>
  # Ungroup
  dplyr::ungroup()
-#> Error in dplyr::summarise(dplyr::inner_join(.x, normals_df), count = dplyr::n(),     normal_mean = utils::head(.data[["normal_mean"]], 1), normal_p10 = utils::head(.data[["normal_p10"]],         1), normal_p90 = utils::head(.data[["normal_p90"]], 1),     mean = mean({        {            value_var        }    }, na.rm = TRUE), median = stats::median({        {            value_var        }    }, na.rm = TRUE), sd = stats::sd({        {            value_var        }    }, na.rm = TRUE), se = .data[["sd"]]/sqrt(.data[["count"]]),     max = max({        {            value_var        }    }, na.rm = TRUE), min = min({        {            value_var        }    }, na.rm = TRUE), p10 = stats::quantile({        {            value_var        }    }, probs = 0.1, names = FALSE, na.rm = TRUE), p25 = stats::quantile({        {            value_var        }    }, probs = 0.25, names = FALSE, na.rm = TRUE), p75 = stats::quantile({        {            value_var        }    }, probs = 0.75, names = FALSE, na.rm = TRUE), p90 = stats::quantile({        {            value_var        }    }, probs = 0.9, names = FALSE, na.rm = TRUE), l_u2_3 = sum(.data[["l_u2_3"]],         na.rm = TRUE), l_u2_5 = sum(.data[["l_u2_5"]], na.rm = TRUE),     h_u2_3 = sum(.data[["h_u2_3"]], na.rm = TRUE), h_u2_5 = sum(.data[["h_u2_5"]],         na.rm = TRUE)): ℹ In argument: `l_u2_3 = sum(.data[["l_u2_3"]], na.rm = TRUE)`.
-#> ℹ In group 1: `code_muni = 3106200` `month = 1`.
-#> Caused by error in `.data[["l_u2_3"]]`:
-#> ! Column `l_u2_3` not found in `.data`.
+#> Error in purrr::map(.x = res, .f = iden): ℹ In index: 1.
+#> Caused by error in `nseq::trle_cond()`:
+#> ! unused argument (pos = TRUE)
 ```

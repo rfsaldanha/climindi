@@ -36,7 +36,10 @@ normals, created with the
 [`summarise_normal()`](https://rfsaldanha.github.io/climindi/reference/summarise_normal.md)
 function and passed with the `normals_df` argument. Keys to join the
 normals data must be present (like id, year, and month) and use the same
-names.
+names. The variables `ds3`, `ds5`, `ws3` and `ws5` must be present in
+the dataset. Those variables can be computed with the
+[`add_wave()`](https://rfsaldanha.github.io/climindi/reference/add_wave.md)
+function. Plase follow this function example for the correct arguments.
 
 The following indicators are computed for each group.
 
@@ -70,21 +73,21 @@ The following indicators are computed for each group.
 
 - `p90` 90th percentile
 
-- `dry_spells_3d` Count of dry spells occurences, with 3 or more
-  consecutive days with relative humidity bellow the climatological
-  normal value minus 10 percent
+- `ds3` Count of dry spells occurences, with 3 or more consecutive days
+  with relative humidity bellow the climatological normal value minus 10
+  percent
 
-- `dry_spells_5d` Count of dry spells occurences, with 5 or more
-  consecutive days with relative humidity bellow the climatological
-  normal value minus 10 percent
+- `ds5` Count of dry spells occurences, with 5 or more consecutive days
+  with relative humidity bellow the climatological normal value minus 10
+  percent
 
-- `wet_spells_3d` Count of wet spells occurences, with 3 or more
-  consecutive days with relative humidity above the climatological
-  normal value plus 10 percent
+- `ws3` Count of wet spells occurences, with 3 or more consecutive days
+  with relative humidity above the climatological normal value plus 10
+  percent
 
-- `wet_spells_5d` Count of wet spells occurences, with 5 or more
-  consecutive days with relative humidity above the climatological
-  normal value plus 10 percent
+- `ws5` Count of wet spells occurences, with 5 or more consecutive days
+  with relative humidity above the climatological normal value plus 10
+  percent
 
 - `dry_days` Count of dry days, when the relative humidity is bellow the
   normal 10th percentile
@@ -115,6 +118,37 @@ normals <- rel_humidity_data |>
 
 # Compute indicators
 rel_humidity_data |>
+# Create wave variables
+dplyr::group_by(code_muni) |>
+   add_wave(
+     normals_df = normals,
+     threshold = -10,
+     threshold_cond = "lte",
+     size = 3,
+     var_name = "ds3"
+   ) |>
+   add_wave(
+     normals_df = normals,
+     threshold = -10,
+     threshold_cond = "lte",
+     size = 5,
+     var_name = "ds5"
+   ) |>
+   add_wave(
+     normals_df = normals,
+     threshold = 10,
+     threshold_cond = "lte",
+     size = 3,
+     var_name = "ws3"
+   ) |>
+   add_wave(
+     normals_df = normals,
+     threshold = 10,
+     threshold_cond = "lte",
+     size = 5,
+     var_name = "ws5"
+   ) |>
+   dplyr::ungroup() |>
  # Identify year
  dplyr::mutate(year = lubridate::year(date)) |>
  # Identify month
@@ -125,22 +159,7 @@ rel_humidity_data |>
  summarise_rel_humidity(value_var = value, normals_df = normals) |>
  # Ungroup
  dplyr::ungroup()
-#> # A tibble: 3,024 × 26
-#>    code_muni  year month count normal_mean normal_p10 normal_p90  mean median
-#>        <int> <dbl> <dbl> <int>       <dbl>      <dbl>      <dbl> <dbl>  <dbl>
-#>  1   3106200  1961     1    31        78.4       65.9       90.4  88.0   88.8
-#>  2   3106200  1961     2    28        77.4       68.3       88.3  80.6   80.1
-#>  3   3106200  1961     3    31        77.2       68.6       87.2  78.9   79.0
-#>  4   3106200  1961     4    30        77.0       69.8       84.5  76.1   74.9
-#>  5   3106200  1961     5    31        76.1       68.5       83.6  76.8   76.8
-#>  6   3106200  1961     6    30        74.8       68.1       81.3  75.6   76.0
-#>  7   3106200  1961     7    31        72.3       64.6       79.9  69.7   69.9
-#>  8   3106200  1961     8    31        67.2       57.5       77.5  61.0   60.5
-#>  9   3106200  1961     9    30        67.2       53.8       81.5  57.6   56.8
-#> 10   3106200  1961    10    31        72.2       58.2       85.9  65.3   63.3
-#> # ℹ 3,014 more rows
-#> # ℹ 17 more variables: sd <dbl>, se <dbl>, max <dbl>, min <dbl>, p10 <dbl>,
-#> #   p25 <dbl>, p75 <dbl>, p90 <dbl>, dry_spells_3d <int>, dry_spells_5d <int>,
-#> #   wet_spells_3d <int>, wet_spells_5d <int>, dry_days <int>, wet_days <int>,
-#> #   h_21_30 <int>, h_12_20 <int>, h_11 <int>
+#> Error in purrr::map(.x = res, .f = iden): ℹ In index: 1.
+#> Caused by error in `nseq::trle_cond()`:
+#> ! unused argument (pos = TRUE)
 ```

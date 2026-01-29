@@ -36,7 +36,10 @@ created with the
 [`summarise_normal()`](https://rfsaldanha.github.io/climindi/reference/summarise_normal.md)
 function and passed with the `normals_df` argument. Keys to join the
 normals data must be present (like id, year, and month) and use the same
-names.
+names. The variables `cw3` and `cw5` must be present in the dataset.
+Those variables can be computed with the
+[`add_wave()`](https://rfsaldanha.github.io/climindi/reference/add_wave.md)
+function. Plase follow this function example for the correct arguments.
 
 The following indicators are computed for each group.
 
@@ -110,6 +113,23 @@ normals <- temp_min_data |>
 
 # Compute indicators
 temp_min_data |>
+# Create wave variables
+dplyr::group_by(code_muni) |>
+   add_wave(
+     normals_df = normals,
+     threshold = -5,
+     threshold_cond = "lte",
+     size = 3,
+     var_name = "cw3"
+   ) |>
+   add_wave(
+     normals_df = normals,
+     threshold = -5,
+     threshold_cond = "lte",
+     size = 5,
+     var_name = "cw5"
+   ) |>
+   dplyr::ungroup() |>
  # Identify year
  dplyr::mutate(year = lubridate::year(date)) |>
  # Identify month
@@ -120,8 +140,7 @@ temp_min_data |>
  summarise_temp_min(value_var = value, normals_df = normals) |>
  # Ungroup
  dplyr::ungroup()
-#> Error in dplyr::summarise(dplyr::inner_join(.x, normals_df), count = dplyr::n(),     normal_mean = utils::head(.data[["normal_mean"]], 1), normal_p10 = utils::head(.data[["normal_p10"]],         1), normal_p90 = utils::head(.data[["normal_p90"]], 1),     mean = mean({        {            value_var        }    }, na.rm = TRUE), median = stats::median({        {            value_var        }    }, na.rm = TRUE), sd = stats::sd({        {            value_var        }    }, na.rm = TRUE), se = .data[["sd"]]/sqrt(.data[["count"]]),     max = max({        {            value_var        }    }, na.rm = TRUE), min = min({        {            value_var        }    }, na.rm = TRUE), p10 = stats::quantile({        {            value_var        }    }, probs = 0.1, names = FALSE, na.rm = TRUE), p25 = stats::quantile({        {            value_var        }    }, probs = 0.25, names = FALSE, na.rm = TRUE), p75 = stats::quantile({        {            value_var        }    }, probs = 0.75, names = FALSE, na.rm = TRUE), p90 = stats::quantile({        {            value_var        }    }, probs = 0.9, names = FALSE, na.rm = TRUE), cw3 = sum(.data[["cw3"]],         na.rm = TRUE), cw5 = sum(.data[["cw5"]], na.rm = TRUE),     cold_days = sum({        {            value_var        }    } <= .data[["normal_p10"]]), t_0 = sum({        {            value_var        }    } <= 0), t_5 = sum({        {            value_var        }    } <= 5), t_10 = sum({        {            value_var        }    } <= 10), t_15 = sum({        {            value_var        }    } <= 15), t_20 = sum({        {            value_var        }    } <= 20), ): ℹ In argument: `cw3 = sum(.data[["cw3"]], na.rm = TRUE)`.
-#> ℹ In group 1: `code_muni = 3106200`, `year = 1961`, `month = 1`.
-#> Caused by error in `.data[["cw3"]]`:
-#> ! Column `cw3` not found in `.data`.
+#> Error in purrr::map(.x = res, .f = iden): ℹ In index: 1.
+#> Caused by error in `nseq::trle_cond()`:
+#> ! unused argument (pos = TRUE)
 ```
