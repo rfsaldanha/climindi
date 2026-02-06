@@ -5,12 +5,13 @@ test_that("summarise_precipitation works", {
     summarise_normal(
       date_var = date,
       value_var = value,
-      year_start = 1961,
-      year_end = 1990
+      year_start = 1981,
+      year_end = 2010
     ) |>
     dplyr::ungroup()
 
   res <- precipitation_data |>
+    dplyr::filter(date >= as.Date("2011-01-01")) |>
     dplyr::group_by(code_muni) |>
     add_wave(
       normals_df = normals,

@@ -61,6 +61,7 @@ normals <- temp_min_data |>
 
 # Compute indicators
 temp_min_data |>
+dplyr::filter(date >= as.Date("2011-01-01")) |>
 # Create wave variables
 dplyr::group_by(code_muni) |>
    add_wave(

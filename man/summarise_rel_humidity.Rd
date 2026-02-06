@@ -62,6 +62,7 @@ normals <- rel_humidity_data |>
 
 # Compute indicators
 rel_humidity_data |>
+dplyr::filter(date >= as.Date("2011-01-01")) |>
 # Create wave variables
 dplyr::group_by(code_muni) |>
    add_wave(
