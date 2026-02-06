@@ -1,16 +1,19 @@
 ## code to prepare `temp_max` dataset goes here
+temp_max_files <- c(
+  zendown::zen_file(10036212, "2m_temperature_max.parquet"),
+  zendown::zen_file(10947952, "2m_temperature_max.parquet"),
+  zendown::zen_file(15748125, "2m_temperature_max.parquet"),
+  zendown::zen_file(18257037, "2m_temperature_max.parquet")
+)
 
-library(dplyr)
-library(arrow)
-library(zendown)
-
-temp_max_data <- zendown::zen_file(13906834, "Tmax_3.2.3.parquet") |>
-  open_dataset() |>
-  filter(code_muni %in% c(3304557, 3136702, 3303401, 3106200)) |>
-  filter(name == "Tmax_3.2.3_mean") |>
-  filter(date >= as.Date("1961-01-01")) |>
-  filter(date <= as.Date("2023-12-31")) |>
-  select(-name) |>
-  collect()
+temp_max_data <- arrow::open_dataset(temp_max_files) |>
+  dplyr::filter(code_muni %in% c(3304557, 3136702, 3303401, 3106200)) |>
+  dplyr::filter(name == "2m_temperature_max_mean") |>
+  dplyr::filter(date >= as.Date("1981-01-01")) |>
+  dplyr::filter(date <= as.Date("2025-12-31")) |>
+  dplyr::select(-name) |>
+  dplyr::arrange(code_muni, date) |>
+  dplyr::collect() |>
+  dplyr::mutate(value = round(value - 273.15, 2))
 
 usethis::use_data(temp_max_data, overwrite = TRUE, compress = "xz")
