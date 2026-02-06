@@ -17,7 +17,7 @@
 #'   dplyr::mutate(month = lubridate::month(date)) |>
 #'   # Group by id variable and month
 #'   dplyr::group_by(code_muni, month) |>
-#'   summarise_normal(date_var = date, value_var = value, year_start = 1961, year_end = 1990) |>
+#'   summarise_normal(date_var = date, value_var = value, year_start = 1981, year_end = 2010) |>
 #'   dplyr::ungroup()
 #'
 summarise_normal <- function(.x, date_var, value_var, year_start, year_end) {
@@ -25,7 +25,9 @@ summarise_normal <- function(.x, date_var, value_var, year_start, year_end) {
   checkmate::assert_data_frame(x = .x)
 
   # Assert group
-  if (!dplyr::is_grouped_df(.x)) (stop(".x must be a grouped data frame"))
+  if (!dplyr::is_grouped_df(.x)) {
+    (stop(".x must be a grouped data frame"))
+  }
 
   .x |>
     dplyr::filter(

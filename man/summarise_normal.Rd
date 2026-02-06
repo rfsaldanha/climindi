@@ -29,7 +29,7 @@ temp_max_data |>
   dplyr::mutate(month = lubridate::month(date)) |>
   # Group by id variable and month
   dplyr::group_by(code_muni, month) |>
-  summarise_normal(date_var = date, value_var = value, year_start = 1961, year_end = 1990) |>
+  summarise_normal(date_var = date, value_var = value, year_start = 1981, year_end = 2010) |>
   dplyr::ungroup()
 
 }
