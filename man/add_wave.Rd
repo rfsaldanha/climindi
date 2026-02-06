@@ -30,7 +30,7 @@ add_wave(
 A data.frame with the \code{var_name} variable with logical values.
 }
 \description{
-Detect sequence of events (aka. waves) in a ordered vector considering its normal values.
+Detect sequence of events (waves) in a ordered vector considering its normal values.
 }
 \details{
 This is a helper function to detect sequence of events in a ordered vector considering historical normal values.
