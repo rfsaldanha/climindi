@@ -22,8 +22,8 @@
 #'  \item{`p25` 25th percentile}
 #'  \item{`p75` 75th percentile}
 #'  \item{`p90` 90th percentile}
-#'  \item{`cold_spells_3d` Count of cold spells occurences, with 3 or more consecutive days with minimum temperature bellow the climatological normal value minus 5 celsius degrees}
-#'  \item{`cold_spells_5d` Count of cold spells occurences, with 5 or more consecutive days with minimum temperature bellow the climatological normal value minus 5 celsius degrees}
+#'  \item{`cw3` Count of cold spells occurences, with 3 or more consecutive days with minimum temperature bellow the climatological normal value minus 5 celsius degrees}
+#'  \item{`cw5` Count of cold spells occurences, with 5 or more consecutive days with minimum temperature bellow the climatological normal value minus 5 celsius degrees}
 #'  \item{`cold_days` Count of cold days, when the minimum temperature is bellow the normal 10th percentile}
 #'  \item{`t_0` Count of days with temperatures bellow or equal to 0 celsius degrees}
 #'  \item{`t_5` Count of days with temperatures bellow or equal to 5 celsius degrees}

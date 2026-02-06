@@ -39,8 +39,8 @@ The following indicators are computed for each group.
 \item{\code{p25} 25th percentile}
 \item{\code{p75} 75th percentile}
 \item{\code{p90} 90th percentile}
-\item{\code{cold_spells_3d} Count of cold spells occurences, with 3 or more consecutive days with minimum temperature bellow the climatological normal value minus 5 celsius degrees}
-\item{\code{cold_spells_5d} Count of cold spells occurences, with 5 or more consecutive days with minimum temperature bellow the climatological normal value minus 5 celsius degrees}
+\item{\code{cw3} Count of cold spells occurences, with 3 or more consecutive days with minimum temperature bellow the climatological normal value minus 5 celsius degrees}
+\item{\code{cw5} Count of cold spells occurences, with 5 or more consecutive days with minimum temperature bellow the climatological normal value minus 5 celsius degrees}
 \item{\code{cold_days} Count of cold days, when the minimum temperature is bellow the normal 10th percentile}
 \item{\code{t_0} Count of days with temperatures bellow or equal to 0 celsius degrees}
 \item{\code{t_5} Count of days with temperatures bellow or equal to 5 celsius degrees}

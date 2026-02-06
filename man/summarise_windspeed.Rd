@@ -43,6 +43,7 @@ The following indicators are computed for each group.
 \item{\code{l_eto_5} Count of sequences of 5 days or more with windspeed bellow the climatological normal}
 \item{\code{h_eto_3} Count of sequences of 3 days or more with windspeed above the climatological normal}
 \item{\code{h_eto_5} Count of sequences of 5 days or more with windspeed above the climatological normal}
+\item{\code{b1}, \code{b2}, \code{b3}, \code{b4}, \code{b5}, \code{b6}, \code{b7}, \code{b8}, \code{b9}, \code{b10}, \code{b11}, \code{b12} Beaufort scale classifications}
 }
 }
 \examples{

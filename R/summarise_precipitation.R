@@ -22,8 +22,8 @@
 #'  \item{`p25` 25th percentile}
 #'  \item{`p75` 75th percentile}
 #'  \item{`p90` 90th percentile}
-#'  \item{`rain_spells_3d` Count of rain spells occurences, with 3 or more consecutive days with rain above the climatological normal average value}
-#'  \item{`rain_spells_5d` Count of rain spells occurences, with 5 or more consecutive days with rain above the climatological normal average value}
+#'  \item{`rs3` Count of rain spells occurences, with 3 or more consecutive days with rain above the climatological normal average value}
+#'  \item{`rs5` Count of rain spells occurences, with 5 or more consecutive days with rain above the climatological normal average value}
 #'  \item{`p_1` Count of days with precipitation above 1mm}
 #'  \item{`p_5` Count of days with precipitation above 5mm}
 #'  \item{`p_10` Count of days with precipitation above 10mm}

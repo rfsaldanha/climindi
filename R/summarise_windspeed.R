@@ -26,6 +26,7 @@
 #'  \item{`l_eto_5` Count of sequences of 5 days or more with windspeed bellow the climatological normal}
 #'  \item{`h_eto_3` Count of sequences of 3 days or more with windspeed above the climatological normal}
 #'  \item{`h_eto_5` Count of sequences of 5 days or more with windspeed above the climatological normal}
+#'  \item{`b1`, `b2`, `b3`, `b4`, `b5`, `b6`, `b7`, `b8`, `b9`, `b10`, `b11`, `b12` Beaufort scale classifications}
 #' }
 #'
 #' @param .x grouped data, created with `dplyr::group_by()`

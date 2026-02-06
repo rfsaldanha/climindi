@@ -22,8 +22,8 @@
 #'  \item{`p25` 25th percentile}
 #'  \item{`p75` 75th percentile}
 #'  \item{`p90` 90th percentile}
-#'  \item{`heat_waves_3d` Count of heat waves occurences, with 3 or more consecutive days with maximum temperature above the climatological normal value plus 5 celsius degrees}
-#'  \item{`heat_waves_5d` Count of heat waves occurences, with 5 or more consecutive days with maximum temperature above the climatological normal value plus 5 celsius degrees}
+#'  \item{`hw3` Count of heat waves occurences, with 3 or more consecutive days with maximum temperature above the climatological normal value plus 5 celsius degrees}
+#'  \item{`hw5` Count of heat waves occurences, with 5 or more consecutive days with maximum temperature above the climatological normal value plus 5 celsius degrees}
 #'  \item{`hot_days` Count of warm days, when the maximum temperature is above the normal 90th percentile}
 #'  \item{`t_25` Count of days with temperatures above or equal to 25 celsius degrees}
 #'  \item{`t_30` Count of days with temperatures above or equal to 30 celsius degrees}
