@@ -73,13 +73,13 @@ The following indicators are computed for each group.
 
 - `p90` 90th percentile
 
-- `cold_spells_3d` Count of cold spells occurences, with 3 or more
-  consecutive days with minimum temperature bellow the climatological
-  normal value minus 5 celsius degrees
+- `cw3` Count of cold spells occurences, with 3 or more consecutive days
+  with minimum temperature bellow the climatological normal value minus
+  5 celsius degrees
 
-- `cold_spells_5d` Count of cold spells occurences, with 5 or more
-  consecutive days with minimum temperature bellow the climatological
-  normal value minus 5 celsius degrees
+- `cw5` Count of cold spells occurences, with 5 or more consecutive days
+  with minimum temperature bellow the climatological normal value minus
+  5 celsius degrees
 
 - `cold_days` Count of cold days, when the minimum temperature is bellow
   the normal 10th percentile
@@ -108,11 +108,12 @@ normals <- temp_min_data |>
   dplyr::mutate(month = lubridate::month(date)) |>
   # Group by id variable and month
   dplyr::group_by(code_muni, month) |>
-  summarise_normal(date_var = date, value_var = value, year_start = 1961, year_end = 1990) |>
+  summarise_normal(date_var = date, value_var = value, year_start = 1981, year_end = 2010) |>
   dplyr::ungroup()
 
 # Compute indicators
 temp_min_data |>
+dplyr::filter(date >= as.Date("2011-01-01")) |>
 # Create wave variables
 dplyr::group_by(code_muni) |>
    add_wave(

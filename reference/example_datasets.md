@@ -1,7 +1,8 @@
 # Example datasets
 
 Example datasets of climate indicators for four Brazilian municipalities
-with daily data, from 1961 to 2023.
+with daily data, from 1980 to 2025, derived from Copernicus ERA5-Land
+data.
 
 ## Usage
 
@@ -14,35 +15,25 @@ rel_humidity_data
 
 precipitation_data
 
-solar_radiation_data
-
-evapotranspiration_data
-
 windspeed_data
 ```
 
 ## Format
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with
-92040 rows and 3 columns.
+65744 rows and 3 columns.
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with
-92040 rows and 3 columns.
+65744 rows and 3 columns.
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with
-92040 rows and 3 columns.
+65748 rows and 3 columns.
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with
-92040 rows and 3 columns.
+65652 rows and 3 columns.
 
 An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with
-92040 rows and 3 columns.
-
-An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with
-92040 rows and 3 columns.
-
-An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with
-92040 rows and 3 columns.
+65744 rows and 3 columns.
 
 ## Details
 
@@ -55,10 +46,6 @@ An object of class `tbl_df` (inherits from `tbl`, `data.frame`) with
 - `rel_humidity_data` Relative humidity (percent)
 
 - `precipitation_data` Precipitation (mm)
-
-- `solar_radiation_data` Solar radiation (MJm-2)
-
-- `evapotranspiration_data` Evapotranspiration (mm)
 
 - `windspeed_data` Windspeed at 2m height (m/s)
 

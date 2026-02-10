@@ -44,20 +44,20 @@ temp_max_data |>
   dplyr::mutate(month = lubridate::month(date)) |>
   # Group by id variable and month
   dplyr::group_by(code_muni, month) |>
-  summarise_normal(date_var = date, value_var = value, year_start = 1961, year_end = 1990) |>
+  summarise_normal(date_var = date, value_var = value, year_start = 1981, year_end = 2010) |>
   dplyr::ungroup()
 #> # A tibble: 48 × 5
 #>    code_muni month normal_mean normal_p10 normal_p90
 #>        <int> <dbl>       <dbl>      <dbl>      <dbl>
-#>  1   3106200     1        27.9       24.0       31.2
-#>  2   3106200     2        28.5       25.5       30.9
-#>  3   3106200     3        28.3       25.4       30.9
-#>  4   3106200     4        27.2       24.6       29.6
-#>  5   3106200     5        25.8       22.8       28.3
-#>  6   3106200     6        24.7       21.9       27.3
-#>  7   3106200     7        24.4       20.9       27.2
-#>  8   3106200     8        26.1       22.2       29.8
-#>  9   3106200     9        27.1       22.6       31.1
-#> 10   3106200    10        27.5       23.0       31.5
+#>  1   3106200     1        26.1       22.7       28.6
+#>  2   3106200     2        26.9       24.4       29.1
+#>  3   3106200     3        26.1       23.4       28.4
+#>  4   3106200     4        25.2       22.5       27.8
+#>  5   3106200     5        23.7       20.9       26.3
+#>  6   3106200     6        22.7       20.0       25.0
+#>  7   3106200     7        22.7       19.7       25.2
+#>  8   3106200     8        24.3       20.9       27.6
+#>  9   3106200     9        25.6       21.2       29.6
+#> 10   3106200    10        26.3       22.0       30.3
 #> # ℹ 38 more rows
 ```

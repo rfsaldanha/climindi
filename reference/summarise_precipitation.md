@@ -73,13 +73,11 @@ The following indicators are computed for each group.
 
 - `p90` 90th percentile
 
-- `rain_spells_3d` Count of rain spells occurences, with 3 or more
-  consecutive days with rain above the climatological normal average
-  value
+- `rs3` Count of rain spells occurences, with 3 or more consecutive days
+  with rain above the climatological normal average value
 
-- `rain_spells_5d` Count of rain spells occurences, with 5 or more
-  consecutive days with rain above the climatological normal average
-  value
+- `rs5` Count of rain spells occurences, with 5 or more consecutive days
+  with rain above the climatological normal average value
 
 - `p_1` Count of days with precipitation above 1mm
 
@@ -112,11 +110,12 @@ normals <- precipitation_data |>
   dplyr::mutate(month = lubridate::month(date)) |>
   # Group by id variable and month
   dplyr::group_by(code_muni, month) |>
-  summarise_normal(date_var = date, value_var = value, year_start = 1961, year_end = 1990) |>
+  summarise_normal(date_var = date, value_var = value, year_start = 1981, year_end = 2010) |>
   dplyr::ungroup()
 
 # Compute indicators
 precipitation_data |>
+dplyr::filter(date >= as.Date("2011-01-01")) |>
 # Create wave variables
 dplyr::group_by(code_muni) |>
    add_wave(

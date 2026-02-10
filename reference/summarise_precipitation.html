@@ -84,8 +84,8 @@ The variables <code>rs3</code> and <code>rs5</code> must be present in the datas
 <li><p><code>p25</code> 25th percentile</p></li>
 <li><p><code>p75</code> 75th percentile</p></li>
 <li><p><code>p90</code> 90th percentile</p></li>
-<li><p><code>rain_spells_3d</code> Count of rain spells occurences, with 3 or more consecutive days with rain above the climatological normal average value</p></li>
-<li><p><code>rain_spells_5d</code> Count of rain spells occurences, with 5 or more consecutive days with rain above the climatological normal average value</p></li>
+<li><p><code>rs3</code> Count of rain spells occurences, with 3 or more consecutive days with rain above the climatological normal average value</p></li>
+<li><p><code>rs5</code> Count of rain spells occurences, with 5 or more consecutive days with rain above the climatological normal average value</p></li>
 <li><p><code>p_1</code> Count of days with precipitation above 1mm</p></li>
 <li><p><code>p_5</code> Count of days with precipitation above 5mm</p></li>
 <li><p><code>p_10</code> Count of days with precipitation above 10mm</p></li>
@@ -107,11 +107,12 @@ The variables <code>rs3</code> and <code>rs5</code> must be present in the datas
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>month <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html" class="external-link">month</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="co"># Group by id variable and month</span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">code_muni</span>, <span class="va">month</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="summarise_normal.html">summarise_normal</a></span><span class="op">(</span>date_var <span class="op">=</span> <span class="va">date</span>, value_var <span class="op">=</span> <span class="va">value</span>, year_start <span class="op">=</span> <span class="fl">1961</span>, year_end <span class="op">=</span> <span class="fl">1990</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="summarise_normal.html">summarise_normal</a></span><span class="op">(</span>date_var <span class="op">=</span> <span class="va">date</span>, value_var <span class="op">=</span> <span class="va">value</span>, year_start <span class="op">=</span> <span class="fl">1981</span>, year_end <span class="op">=</span> <span class="fl">2010</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute indicators</span></span></span>
 <span class="r-in"><span><span class="va">precipitation_data</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">date</span> <span class="op">&gt;=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2011-01-01"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span><span class="co"># Create wave variables</span></span></span>
 <span class="r-in"><span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">code_muni</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>   <span class="fu"><a href="add_wave.html">add_wave</a></span><span class="op">(</span></span></span>

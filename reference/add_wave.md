@@ -1,7 +1,7 @@
 # Add waves
 
-Detect sequence of events (aka. waves) in a ordered vector considering
-its normal values.
+Detect sequence of events (waves) in a ordered vector considering its
+normal values.
 
 ## Usage
 

@@ -73,13 +73,13 @@ The following indicators are computed for each group.
 
 - `p90` 90th percentile
 
-- `heat_waves_3d` Count of heat waves occurences, with 3 or more
-  consecutive days with maximum temperature above the climatological
-  normal value plus 5 celsius degrees
+- `hw3` Count of heat waves occurences, with 3 or more consecutive days
+  with maximum temperature above the climatological normal value plus 5
+  celsius degrees
 
-- `heat_waves_5d` Count of heat waves occurences, with 5 or more
-  consecutive days with maximum temperature above the climatological
-  normal value plus 5 celsius degrees
+- `hw5` Count of heat waves occurences, with 5 or more consecutive days
+  with maximum temperature above the climatological normal value plus 5
+  celsius degrees
 
 - `hot_days` Count of warm days, when the maximum temperature is above
   the normal 90th percentile
@@ -105,11 +105,12 @@ normals <- temp_max_data |>
   dplyr::mutate(month = lubridate::month(date)) |>
   # Group by id variable and month
   dplyr::group_by(code_muni, month) |>
-  summarise_normal(date_var = date, value_var = value, year_start = 1961, year_end = 1990) |>
+  summarise_normal(date_var = date, value_var = value, year_start = 1981, year_end = 2010) |>
   dplyr::ungroup()
 
 # Compute indicators
 temp_max_data |>
+dplyr::filter(date >= as.Date("2011-01-01")) |>
 # Create wave variables
 dplyr::group_by(code_muni) |>
    add_wave(

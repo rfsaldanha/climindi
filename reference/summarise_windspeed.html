@@ -88,68 +88,9 @@ The variables <code>l_u2_3</code>, <code>l_u2_5</code>, <code>h_u2_3</code> and 
 <li><p><code>l_eto_5</code> Count of sequences of 5 days or more with windspeed bellow the climatological normal</p></li>
 <li><p><code>h_eto_3</code> Count of sequences of 3 days or more with windspeed above the climatological normal</p></li>
 <li><p><code>h_eto_5</code> Count of sequences of 5 days or more with windspeed above the climatological normal</p></li>
+<li><p><code>b1</code>, <code>b2</code>, <code>b3</code>, <code>b4</code>, <code>b5</code>, <code>b6</code>, <code>b7</code>, <code>b8</code>, <code>b9</code>, <code>b10</code>, <code>b11</code>, <code>b12</code> Beaufort scale classifications</p></li>
 </ul></div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Compute monthly normals</span></span></span>
-<span class="r-in"><span><span class="va">normals</span> <span class="op">&lt;-</span> <span class="va">windspeed_data</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="co"># Identify year</span></span></span>
-<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/year.html" class="external-link">year</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="co"># Identify month</span></span></span>
-<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>month <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html" class="external-link">month</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="co"># Group by id variable, year and month</span></span></span>
-<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">code_muni</span>, <span class="va">year</span>, <span class="va">month</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="summarise_normal.html">summarise_normal</a></span><span class="op">(</span>date_var <span class="op">=</span> <span class="va">date</span>, value_var <span class="op">=</span> <span class="va">value</span>, year_start <span class="op">=</span> <span class="fl">1961</span>, year_end <span class="op">=</span> <span class="fl">1990</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Compute indicators</span></span></span>
-<span class="r-in"><span><span class="va">windspeed_data</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span><span class="co"># Create wave variables</span></span></span>
-<span class="r-in"><span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">code_muni</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>   <span class="fu"><a href="add_wave.html">add_wave</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>     normals_df <span class="op">=</span> <span class="va">normals</span>,</span></span>
-<span class="r-in"><span>     threshold <span class="op">=</span> <span class="fl">0</span>,</span></span>
-<span class="r-in"><span>     threshold_cond <span class="op">=</span> <span class="st">"lte"</span>,</span></span>
-<span class="r-in"><span>     size <span class="op">=</span> <span class="fl">3</span>,</span></span>
-<span class="r-in"><span>     var_name <span class="op">=</span> <span class="st">"l_u2_3"</span></span></span>
-<span class="r-in"><span>   <span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>   <span class="fu"><a href="add_wave.html">add_wave</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>     normals_df <span class="op">=</span> <span class="va">normals</span>,</span></span>
-<span class="r-in"><span>     threshold <span class="op">=</span> <span class="fl">0</span>,</span></span>
-<span class="r-in"><span>     threshold_cond <span class="op">=</span> <span class="st">"lte"</span>,</span></span>
-<span class="r-in"><span>     size <span class="op">=</span> <span class="fl">5</span>,</span></span>
-<span class="r-in"><span>     var_name <span class="op">=</span> <span class="st">"l_u2_5"</span></span></span>
-<span class="r-in"><span>   <span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>   <span class="fu"><a href="add_wave.html">add_wave</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>     normals_df <span class="op">=</span> <span class="va">normals</span>,</span></span>
-<span class="r-in"><span>     threshold <span class="op">=</span> <span class="fl">0</span>,</span></span>
-<span class="r-in"><span>     threshold_cond <span class="op">=</span> <span class="st">"gte"</span>,</span></span>
-<span class="r-in"><span>     size <span class="op">=</span> <span class="fl">3</span>,</span></span>
-<span class="r-in"><span>     var_name <span class="op">=</span> <span class="st">"h_u2_3"</span></span></span>
-<span class="r-in"><span>   <span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>   <span class="fu"><a href="add_wave.html">add_wave</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>     normals_df <span class="op">=</span> <span class="va">normals</span>,</span></span>
-<span class="r-in"><span>     threshold <span class="op">=</span> <span class="fl">0</span>,</span></span>
-<span class="r-in"><span>     threshold_cond <span class="op">=</span> <span class="st">"gte"</span>,</span></span>
-<span class="r-in"><span>     size <span class="op">=</span> <span class="fl">5</span>,</span></span>
-<span class="r-in"><span>     var_name <span class="op">=</span> <span class="st">"h_u2_5"</span></span></span>
-<span class="r-in"><span>   <span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span> <span class="co"># Identify month</span></span></span>
-<span class="r-in"><span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>month <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html" class="external-link">month</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span> <span class="co"># Group by id variable and month</span></span></span>
-<span class="r-in"><span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">code_muni</span>, <span class="va">month</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span> <span class="co"># Compute windspeed indicators</span></span></span>
-<span class="r-in"><span> <span class="fu">summarise_windspeed</span><span class="op">(</span>value_var <span class="op">=</span> <span class="va">value</span>, normals_df <span class="op">=</span> <span class="va">normals</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span> <span class="co"># Ungroup</span></span></span>
-<span class="r-in"><span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in purrr::map(.x = res, .f = iden):</span> <span style="color: #00BBBB;">ℹ</span> In index: 1.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `nseq::trle_cond()`:</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> unused argument (pos = TRUE)</span>
-<span class="r-in"><span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
