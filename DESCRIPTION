@@ -4,7 +4,7 @@ Version: 0.2.0
 Authors@R: 
     person("Raphael", "Saldanha", , "raphael.saldanha@fiocruz.br", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-0652-8466"))
-Description: Helper functions to compute climate indicators to be used in a 'dplyr' pipeline.
+Description: Helper functions to compute event-based climate indicators to be used in a 'dplyr' pipeline.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
