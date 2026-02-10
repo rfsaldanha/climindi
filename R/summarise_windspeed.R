@@ -110,9 +110,9 @@ summarise_windspeed <- function(.x, value_var, normals_df) {
       dplyr::inner_join(normals_df) |>
       dplyr::summarise(
         count = dplyr::n(),
-        normal_mean = utils::head("normal_mean", 1),
-        normal_p10 = utils::head("normal_p10", 1),
-        normal_p90 = utils::head("normal_p90", 1),
+        normal_mean = utils::head(.data[["normal_mean"]], 1),
+        normal_p10 = utils::head(.data[["normal_p10"]], 1),
+        normal_p90 = utils::head(.data[["normal_p90"]], 1),
         mean = mean({{ value_var }}, na.rm = TRUE),
         median = stats::median({{ value_var }}, na.rm = TRUE),
         sd = stats::sd({{ value_var }}, na.rm = TRUE),
