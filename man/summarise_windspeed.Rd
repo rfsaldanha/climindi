@@ -46,3 +46,61 @@ The following indicators are computed for each group.
 \item{\code{b1}, \code{b2}, \code{b3}, \code{b4}, \code{b5}, \code{b6}, \code{b7}, \code{b8}, \code{b9}, \code{b10}, \code{b11}, \code{b12} Beaufort scale classifications}
 }
 }
+\examples{
+\dontrun{
+# Compute monthly normals
+normals <- windspeed_data |>
+  # Identify year
+  dplyr::mutate(year = lubridate::year(date)) |>
+  # Identify month
+  dplyr::mutate(month = lubridate::month(date)) |>
+  # Group by id variable, year and month
+  dplyr::group_by(code_muni, year, month) |>
+  summarise_normal(date_var = date, value_var = value, year_start = 1981, year_end = 2010) |>
+  dplyr::ungroup()
+
+# Compute indicators
+windspeed_data |>
+dplyr::filter(date >= as.Date("2011-01-01")) |>
+# Create wave variables
+dplyr::group_by(code_muni) |>
+   add_wave(
+     normals_df = normals,
+     threshold = 0,
+     threshold_cond = "lte",
+     size = 3,
+     var_name = "l_u2_3"
+   ) |>
+   add_wave(
+     normals_df = normals,
+     threshold = 0,
+     threshold_cond = "lte",
+     size = 5,
+     var_name = "l_u2_5"
+   ) |>
+   add_wave(
+     normals_df = normals,
+     threshold = 0,
+     threshold_cond = "gte",
+     size = 3,
+     var_name = "h_u2_3"
+   ) |>
+   add_wave(
+     normals_df = normals,
+     threshold = 0,
+     threshold_cond = "gte",
+     size = 5,
+     var_name = "h_u2_5"
+   ) |>
+   dplyr::ungroup() |>
+ # Identify month
+ dplyr::mutate(month = lubridate::month(date)) |>
+ # Group by id variable and month
+ dplyr::group_by(code_muni, month) |>
+ # Compute windspeed indicators
+ summarise_windspeed(value_var = value, normals_df = normals) |>
+ # Ungroup
+ dplyr::ungroup()
+}
+
+}
