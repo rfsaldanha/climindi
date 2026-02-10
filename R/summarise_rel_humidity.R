@@ -41,60 +41,6 @@
 #' @export
 #' @importFrom rlang .data
 #'
-#' @examples
-#' # Compute monthly normals
-#' normals <- rel_humidity_data |>
-#'   # Identify month
-#'   dplyr::mutate(month = lubridate::month(date)) |>
-#'   # Group by id variable and month
-#'   dplyr::group_by(code_muni, month) |>
-#'   summarise_normal(date_var = date, value_var = value, year_start = 1981, year_end = 2010) |>
-#'   dplyr::ungroup()
-#'
-#' # Compute indicators
-#' rel_humidity_data |>
-#' dplyr::filter(date >= as.Date("2011-01-01")) |>
-#' # Create wave variables
-#' dplyr::group_by(code_muni) |>
-#'    add_wave(
-#'      normals_df = normals,
-#'      threshold = -10,
-#'      threshold_cond = "lte",
-#'      size = 3,
-#'      var_name = "ds3"
-#'    ) |>
-#'    add_wave(
-#'      normals_df = normals,
-#'      threshold = -10,
-#'      threshold_cond = "lte",
-#'      size = 5,
-#'      var_name = "ds5"
-#'    ) |>
-#'    add_wave(
-#'      normals_df = normals,
-#'      threshold = 10,
-#'      threshold_cond = "lte",
-#'      size = 3,
-#'      var_name = "ws3"
-#'    ) |>
-#'    add_wave(
-#'      normals_df = normals,
-#'      threshold = 10,
-#'      threshold_cond = "lte",
-#'      size = 5,
-#'      var_name = "ws5"
-#'    ) |>
-#'    dplyr::ungroup() |>
-#'  # Identify year
-#'  dplyr::mutate(year = lubridate::year(date)) |>
-#'  # Identify month
-#'  dplyr::mutate(month = lubridate::month(date)) |>
-#'  # Group by id variable, year and month
-#'  dplyr::group_by(code_muni, year, month) |>
-#'  # Compute relative humidity indicators
-#'  summarise_rel_humidity(value_var = value, normals_df = normals) |>
-#'  # Ungroup
-#'  dplyr::ungroup()
 #'
 summarise_rel_humidity <- function(.x, value_var, normals_df) {
   # Assertions
