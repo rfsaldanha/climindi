@@ -42,6 +42,7 @@
 #' @importFrom rlang .data
 #'
 #' @examples
+#' \dontrun{
 #' # Compute monthly normals
 #' normals <- rel_humidity_data |>
 #'   # Identify month
@@ -95,6 +96,7 @@
 #'  summarise_rel_humidity(value_var = value, normals_df = normals) |>
 #'  # Ungroup
 #'  dplyr::ungroup()
+#' }
 #'
 summarise_rel_humidity <- function(.x, value_var, normals_df) {
   # Assertions

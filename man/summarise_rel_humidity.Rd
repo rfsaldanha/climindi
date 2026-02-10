@@ -51,6 +51,7 @@ The following indicators are computed for each group.
 }
 }
 \examples{
+\dontrun{
 # Compute monthly normals
 normals <- rel_humidity_data |>
   # Identify month
@@ -104,5 +105,6 @@ dplyr::group_by(code_muni) |>
  summarise_rel_humidity(value_var = value, normals_df = normals) |>
  # Ungroup
  dplyr::ungroup()
+}
 
 }
